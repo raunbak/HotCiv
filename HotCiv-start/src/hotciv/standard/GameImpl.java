@@ -22,7 +22,27 @@ import hotciv.framework.*;
 public class GameImpl implements Game {
   public Tile getTileAt( Position p ) { return null; }
   public Unit getUnitAt( Position p ) { return null; }
-  public City getCityAt( Position p ) { return null; }
+  public City getCityAt( Position p ) { return new City() {
+      @Override
+      public Player getOwner() {
+          return Player.RED;  //To change body of implemented methods use File | Settings | File Templates.
+      }
+
+      @Override
+      public int getSize() {
+          return 0;  //To change body of implemented methods use File | Settings | File Templates.
+      }
+
+      @Override
+      public String getProduction() {
+          return null;  //To change body of implemented methods use File | Settings | File Templates.
+      }
+
+      @Override
+      public String getWorkforceFocus() {
+          return null;  //To change body of implemented methods use File | Settings | File Templates.
+      }
+  }; }
   public Player getPlayerInTurn() { return null; }
   public Player getWinner() { return null; }
   public int getAge() { return 0; }
