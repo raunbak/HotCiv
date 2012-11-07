@@ -21,40 +21,41 @@ import hotciv.framework.*;
 
 public class GameImpl implements Game {
     private Player playerInTurn = Player.RED;
+    // A 2-dimensional array for storing the tiles:
+    private Tile[][] tileTable = new Tile[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
+    private City[][] cityTable = new City[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
+    private int age = -4000;   // Game starts in year 4000 BC
+    private Player winner = null;
 
-    public Tile getTileAt( Position p ) { return null; }
+    public GameImpl() {
+        tileTable[1][0] = new TileImpl(new Position(1,0), GameConstants.OCEANS);
+        tileTable[0][1] = new TileImpl(new Position(0,1), GameConstants.HILLS);
+        tileTable[2][2] = new TileImpl(new Position(2,2), GameConstants.MOUNTAINS);
+        cityTable[1][1] = new CityImpl(Player.RED);
+        cityTable[4][1] = new CityImpl(Player.BLUE);
+    }
+
+    public Tile getTileAt( Position p ) {
+        return tileTable[p.getRow()][p.getColumn()];
+    }
   public Unit getUnitAt( Position p ) { return null; }
-  public City getCityAt( Position p ) { return new City() {
-      @Override
-      public Player getOwner() {
-          return Player.RED;  //To change body of implemented methods use File | Settings | File Templates.
-      }
-
-      @Override
-      public int getSize() {
-          return 0;  //To change body of implemented methods use File | Settings | File Templates.
-      }
-
-      @Override
-      public String getProduction() {
-          return null;  //To change body of implemented methods use File | Settings | File Templates.
-      }
-
-      @Override
-      public String getWorkforceFocus() {
-          return null;  //To change body of implemented methods use File | Settings | File Templates.
-      }
-  }; }
-  public Player getPlayerInTurn() { return playerInTurn; } // TODO Don't be a constant.
-  public Player getWinner() { return null; }
-  public int getAge() { return 0; }
+  public City getCityAt( Position p ) {
+      return cityTable[p.getRow()][p.getColumn()];
+  }
+  public Player getPlayerInTurn() { return playerInTurn; }
+  public Player getWinner() { return winner; }
+  public int getAge() { return age; }
   public boolean moveUnit( Position from, Position to ) {
     return false;
   }
   public void endOfTurn() {
       if (playerInTurn.equals(Player.RED)) playerInTurn = Player.BLUE;
-      else playerInTurn = Player.RED;
-      // TODO end-of-round processing
+      else {
+          playerInTurn = Player.RED;
+          age += 100;
+          if (age == -3000) winner = Player.RED;
+          // TODO more end-of-round processing
+      }
   }
   public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
   public void changeProductionInCityAt( Position p, String unitType ) {}
