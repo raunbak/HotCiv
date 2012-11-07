@@ -37,4 +37,25 @@ public class TestAlphaCiv {
     assertEquals( "City at (1,1) should be owned by red",
       Player.RED, p );
   }
+
+    @Test
+    public void shouldHaveExactlyRedAndBluePlayer() {
+       Player p1 = game.getPlayerInTurn();
+        assertEquals("Red should be the first player in turn", Player.RED, p1);
+        game.endOfTurn();
+        Player p2 = game.getPlayerInTurn();
+        assertEquals("Blue should now be the player in turn", Player.BLUE, p2);
+        game.endOfTurn();
+        Player p3 = game.getPlayerInTurn();
+        assertEquals("New round begins, should be red's turn", Player.RED, p3);
+    }
+
+    // TODO this is redundant as it is tested in the test above.
+    @Test
+    public void redShouldBeFirstPlayer() {
+        Player p = game.getPlayerInTurn();
+        assertEquals("Red should be the first player in turn", Player.RED, p);
+    }
+
+
 }
