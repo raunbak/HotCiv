@@ -78,13 +78,51 @@ public class TestAlphaCiv {
     }
 
     @Test
+    public void shouldHaveMountainAt2_2() {
+        Tile t = game.getTileAt(new Position(0,1));
+        assertEquals("The tile at position (0,1) should be hills", GameConstants.HILLS, t.getTypeString());
+    }
+
+    @Test
+    public void shouldIncrementAgeBy100EachRound() {
+        assertEquals("Game should start at 4000 BC", -4000, game.getAge());
+        makeGameRunNturns(10);
+        assertEquals("Age should now be 3000 BC", -3000, game.getAge());
+    }
+
+    @Test
     public void redShouldWinInYear3000BC() {
         assertEquals("Game should start at 4000 BC", -4000, game.getAge());
-        for (int i=0; i<20; i++) {   // age should increment by 100 each time both player's turn has ended, 2*1000/100 = 20.
-            game.endOfTurn();
-        }
-        assertEquals("Age should now be 3000 BC", -3000, game.getAge());
+        makeGameRunNturns(10);
         assertEquals("Red should have won at 3000 BC", Player.RED, game.getWinner());
     }
 
+    @Test
+    public void redShouldHaveCorrectNumOfUnitsAtStart(){
+        Unit u = game.getUnitAt(new Position(2,0));
+        assertEquals("Should have an archer at (2,0)",GameConstants.ARCHER,u.getTypeString());
+        assertEquals("Archer at (2,0) should have Red as owner",Player.RED,u.getOwner());
+
+        u = game.getUnitAt(new Position(4,3));
+        assertEquals("Should have an Settler at (4,3)",GameConstants.SETTLER,u.getTypeString());
+        assertEquals("Settler at (4,3) should have Red as owner",Player.RED,u.getOwner());
+
+    }
+
+    @Test
+    public void blueShouldHaveCorrectNumOfUnitsAtStart(){
+        Unit u = game.getUnitAt(new Position(3,2));
+        assertEquals("Should have an legion at (3,2)",GameConstants.LEGION,u.getTypeString());
+        assertEquals("Legion at (3,2) should have Blue as owner",Player.BLUE,u.getOwner());
+
+    }
+
+
+
+    private void makeGameRunNturns(int Nturns) {
+        // TODO works for two players only
+        for (int i=0; i<2*Nturns; i++) {   // age should increment by 100 each time both player's turn has ended, 2*1000/100 = 20.
+            game.endOfTurn();
+        }
+    }
 }

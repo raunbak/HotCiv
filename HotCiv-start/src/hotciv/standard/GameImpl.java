@@ -21,24 +21,24 @@ import hotciv.framework.*;
 
 public class GameImpl implements Game {
     private Player playerInTurn = Player.RED;
-    // A 2-dimensional array for storing the tiles:
+    // 2-dimensional arrays for storing the tiles/cities/units:
     private Tile[][] tileTable = new Tile[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
     private City[][] cityTable = new City[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
+    private Unit[][] unitTable = new Unit[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
     private int age = -4000;   // Game starts in year 4000 BC
     private Player winner = null;
 
     public GameImpl() {
-        tileTable[1][0] = new TileImpl(new Position(1,0), GameConstants.OCEANS);
-        tileTable[0][1] = new TileImpl(new Position(0,1), GameConstants.HILLS);
-        tileTable[2][2] = new TileImpl(new Position(2,2), GameConstants.MOUNTAINS);
-        cityTable[1][1] = new CityImpl(Player.RED);
-        cityTable[4][1] = new CityImpl(Player.BLUE);
+       SetupOfAlphaCiv();
     }
 
     public Tile getTileAt( Position p ) {
         return tileTable[p.getRow()][p.getColumn()];
     }
-  public Unit getUnitAt( Position p ) { return null; }
+  public Unit getUnitAt( Position p ) {
+      return unitTable[p.getRow()][p.getColumn()];
+  }
+
   public City getCityAt( Position p ) {
       return cityTable[p.getRow()][p.getColumn()];
   }
@@ -60,4 +60,16 @@ public class GameImpl implements Game {
   public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
   public void changeProductionInCityAt( Position p, String unitType ) {}
   public void performUnitActionAt( Position p ) {}
+
+
+  private void SetupOfAlphaCiv(){
+      tileTable[1][0] = new TileImpl(new Position(1,0), GameConstants.OCEANS);
+      tileTable[0][1] = new TileImpl(new Position(0,1), GameConstants.HILLS);
+      tileTable[2][2] = new TileImpl(new Position(2,2), GameConstants.MOUNTAINS);
+      cityTable[1][1] = new CityImpl(Player.RED);
+      cityTable[4][1] = new CityImpl(Player.BLUE);
+      unitTable[2][0] = new UnitImpl(GameConstants.ARCHER,Player.RED);
+      unitTable[4][3] = new UnitImpl(GameConstants.SETTLER,Player.RED);
+      unitTable[3][2] = new UnitImpl(GameConstants.LEGION,Player.BLUE);
+  }
 }
