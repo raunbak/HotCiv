@@ -4,19 +4,17 @@ import hotciv.framework.Player;
 import hotciv.framework.Unit;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Laurids
- * Date: 09-11-12
- * Time: 12:18
- * To change this template use File | Settings | File Templates.
+ *
+ *
  */
 public abstract class AbstractUnit implements Unit
 {
-
     protected Player owner;
     protected String unittype;
     protected int defensiveStrength;
     protected int attackingStrength;
+    protected int moveCount;
+    protected int totalMoves;
 
     @Override
     public String getTypeString() {
@@ -30,7 +28,7 @@ public abstract class AbstractUnit implements Unit
 
     @Override
     public int getMoveCount() {
-        return 0;
+        return moveCount;
     }
 
     @Override
@@ -43,5 +41,14 @@ public abstract class AbstractUnit implements Unit
         return attackingStrength;
     }
 
+    @Override
+    public void reduceMoveCountBy(int moves) {
+        moveCount -= moves;
+    }
+
+    @Override
+    public void restoreMoveCount() {
+        moveCount = totalMoves;
+    }
 
 }

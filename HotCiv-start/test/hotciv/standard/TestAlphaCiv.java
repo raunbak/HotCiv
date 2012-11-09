@@ -40,7 +40,7 @@ public class TestAlphaCiv {
 
   @Test
   public void shouldHaveBlueCityAt4_1() {
-      City c = game.getCityAt(new Position(4,1));
+      City c = game.getCityAt(new Position(4, 1));
       assertNotNull("There should be a city at (4,1)", c);
       Player p = c.getOwner();
       assertEquals( "City at (4,1) should be owned by blue", Player.BLUE, p );
@@ -117,6 +117,54 @@ public class TestAlphaCiv {
 
     }
 
+    @Test
+    public void archerShouldBeAbleToMoveFrom2_0To3_1() {
+        Unit archer = game.getUnitAt(new Position(2,0));
+        assertNotNull("There should be an archer at (2,0)", archer);
+        game.moveUnit(new Position(2,0), new Position(3,1));
+        assertEquals("This archer should now be at position (3,1)", archer, game.getUnitAt(new Position(3,1)));
+    }
+
+    @Test
+    public void unitShouldNotBeAbleToMoveToATileWithAMountain() {
+        game.moveUnit(new Position(3,2), new Position(2,2));
+        assertNull("There should not be any units on a mountain-tile", game.getUnitAt(new Position(2,2)));
+    }
+
+    @Test
+    public void redCannotMoveBlueUnits() {
+        game.moveUnit(new Position(3,2), new Position(4,2));
+        assertNull("If not null, then red could move blues units", game.getUnitAt(new Position(4,2)));
+    }
+
+    @Test
+    public void unitsCannotMoveFurtherThanRemainingMoveCount() {
+        game.moveUnit(new Position(4,3), new Position(4,5));
+        assertNull("This settler should not be able to move here. (distance > 1)", game.getUnitAt(new Position(4,5)));
+    }
+
+    @Test
+    public void unitsCannotMoveWhenAtZeroMoveCount() {
+        game.moveUnit(new Position(4,3), new Position(4,4));
+        game.moveUnit(new Position(4,4), new Position(4,5));
+        assertNull("This settler should not be able to move here. (no moves left)", game.getUnitAt(new Position(4,5)));
+    }
+
+    @Test
+    public void thereShouldBeOnlyOneUnitOnATile() {
+        game.moveUnit(new Position(2,0), new Position(3,1));  // Move archer
+        game.moveUnit(new Position(4,3), new Position(4,2));  // Move settler
+        game.endOfTurn();  // End the turn, because red has no moves left.
+        game.endOfTurn();  // End the turn again, so it becomes red's turn again.
+        game.moveUnit(new Position(3,1), new Position(4,2));  // Move archer to settler's position.
+        assertNotNull("Archer should still be at (3,1) because it can't move to settlers position", game.getUnitAt(new Position(3,1)));
+    }
+
+    @Test
+    public void movingRedUnitToBlueUnitOverwritesTheBlueUnit() {
+        game.moveUnit(new Position(4,3), new Position(3,2));
+        assertEquals("The red settler should now be in the legion's position", Player.RED, game.getUnitAt(new Position(3,2)).getOwner());
+    }
 
 
     private void makeGameRunNturns(int Nturns) {

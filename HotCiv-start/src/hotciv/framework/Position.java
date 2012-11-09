@@ -42,6 +42,10 @@ public class Position {
    */
   public int getColumn() { return c; }
 
+  public int distanceBetween(Position p) {
+      return Math.max(Math.abs(p.getRow() - r), Math.abs(p.getColumn() - c));
+  }
+
   public boolean equals(Object o) {
     if (o == null) { return false; }
     if (o.getClass() != Position.class) { return false; }

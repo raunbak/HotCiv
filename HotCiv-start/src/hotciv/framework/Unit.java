@@ -5,7 +5,8 @@ package hotciv.framework;
 Responsibilities:
 1) Know its type name.
 2) Know its owner.
-2) Know its defensive and attacking strengths.
+3) Know its defensive and attacking strengths.
+4) Know remaining moves (added by L&M)
 
    This source code is from the book 
      "Flexible, Reliable Software:
@@ -53,4 +54,12 @@ public interface Unit {
    * @return attack strength
    */
   public int getAttackingStrength();
+
+    /**
+     * Precondition: moves <= moveCount
+     * @param moves
+     */
+    public void reduceMoveCountBy(int moves);
+
+    public void restoreMoveCount();
 }

@@ -45,15 +45,46 @@ public class GameImpl implements Game {
   public Player getPlayerInTurn() { return playerInTurn; }
   public Player getWinner() { return winner; }
   public int getAge() { return age; }
+
   public boolean moveUnit( Position from, Position to ) {
-    return false;
+      Unit unitFrom = getUnitAt(from);
+      Unit unitTo = getUnitAt(to);
+      Tile tileTo = getTileAt(to);
+
+      if (!playerInTurn.equals(unitFrom.getOwner())) {return false;}
+
+      int distanceToBeMoved = from.distanceBetween(to);
+      if (distanceToBeMoved > unitFrom.getMoveCount()) {return false;}
+
+
+      if (tileTo.getTypeString().equals(GameConstants.MOUNTAINS)) {return false;}
+
+      if (unitTo != null) {
+          if (unitFrom.getOwner().equals(unitTo.getOwner())) {return false;}
+          // Because the attack-strategy used, the attacking unit always wins. So no need to check if a unit of different owner is at position "to".
+      }
+
+      // Now, move the unit:
+      unitTable[to.getRow()][to.getColumn()] = unitFrom;
+      unitTable[from.getRow()][from.getColumn()] = null;
+      unitFrom.reduceMoveCountBy(distanceToBeMoved);
+      return true;
   }
+
   public void endOfTurn() {
       if (playerInTurn.equals(Player.RED)) playerInTurn = Player.BLUE;
       else {
           playerInTurn = Player.RED;
           age += 100;
           if (age == -3000) winner = Player.RED;
+
+          for (int i=0; i<GameConstants.WORLDSIZE; i++) {
+              for (int j=0; j<GameConstants.WORLDSIZE; j++) {
+                  if (unitTable[i][j] != null) {
+                      unitTable[i][j].restoreMoveCount();
+                  }
+              }
+          }
           // TODO more end-of-round processing
       }
   }
@@ -63,6 +94,13 @@ public class GameImpl implements Game {
 
 
   private void SetupOfAlphaCiv(){
+      // Initialize the tile array with plains on every tile, with the responding positions.
+      for (int i=0; i<GameConstants.WORLDSIZE; i++) {
+          for (int j=0; j<GameConstants.WORLDSIZE; j++) {
+              tileTable[i][j] = new TileImpl(new Position(i,j), GameConstants.PLAINS);
+          }
+      }
+
       tileTable[1][0] = new TileImpl(new Position(1,0), GameConstants.OCEANS);
       tileTable[0][1] = new TileImpl(new Position(0,1), GameConstants.HILLS);
       tileTable[2][2] = new TileImpl(new Position(2,2), GameConstants.MOUNTAINS);

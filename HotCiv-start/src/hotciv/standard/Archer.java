@@ -16,5 +16,7 @@ public class Archer extends AbstractUnit {
         this.owner = owner;
         attackingStrength = 2;
         defensiveStrength = 3;
+        totalMoves = 1;
+        moveCount = totalMoves;
     }
 }

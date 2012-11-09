@@ -16,5 +16,7 @@ public class Legion extends AbstractUnit {
         this.owner = owner;
         attackingStrength = 4;
         defensiveStrength = 2;
+        totalMoves = 1;
+        moveCount = totalMoves;
     }
 }

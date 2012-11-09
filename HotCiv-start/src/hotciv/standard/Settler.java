@@ -16,5 +16,7 @@ public class Settler extends AbstractUnit {
         this.owner = owner;
         attackingStrength = 0;
         defensiveStrength = 3;
+        totalMoves = 1;
+        moveCount = totalMoves;
     }
 }
