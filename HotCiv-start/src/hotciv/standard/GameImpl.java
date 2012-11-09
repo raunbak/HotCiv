@@ -68,8 +68,8 @@ public class GameImpl implements Game {
       tileTable[2][2] = new TileImpl(new Position(2,2), GameConstants.MOUNTAINS);
       cityTable[1][1] = new CityImpl(Player.RED);
       cityTable[4][1] = new CityImpl(Player.BLUE);
-      unitTable[2][0] = new UnitImpl(GameConstants.ARCHER,Player.RED);
-      unitTable[4][3] = new UnitImpl(GameConstants.SETTLER,Player.RED);
-      unitTable[3][2] = new UnitImpl(GameConstants.LEGION,Player.BLUE);
+      unitTable[2][0] = new Archer(Player.RED);
+      unitTable[4][3] = new Settler(Player.RED);
+      unitTable[3][2] = new Legion(Player.BLUE);
   }
 }
