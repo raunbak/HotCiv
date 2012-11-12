@@ -4,7 +4,8 @@ import hotciv.framework.Player;
 import hotciv.framework.Unit;
 
 /**
- *
+ * AbstractUnit is an implementation of Unit.
+ * it has implementations for all of the necessary methods of a unit.
  *
  */
 public abstract class AbstractUnit implements Unit

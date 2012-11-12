@@ -7,6 +7,7 @@ Responsibilities:
 2) Know its owner.
 3) Know its defensive and attacking strengths.
 4) Know remaining moves (added by L&M)
+5) Be able to restore it's moves to it's original value. {added by L&N)
 
    This source code is from the book 
      "Flexible, Reliable Software:
@@ -55,11 +56,15 @@ public interface Unit {
    */
   public int getAttackingStrength();
 
-    /**
-     * Precondition: moves <= moveCount
-     * @param moves
-     */
-    public void reduceMoveCountBy(int moves);
+  /**
+   * Reduces a units movecount by int move amount.
+   * Precondition: moves <= moveCount
+   * @param moves
+   */
+  public void reduceMoveCountBy(int moves);
 
-    public void restoreMoveCount();
+    /**
+     * Restores a units movecount back to it's original value.
+      */
+  public void restoreMoveCount();
 }

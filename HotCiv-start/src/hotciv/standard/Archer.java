@@ -4,11 +4,8 @@ import hotciv.framework.GameConstants;
 import hotciv.framework.Player;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Laurids
- * Date: 09-11-12
- * Time: 12:26
- * To change this template use File | Settings | File Templates.
+ * Class for an Archer Unit.
+ * Extends AbstractUnit
  */
 public class Archer extends AbstractUnit {
     public Archer(Player owner) {
