@@ -4,16 +4,19 @@ import hotciv.framework.Position;
 import hotciv.framework.Tile;
 
 /**
+ * An implementation of the Tile interface.
  * Created with IntelliJ IDEA.
  * User: Laurids
- * Date: 07-11-12
- * Time: 18:25
- * To change this template use File | Settings | File Templates.
  */
 public class TileImpl implements Tile {
     private Position position;
     private String type;
 
+    /**
+     *  Constructor for TileImpl.
+     * @param p (the position of the tile)
+     * @param type (the tupe of tile, String value)
+     */
     public TileImpl(Position p, String type) {
         position = p;
         this.type = type;
