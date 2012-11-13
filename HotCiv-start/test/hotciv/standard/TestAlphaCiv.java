@@ -166,6 +166,28 @@ public class TestAlphaCiv {
         assertEquals("The red settler should now be in the legion's position", Player.RED, game.getUnitAt(new Position(3,2)).getOwner());
     }
 
+    @Test
+    public void RedCityAt1_1_ShouldProduce6ProductionEachTurn() {
+        makeGameRunNturns(1); // To make sure a full turn has passed.
+        City c = game.getCityAt(new Position(1,1));
+        assertEquals("Since a turn has passed, this City should have 6 production",6,c.getCurrentAmountOfProduction());
+    }
+
+    @Test
+    public void canChangeProductionInRedCity1_1() {
+        City c = game.getCityAt(new Position(1,1));
+        assertNull("This city should not have a production focus at this point",c.getProduction());
+        game.changeProductionInCityAt(new Position(1,1),GameConstants.ARCHER);
+        assertEquals("Production focus should be Archer in this city",GameConstants.ARCHER,c.getProduction());
+    }
+
+    @Test
+    public void blueCityAt4_1_WillProduceALegionIn3Turns(){
+        game.changeProductionInCityAt(new Position(4,1),GameConstants.LEGION);
+        makeGameRunNturns(3);
+        Unit u = game.getUnitAt(new Position(4,1));
+        assertEquals("There should be a Legion unit here",GameConstants.LEGION,u.getTypeString());
+    }
 
     private void makeGameRunNturns(int Nturns) {
         // TODO works for two players only

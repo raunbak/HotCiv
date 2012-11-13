@@ -24,7 +24,6 @@ Responsibilities:
    commercial use, see http://www.baerbak.com/
 */
 public interface Unit {
-
   /** return the type of the unit
    * @return unit type as a string, valid values are at
    * least those listed in GameConstants, particular variants

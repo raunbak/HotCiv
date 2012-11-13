@@ -1,5 +1,9 @@
 package hotciv.framework;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /** Collection of constants used in HotCiv Game. Note that strings are
  * used instead of enumeration types to keep the set of valid
  * constants open to extensions by future HotCiv variants.  Enums can
@@ -23,9 +27,9 @@ public class GameConstants {
   // The size of the world is set permanently to a 16x16 grid 
   public static final int WORLDSIZE = 16;
   // Valid unit types
-  public static final String ARCHER    = "archer";
-  public static final String LEGION    = "legion";
-  public static final String SETTLER   = "settler";
+  public static final String ARCHER    = "Archer";
+  public static final String LEGION    = "Legion";
+  public static final String SETTLER   = "Settler";
   // Valid terrain types
   public static final String PLAINS    = "plains";
   public static final String OCEANS    = "ocean";
@@ -35,4 +39,18 @@ public class GameConstants {
   // Valid production balance types
   public static final String productionFocus = "hammer";
   public static final String foodFocus = "apple";
+  // Valid costs of units
+  public static final int ARCHERCOST = 10;
+  public static final int LEGIONCOST = 15;
+  public static final int SETTLERCOST = 30;
+
+  // Cost map of units.
+  public static final Map<String,Integer> COSTMAP;
+    static {
+        Map<String,Integer> aMap = new HashMap<String, Integer>();
+        aMap.put(ARCHER,ARCHERCOST);
+        aMap.put(LEGION,LEGIONCOST);
+        aMap.put(SETTLER,SETTLERCOST);
+        COSTMAP = Collections.unmodifiableMap(aMap);
+    }
 }

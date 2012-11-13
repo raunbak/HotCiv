@@ -8,6 +8,7 @@ import hotciv.framework.Player;
  * Extends AbstractUnit
  */
 public class Archer extends AbstractUnit {
+
     public Archer(Player owner) {
         unittype = GameConstants.ARCHER;
         this.owner = owner;
@@ -15,5 +16,6 @@ public class Archer extends AbstractUnit {
         defensiveStrength = 3;
         totalMoves = 1;
         moveCount = totalMoves;
+
     }
 }

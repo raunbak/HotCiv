@@ -92,7 +92,36 @@ public class GameImpl implements Game {
         else {
             playerInTurn = Player.RED;
             age += 100;
-            if (age == -3000) winner = Player.RED;
+            if (age == -3000) { winner = Player.RED;}
+
+
+            for (int i= 0; i< GameConstants.WORLDSIZE; i++) {
+                for  (int j = 0; j < GameConstants.WORLDSIZE;j++) {
+                 if (cityTable[i][j] != null) {
+
+                     cityTable[i][j].addAmountTofProduction(6); // Constant amount of 6 in AlphaCiv.
+                     String unittype = cityTable[i][j].getProduction();
+                     int productionAmount = cityTable[i][j].getCurrentAmountOfProduction();
+
+                     if (unittype!=null && GameConstants.COSTMAP.get(unittype) <= productionAmount) {
+                         try {
+                             unitTable[i][j]  =(Unit) Class.forName(unittype).newInstance();
+
+                         } catch (ClassNotFoundException e) {
+                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                         } catch (InstantiationException e) {
+                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                         } catch (IllegalAccessException e) {
+                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                         }
+                     }
+
+                 }
+                }
+            }
+
+
+
 
             for (int i=0; i<GameConstants.WORLDSIZE; i++) {
                 for (int j=0; j<GameConstants.WORLDSIZE; j++) {
@@ -105,7 +134,12 @@ public class GameImpl implements Game {
         }
     }
     public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
-    public void changeProductionInCityAt( Position p, String unitType ) {}
+    public void changeProductionInCityAt( Position p, String unitType ) {
+
+        City c = getCityAt(p);
+
+        c.setProduction(unitType);
+    }
     public void performUnitActionAt( Position p ) {}
 
     /**

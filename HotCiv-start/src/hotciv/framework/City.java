@@ -5,6 +5,7 @@ package hotciv.framework;
 Responsibilities:
 1) Knows its owner.
 2) Knows its population size.
+3) Know how much production it has.  (L&M)
 
    This source code is from the book 
      "Flexible, Reliable Software:
@@ -43,4 +44,15 @@ public interface City {
    */
   public String getWorkforceFocus();
 
+   /**
+    * Returns how much a city has of production.
+    * @return an int of the current amount of production the city has.
+    */
+  public int getCurrentAmountOfProduction();
+
+  public int reduceAmountOfProduction(int amount);
+
+  public int addAmountTofProduction(int amount);
+
+  public void setProduction(String unit);
 }
