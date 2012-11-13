@@ -2,6 +2,8 @@ package hotciv.standard;
 
 import hotciv.framework.*;
 
+import java.lang.reflect.Constructor;
+
 /** Skeleton implementation of HotCiv.
 
  This source code is from the book
@@ -104,8 +106,34 @@ public class GameImpl implements Game {
                      int productionAmount = cityTable[i][j].getCurrentAmountOfProduction();
 
                      if (unittype!=null && GameConstants.COSTMAP.get(unittype) <= productionAmount) {
+
+                         if (unittype.equals(GameConstants.ARCHER)) {
+
+                             unitTable[i][j] = new Archer(getPlayerInTurn() );
+                             cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype));
+                         }
+
+                         if (unittype.equals(GameConstants.LEGION)) {
+
+                             unitTable[i][j] = new Legion(getPlayerInTurn() );
+                             cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype));
+                         }
+
+                         if (unittype.equals(GameConstants.SETTLER)) {
+
+                             unitTable[i][j] = new Settler(getPlayerInTurn() );
+                             cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype));
+                         }
+
+                         /**
+
                          try {
-                             unitTable[i][j]  =(Unit) Class.forName(unittype).newInstance();
+                             //unitTable[i][j]  =(Unit) Class.forName(unittype).newInstance();
+
+                             Class<?> c = Class.forName("hotciv.standard."+unittype+);
+                             Constructor<?> cons = c.getConstructor(unittype.class);
+                             Object object = cons.newInstance("MyAttributeValue");
+
 
                          } catch (ClassNotFoundException e) {
                              e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -114,6 +142,7 @@ public class GameImpl implements Game {
                          } catch (IllegalAccessException e) {
                              e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                          }
+                          */
                      }
 
                  }
