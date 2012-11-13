@@ -3,6 +3,7 @@ package hotciv.standard;
 import hotciv.framework.*;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /** Skeleton implementation of HotCiv.
 
@@ -105,44 +106,35 @@ public class GameImpl implements Game {
                      String unittype = cityTable[i][j].getProduction();
                      int productionAmount = cityTable[i][j].getCurrentAmountOfProduction();
 
+                     // If the city the city is currently set to produce a type of unit
+                     //    and the the city has enough production amount to afford it, then create the unit.
                      if (unittype!=null && GameConstants.COSTMAP.get(unittype) <= productionAmount) {
+                         // Below we need the name of our unitclass. Since we used the same name as the unittypes in GameConstants
+                         //    but with capital first-letter, we can get the relevant classname at runtime using the following:
+                         String className = Character.toUpperCase(unittype.charAt(0)) + unittype.substring(1);
 
-                         if (unittype.equals(GameConstants.ARCHER)) {
-
-                             unitTable[i][j] = new Archer(getPlayerInTurn() );
-                             cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype));
-                         }
-
-                         if (unittype.equals(GameConstants.LEGION)) {
-
-                             unitTable[i][j] = new Legion(getPlayerInTurn() );
-                             cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype));
-                         }
-
-                         if (unittype.equals(GameConstants.SETTLER)) {
-
-                             unitTable[i][j] = new Settler(getPlayerInTurn() );
-                             cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype));
-                         }
-
-                         /**
-
+                         // Now, we use the following code to create an instance of the relevant unit
+                         //     at the right position in unitTable (again completely polymorphic).
                          try {
-                             //unitTable[i][j]  =(Unit) Class.forName(unittype).newInstance();
+                             Class<?> unitClass = Class.forName("hotciv.standard."+className);
+                             Constructor<?> cons = unitClass.getConstructor(Player.class);
+                             Object object = cons.newInstance(getPlayerInTurn());
 
-                             Class<?> c = Class.forName("hotciv.standard."+unittype+);
-                             Constructor<?> cons = c.getConstructor(unittype.class);
-                             Object object = cons.newInstance("MyAttributeValue");
+                             unitTable[i][j] = (Unit) object;
 
-
-                         } catch (ClassNotFoundException e) {
-                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                          } catch (InstantiationException e) {
-                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                             e.printStackTrace();
                          } catch (IllegalAccessException e) {
-                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                             e.printStackTrace();
+                         } catch (InvocationTargetException e) {
+                             e.printStackTrace();
+                         } catch (NoSuchMethodException e) {
+                             e.printStackTrace();
+                         } catch (ClassNotFoundException e) {
+                             e.printStackTrace();
                          }
-                          */
+
+                         cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype));
                      }
 
                  }
