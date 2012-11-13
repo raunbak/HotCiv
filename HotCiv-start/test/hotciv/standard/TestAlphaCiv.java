@@ -189,6 +189,45 @@ public class TestAlphaCiv {
         assertEquals("There should be a Legion unit here",GameConstants.LEGION,u.getTypeString());
     }
 
+    @Test
+    public void shouldPlaceUnitAtNextFreeTileIfCityIsOccupied() {
+        game.changeProductionInCityAt(new Position(1,1),GameConstants.ARCHER);
+        // Run game until red city has produced enough to make 2 archers.
+        makeGameRunNturns((int)Math.ceil(2 * GameConstants.ARCHERCOST / 6.0));
+        Unit u = game.getUnitAt(new Position(0,1));
+        assertEquals("There should now be an archer at (0,1)",GameConstants.ARCHER,u.getTypeString());
+    }
+
+    @Test
+    public void shouldSkipOccupiedTileWhenPlacingUnit() {
+        game.changeProductionInCityAt(new Position(4,1), GameConstants.SETTLER);
+        // Run the game until the blue city tries to produce a third settler.
+        makeGameRunNturns((int)Math.ceil(3 * GameConstants.SETTLERCOST / 6.0));
+        Unit uLegion = game.getUnitAt(new Position(3,2));
+        assertEquals("The legion should still be there (3,2).", GameConstants.LEGION, uLegion.getTypeString());
+        Unit uSettler3 = game.getUnitAt(new Position(4,2));
+        assertEquals("The third settler should have been placed here (4,2).", GameConstants.SETTLER, uSettler3.getTypeString());
+
+    }
+
+    @Test
+    public void startByPlacingTheUnit2TilesToTheNorthWhenNoFreeTilesInAOneTileRadius() {
+        game.changeProductionInCityAt(new Position(4,1), GameConstants.ARCHER);
+        // Run the game until the blue city has produced 9 archers.
+        makeGameRunNturns((int)Math.ceil(9 * GameConstants.ARCHERCOST / 6.0));
+        Unit u = game.getUnitAt(new Position(2,1));
+        assertEquals("The 9'th archer should be placed at (2,1).", GameConstants.ARCHER, u.getTypeString());
+
+        // blev ikke sat korrekt før:
+        u = game.getUnitAt(new Position(3,0));
+        assertEquals("The 8'th archer should be placed at (3,0).", GameConstants.ARCHER, u.getTypeString());
+
+    }
+
+
+    // TODO More tests that the placement order of produced units is correct.
+
+
     private void makeGameRunNturns(int Nturns) {
         // TODO works for two players only
         for (int i=0; i<2*Nturns; i++) {   // age should increment by 100 each time both player's turn has ended, 2*1000/100 = 20.

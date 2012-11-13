@@ -97,7 +97,6 @@ public class GameImpl implements Game {
             age += 100;
             if (age == -3000) { winner = Player.RED;}
 
-
             for (int i= 0; i< GameConstants.WORLDSIZE; i++) {
                 for  (int j = 0; j < GameConstants.WORLDSIZE;j++) {
                  if (cityTable[i][j] != null) {
@@ -109,40 +108,12 @@ public class GameImpl implements Game {
                      // If the city the city is currently set to produce a type of unit
                      //    and the the city has enough production amount to afford it, then create the unit.
                      if (unittype!=null && GameConstants.COSTMAP.get(unittype) <= productionAmount) {
-                         // Below we need the name of our unitclass. Since we used the same name as the unittypes in GameConstants
-                         //    but with capital first-letter, we can get the relevant classname at runtime using the following:
-                         String className = Character.toUpperCase(unittype.charAt(0)) + unittype.substring(1);
-
-                         // Now, we use the following code to create an instance of the relevant unit
-                         //     at the right position in unitTable (again completely polymorphic).
-                         try {
-                             Class<?> unitClass = Class.forName("hotciv.standard."+className);
-                             Constructor<?> cons = unitClass.getConstructor(Player.class);
-                             Object object = cons.newInstance(getPlayerInTurn());
-
-                             unitTable[i][j] = (Unit) object;
-
-                         } catch (InstantiationException e) {
-                             e.printStackTrace();
-                         } catch (IllegalAccessException e) {
-                             e.printStackTrace();
-                         } catch (InvocationTargetException e) {
-                             e.printStackTrace();
-                         } catch (NoSuchMethodException e) {
-                             e.printStackTrace();
-                         } catch (ClassNotFoundException e) {
-                             e.printStackTrace();
-                         }
-
-                         cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype));
+                         if (produceUnit(new Position(i,j),unittype)) { cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype)); }
                      }
 
                  }
                 }
             }
-
-
-
 
             for (int i=0; i<GameConstants.WORLDSIZE; i++) {
                 for (int j=0; j<GameConstants.WORLDSIZE; j++) {
@@ -154,6 +125,8 @@ public class GameImpl implements Game {
             // TODO more end-of-round processing
         }
     }
+
+
     public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
     public void changeProductionInCityAt( Position p, String unitType ) {
 
@@ -162,6 +135,83 @@ public class GameImpl implements Game {
         c.setProduction(unitType);
     }
     public void performUnitActionAt( Position p ) {}
+
+
+    private boolean produceUnit(Position pCity, String unittype) {
+        if (validateUnitCreation(pCity, unittype)) { return true; }
+        int r = pCity.getRow();
+        int c = pCity.getColumn();
+        int tmax = 2;
+        int a = 0;
+        int b = 1;
+        while (tmax < GameConstants.WORLDSIZE) {
+            int t = tmax / 2;
+            int i = r - t;
+            int j = c;
+            for (int side = 0; side < 5; side++) {
+                while (t > 0) {
+                    // TODO Avoid positions outside of the 16x16 world. Either here, or by checking in validateUnitCreation()?.
+                    // Check if this tile is free and of a type that can hold units.
+                    // If yes, then it will be created in the other method with returnvalue true.
+                    if (validateUnitCreation(new Position(i,j), unittype)) { return true; }
+
+                    // Add the "vector" (a,b) to (i,j) to get the new position.
+                    i += a;
+                    j += b;
+                    // Decrement t so we know when we should turn the next corner.
+                    t--;
+                }
+
+                // When we reach the top horizontal row again, make sure to only check the tiles to the left of the starting tile.
+                if (side == 4) { t = tmax / 2 - 1; }
+                else { t = tmax; }
+
+                // if (a,b) is a vector, then (b,-a) is that vector rotated 90 degrees clockwise.
+                int atmp = a;
+                a = b;
+                b = - atmp;
+            }
+            tmax *= 2;
+        }
+        // At this point, there are no possible tiles left, so return false (no unit has been produced).
+        return false;
+    }
+
+
+    private boolean validateUnitCreation(Position p, String unittype) {
+        // If there is already a unit of the tile at position p, don't create the new unit here.
+        if (getUnitAt(p) != null) { return false; }
+        String tileType = getTileAt(p).getTypeString();
+        // Also skip it if the tile is a mountain or an ocean, then don't create the new unit on this tile.
+        if (tileType.equals(GameConstants.MOUNTAINS)
+                || tileType.equals(GameConstants.OCEANS)) { return false; }
+
+        // Below we need the name of our unitclass. Since we used the same name as the unittypes in GameConstants
+        //    but with capital first-letter, we can get the relevant classname at runtime using the following:
+        String className = Character.toUpperCase(unittype.charAt(0)) + unittype.substring(1);
+        // Now, we use the following code to create an instance of the relevant unit
+        //     at the right position in unitTable (again completely polymorphic).
+        try {
+            Class<?> unitClass = Class.forName("hotciv.standard."+className);
+            Constructor<?> cons = unitClass.getConstructor(Player.class);
+            Object object = cons.newInstance(getPlayerInTurn());
+
+            unitTable[p.getRow()][p.getColumn()] = (Unit) object;
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 
     /**
      * Setup of AlphaCiv
