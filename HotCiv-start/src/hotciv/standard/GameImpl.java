@@ -142,11 +142,13 @@ public class GameImpl implements Game {
 
     private boolean produceUnit(Position pCity, String unittype) {
         if (validateUnitCreation(pCity, unittype)) { return true; }
+
         int r = pCity.getRow();
         int c = pCity.getColumn();
         int tmax = 2;
         int a = 0;
         int b = 1;
+
         while (tmax < GameConstants.WORLDSIZE) {
             int t = tmax / 2;
             int i = r - t;

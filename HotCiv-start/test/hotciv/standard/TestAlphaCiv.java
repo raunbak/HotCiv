@@ -7,48 +7,48 @@ import static org.junit.Assert.*;
 
 /** Skeleton class for AlphaCiv test cases
 
-   This source code is from the book 
-     "Flexible, Reliable Software:
-       Using Patterns and Agile Development"
-     published 2010 by CRC Press.
-   Author: 
-     Henrik B Christensen 
-     Computer Science Department
-     Aarhus University
-   
-   This source code is provided WITHOUT ANY WARRANTY either 
-   expressed or implied. You may study, use, modify, and 
-   distribute it for non-commercial purposes. For any 
-   commercial use, see http://www.baerbak.com/
-*/
+ This source code is from the book
+ "Flexible, Reliable Software:
+ Using Patterns and Agile Development"
+ published 2010 by CRC Press.
+ Author:
+ Henrik B Christensen
+ Computer Science Department
+ Aarhus University
+
+ This source code is provided WITHOUT ANY WARRANTY either
+ expressed or implied. You may study, use, modify, and
+ distribute it for non-commercial purposes. For any
+ commercial use, see http://www.baerbak.com/
+ */
 public class TestAlphaCiv {
-  private Game game;
-  /** Fixture for alphaciv testing. */
-  @Before
-  public void setUp() {
-    game = new GameImpl();
-  }
+    private Game game;
+    /** Fixture for alphaciv testing. */
+    @Before
+    public void setUp() {
+        game = new GameImpl();
+    }
 
-  @Test
-  public void shouldHaveRedCityAt1_1() {
-    City c = game.getCityAt(new Position(1,1));
-    assertNotNull("There should be a city at (1,1)", c);
-    Player p = c.getOwner();
-    assertEquals( "City at (1,1) should be owned by red",
-      Player.RED, p );
-  }
+    @Test
+    public void shouldHaveRedCityAt1_1() {
+        City c = game.getCityAt(new Position(1,1));
+        assertNotNull("There should be a city at (1,1)", c);
+        Player p = c.getOwner();
+        assertEquals( "City at (1,1) should be owned by red",
+                Player.RED, p );
+    }
 
-  @Test
-  public void shouldHaveBlueCityAt4_1() {
-      City c = game.getCityAt(new Position(4, 1));
-      assertNotNull("There should be a city at (4,1)", c);
-      Player p = c.getOwner();
-      assertEquals( "City at (4,1) should be owned by blue", Player.BLUE, p );
-  }
+    @Test
+    public void shouldHaveBlueCityAt4_1() {
+        City c = game.getCityAt(new Position(4, 1));
+        assertNotNull("There should be a city at (4,1)", c);
+        Player p = c.getOwner();
+        assertEquals( "City at (4,1) should be owned by blue", Player.BLUE, p );
+    }
 
     @Test
     public void shouldHaveExactlyRedAndBluePlayer() {
-       Player p1 = game.getPlayerInTurn();
+        Player p1 = game.getPlayerInTurn();
         assertEquals("Red should be the first player in turn", Player.RED, p1);
         game.endOfTurn();
         Player p2 = game.getPlayerInTurn();
@@ -174,6 +174,15 @@ public class TestAlphaCiv {
     }
 
     @Test
+    public void ShouldLowerProductionAmountInRed1_1_CityFrom30to10(){
+        makeGameRunNturns(5);
+        City c = game.getCityAt(new Position(1,1));
+        c.reduceAmountOfProduction(20);
+        assertEquals("Should be 10 production in this city now",10,c.getCurrentAmountOfProduction());
+
+    }
+
+    @Test
     public void canChangeProductionInRedCity1_1() {
         City c = game.getCityAt(new Position(1,1));
         assertNull("This city should not have a production focus at this point",c.getProduction());
@@ -217,15 +226,20 @@ public class TestAlphaCiv {
         makeGameRunNturns((int)Math.ceil(9 * GameConstants.ARCHERCOST / 6.0));
         Unit u = game.getUnitAt(new Position(2,1));
         assertEquals("The 9'th archer should be placed at (2,1).", GameConstants.ARCHER, u.getTypeString());
-
-        // blev ikke sat korrekt før:
-        u = game.getUnitAt(new Position(3,0));
-        assertEquals("The 8'th archer should be placed at (3,0).", GameConstants.ARCHER, u.getTypeString());
-
     }
 
+    @Test
+    public void ThereShouldBeAUnitInCity1_1andOneAbove(){
+        makeGameRunNturns(3);
+        game.changeProductionInCityAt(new Position(1,1),GameConstants.ARCHER);
 
-    // TODO More tests that the placement order of produced units is correct.
+        makeGameRunNturns(1);
+        Unit u1 = game.getUnitAt(new Position(1,1));
+        Unit u2 = game.getUnitAt(new Position(0,1));
+        assertEquals("There should be an archer here!(1,1)",GameConstants.ARCHER,u1.getTypeString());
+        assertEquals("There should be an archer here!(0,1)",GameConstants.ARCHER,u2.getTypeString());
+
+    }
 
 
     private void makeGameRunNturns(int Nturns) {
