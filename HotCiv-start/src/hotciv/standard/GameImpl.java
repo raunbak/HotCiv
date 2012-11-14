@@ -107,8 +107,11 @@ public class GameImpl implements Game {
 
                      // If the city the city is currently set to produce a type of unit
                      //    and the the city has enough production amount to afford it, then create the unit.
-                     if (unittype!=null && GameConstants.COSTMAP.get(unittype) <= productionAmount) {
-                         if (produceUnit(new Position(i,j),unittype)) { cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype)); }
+                     while (unittype!=null && GameConstants.COSTMAP.get(unittype) <= productionAmount) {
+                         if (produceUnit(new Position(i,j),unittype)) {
+                             cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype));
+                             productionAmount = cityTable[i][j].getCurrentAmountOfProduction();
+                         }
                      }
 
                  }
