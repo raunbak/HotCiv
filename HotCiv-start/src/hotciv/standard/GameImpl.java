@@ -37,9 +37,12 @@ public class GameImpl implements Game {
     private Unit[][] unitTable = new Unit[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
     private int age = -4000;   // Game starts in year 4000 BC
     private Player winner = null;
+    private AgeStrategy ageStrategy;
 
-    public GameImpl() {
+    public GameImpl(AgeStrategy ageStrategy) {
+        this.ageStrategy = ageStrategy;
         SetupOfAlphaCiv();
+
     }
 
     public Tile getTileAt( Position p ) {
@@ -93,8 +96,10 @@ public class GameImpl implements Game {
     public void endOfTurn() {
         if (playerInTurn.equals(Player.RED)) playerInTurn = Player.BLUE;
         else {
+
             playerInTurn = Player.RED;
-            age += 100;
+            age = ageStrategy.CalculateAge(age);
+
             if (age == -3000) { winner = Player.RED;}
 
             for (int i= 0; i< GameConstants.WORLDSIZE; i++) {
@@ -238,5 +243,7 @@ public class GameImpl implements Game {
         unitTable[2][0] = new Archer(Player.RED);
         unitTable[4][3] = new Settler(Player.RED);
         unitTable[3][2] = new Legion(Player.BLUE);
+
+
     }
 }

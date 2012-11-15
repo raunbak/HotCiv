@@ -26,7 +26,7 @@ public class TestAlphaCiv {
     /** Fixture for alphaciv testing. */
     @Before
     public void setUp() {
-        game = new GameImpl();
+        game = new GameImpl(new LinearAgeStrategy());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class TestAlphaCiv {
     }
 
     @Test
-    public void redShouldHaveCorrectNumOfUnitsAtStart(){
+    public void redShouldHaveCorrectUnitsAtStart(){
         Unit u = game.getUnitAt(new Position(2,0));
         assertEquals("Should have an archer at (2,0)",GameConstants.ARCHER,u.getTypeString());
         assertEquals("Archer at (2,0) should have Red as owner",Player.RED,u.getOwner());
@@ -110,7 +110,7 @@ public class TestAlphaCiv {
     }
 
     @Test
-    public void blueShouldHaveCorrectNumOfUnitsAtStart(){
+    public void blueShouldHaveCorrectUnitAtStart(){
         Unit u = game.getUnitAt(new Position(3,2));
         assertEquals("Should have an legion at (3,2)",GameConstants.LEGION,u.getTypeString());
         assertEquals("Legion at (3,2) should have Blue as owner",Player.BLUE,u.getOwner());
