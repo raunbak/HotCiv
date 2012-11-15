@@ -58,4 +58,9 @@ public class CityImpl implements City {
         unitInProduction = unit;
     }
 
+    @Override
+    public void setOwner(Player player) {
+        owner = player;
+    }
+
 }

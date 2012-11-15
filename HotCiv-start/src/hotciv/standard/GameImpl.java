@@ -6,6 +6,7 @@ import hotciv.winner.WinnerStrategy;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 /** Skeleton implementation of HotCiv.
 
@@ -86,11 +87,15 @@ public class GameImpl implements Game {
             if (unitFrom.getOwner().equals(unitTo.getOwner())) {return false;}
             // Because the attack-strategy used, the attacking unit always wins. So no need to check if a unit of different owner is at position "to".
         }
-
         // Now, move the unit:
         unitTable[to.getRow()][to.getColumn()] = unitFrom;
         unitTable[from.getRow()][from.getColumn()] = null;
         unitFrom.reduceMoveCountBy(distanceToBeMoved);
+
+        if (getCityAt(to) != null && getCityAt(to).getOwner() != getPlayerInTurn()) {
+            getCityAt(to).setOwner(getPlayerInTurn());
+        }
+
         return true;
     }
 
@@ -98,32 +103,31 @@ public class GameImpl implements Game {
      *
      */
     public void endOfTurn() {
-        if (playerInTurn.equals(Player.RED)) playerInTurn = Player.BLUE;
+        if (playerInTurn.equals(Player.RED)) {playerInTurn = Player.BLUE;}
         else {
 
             playerInTurn = Player.RED;
             age = ageStrategy.CalculateAge(age);
-
             winner = winnerStrategy.winner(this);
 
             for (int i= 0; i< GameConstants.WORLDSIZE; i++) {
                 for  (int j = 0; j < GameConstants.WORLDSIZE;j++) {
-                 if (cityTable[i][j] != null) {
+                    if (cityTable[i][j] != null) {
 
-                     cityTable[i][j].addAmountTofProduction(6); // Constant amount of 6 in AlphaCiv.
-                     String unittype = cityTable[i][j].getProduction();
-                     int productionAmount = cityTable[i][j].getCurrentAmountOfProduction();
+                        cityTable[i][j].addAmountTofProduction(6); // Constant amount of 6 in AlphaCiv.
+                        String unittype = cityTable[i][j].getProduction();
+                        int productionAmount = cityTable[i][j].getCurrentAmountOfProduction();
 
-                     // If the city the city is currently set to produce a type of unit
-                     //    and the the city has enough production amount to afford it, then create the unit.
-                     while (unittype!=null && GameConstants.COSTMAP.get(unittype) <= productionAmount) {
-                         if (produceUnit(new Position(i,j),unittype)) {
-                             cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype));
-                             productionAmount = cityTable[i][j].getCurrentAmountOfProduction();
-                         }
-                     }
+                        // If the city the city is currently set to produce a type of unit
+                        //    and the the city has enough production amount to afford it, then create the unit.
+                        while (unittype!=null && GameConstants.COSTMAP.get(unittype) <= productionAmount) {
+                            if (produceUnit(new Position(i,j),unittype)) {
+                                cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype));
+                                productionAmount = cityTable[i][j].getCurrentAmountOfProduction();
+                            }
+                        }
 
-                 }
+                    }
                 }
             }
 
@@ -147,6 +151,24 @@ public class GameImpl implements Game {
         c.setProduction(unitType);
     }
     public void performUnitActionAt( Position p ) {}
+
+    @Override
+    public City[] getAllCities() {
+        City[] citylist = new City[100];
+        int k = 0;
+        for (int i= 0; i< GameConstants.WORLDSIZE; i++) {
+            for  (int j = 0; j < GameConstants.WORLDSIZE;j++) {
+
+                if ( cityTable[i][j] != null) {
+                    citylist[k] = cityTable[i][j];
+                    k++;
+                }
+
+            }
+        }
+        return citylist;
+    }
+
 
 
     private boolean produceUnit(Position pCity, String unittype) {

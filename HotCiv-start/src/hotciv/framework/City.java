@@ -55,4 +55,7 @@ public interface City {
   public int addAmountTofProduction(int amount);
 
   public void setProduction(String unit);
+
+  public void setOwner(Player player);
+
 }
