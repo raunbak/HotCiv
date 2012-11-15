@@ -38,9 +38,11 @@ public class GameImpl implements Game {
     private int age = -4000;   // Game starts in year 4000 BC
     private Player winner = null;
     private AgeStrategy ageStrategy;
+    private WinnerStrategy winnerStrategy;
 
-    public GameImpl(AgeStrategy ageStrategy) {
+    public GameImpl(AgeStrategy ageStrategy, WinnerStrategy winnerStrategy) {
         this.ageStrategy = ageStrategy;
+        this.winnerStrategy = winnerStrategy;
         SetupOfAlphaCiv();
 
     }
@@ -100,7 +102,7 @@ public class GameImpl implements Game {
             playerInTurn = Player.RED;
             age = ageStrategy.CalculateAge(age);
 
-            if (age == -3000) { winner = Player.RED;}
+            winner = winnerStrategy.winner(this);
 
             for (int i= 0; i< GameConstants.WORLDSIZE; i++) {
                 for  (int j = 0; j < GameConstants.WORLDSIZE;j++) {
