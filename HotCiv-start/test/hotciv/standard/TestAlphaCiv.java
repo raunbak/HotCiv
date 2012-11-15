@@ -1,7 +1,9 @@
 package hotciv.standard;
 
+import hotciv.age.LinearAgeStrategy;
 import hotciv.framework.*;
 
+import hotciv.winner.RedWinsAtAge3000BC;
 import org.junit.*;
 import static org.junit.Assert.*;
 

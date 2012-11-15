@@ -1,6 +1,8 @@
 package hotciv.standard;
 
+import hotciv.age.AgeStrategy;
 import hotciv.framework.*;
+import hotciv.winner.WinnerStrategy;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
