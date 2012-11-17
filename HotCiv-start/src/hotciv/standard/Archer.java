@@ -18,4 +18,23 @@ public class Archer extends AbstractUnit {
         moveCount = totalMoves;
 
     }
+
+    public void fortify() {
+        switch (totalMoves) {
+            case 1:
+                defensiveStrength = 6;
+                totalMoves = 0;
+                moveCount =  0;
+                break;
+            case 0:
+                defensiveStrength = 3;
+                totalMoves = 1;
+                moveCount =  1;
+                break;
+        }
+
+
+
+    }
+
 }

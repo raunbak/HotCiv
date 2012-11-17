@@ -150,7 +150,22 @@ public class GameImpl implements Game {
 
         c.setProduction(unitType);
     }
-    public void performUnitActionAt( Position p ) {}
+    public void performUnitActionAt( Position p ) {
+        Unit u = getUnitAt(p);
+        String type = u.getTypeString();
+        int i = p.getRow();
+        int j = p.getColumn();
+
+        if (type.equals("archer")) {
+
+           Archer a = (Archer) u;
+           a.fortify();
+        }
+        if (type.equals("settler")) {
+            cityTable[i][j] = new CityImpl(playerInTurn);
+            unitTable[i][j] = null;
+        }
+    }
 
     @Override
     public City[] getAllCities() {
