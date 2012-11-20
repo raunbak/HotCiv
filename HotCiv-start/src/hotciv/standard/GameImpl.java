@@ -7,6 +7,7 @@ import hotciv.winner.WinnerStrategy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /** Skeleton implementation of HotCiv.
 
@@ -184,8 +185,6 @@ public class GameImpl implements Game {
         return citylist;
     }
 
-
-
     private boolean produceUnit(Position pCity, String unittype) {
         if (validateUnitCreation(pCity, unittype)) { return true; }
 
@@ -262,6 +261,7 @@ public class GameImpl implements Game {
         }
         return true;
     }
+
 
 
     /**
