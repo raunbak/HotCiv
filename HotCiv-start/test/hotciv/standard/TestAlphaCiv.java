@@ -3,7 +3,9 @@ package hotciv.standard;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.framework.*;
 
+import hotciv.unitaction.NoActionStrategy;
 import hotciv.winner.RedWinsAtAge3000BC;
+import hotciv.world.SimpleLayoutStrategy;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -28,7 +30,7 @@ public class TestAlphaCiv {
     /** Fixture for alphaciv testing. */
     @Before
     public void setUp() {
-        game = new GameImpl(new LinearAgeStrategy(),new RedWinsAtAge3000BC());
+        game = new GameImpl(new LinearAgeStrategy(),new RedWinsAtAge3000BC(),new SimpleLayoutStrategy(),new NoActionStrategy());
     }
 
     @Test
@@ -242,6 +244,10 @@ public class TestAlphaCiv {
         assertEquals("There should be an archer here!(0,1)",GameConstants.ARCHER,u2.getTypeString());
 
     }
+
+
+    // TODO Test at units-actions ikke har nogen effekt.
+    // TODO skriv alle constructors i produktionskoden så de har én parameter pr. linje.
 
 
     private void makeGameRunNturns(int Nturns) {

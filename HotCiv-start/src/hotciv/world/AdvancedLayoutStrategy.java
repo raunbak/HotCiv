@@ -12,7 +12,7 @@ import hotciv.standard.TileImpl;
  * Time: 15:10
  * To change this template use File | Settings | File Templates.
  */
-public class AdvancedLayout  implements WorldStrategy{
+public class AdvancedLayoutStrategy implements WorldStrategy{
     private Tile[][] tileTable = new Tile[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
     private City[][] cityTable = new City[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
     private Unit[][] unitTable = new Unit[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
@@ -37,7 +37,7 @@ public class AdvancedLayout  implements WorldStrategy{
             ".....ooooooooo..",
     };
 
-    public AdvancedLayout() {
+    public AdvancedLayoutStrategy() {
         defineTilesOfWorld();
         cityTable[8][12] = new CityImpl(Player.RED);
         cityTable[4][5] = new CityImpl(Player.BLUE);

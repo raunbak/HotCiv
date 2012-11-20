@@ -2,7 +2,9 @@ package hotciv.standard;
 
 import hotciv.age.AgeStrategy;
 import hotciv.framework.*;
+import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
+import hotciv.world.WorldStrategy;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -36,18 +38,28 @@ public class GameImpl implements Game {
      */
     private Player playerInTurn = Player.RED;
     // 2-dimensional arrays for storing the tiles/cities/units:
-    private Tile[][] tileTable = new Tile[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
-    private City[][] cityTable = new City[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
-    private Unit[][] unitTable = new Unit[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
+    private Tile[][] tileTable;
+    private City[][] cityTable;
+    private Unit[][] unitTable;
     private int age = -4000;   // Game starts in year 4000 BC
     private Player winner = null;
     private AgeStrategy ageStrategy;
     private WinnerStrategy winnerStrategy;
+    private WorldStrategy worldStrategy;
+    private UnitActionStrategy unitActionStrategy;
 
-    public GameImpl(AgeStrategy ageStrategy, WinnerStrategy winnerStrategy) {
+    public GameImpl(AgeStrategy ageStrategy,
+                    WinnerStrategy winnerStrategy,
+                    WorldStrategy worldStrategy,
+                    UnitActionStrategy unitActionStrategy) {
+
         this.ageStrategy = ageStrategy;
         this.winnerStrategy = winnerStrategy;
-        SetupOfAlphaCiv();
+        this.worldStrategy = worldStrategy;
+        this.unitActionStrategy = unitActionStrategy;
+        tileTable = worldStrategy.getTileArray();
+        cityTable = worldStrategy.getCityArray();
+        unitTable = worldStrategy.getUnitArray();
 
     }
 
@@ -104,12 +116,12 @@ public class GameImpl implements Game {
      *
      */
     public void endOfTurn() {
-        if (playerInTurn.equals(Player.RED)) {playerInTurn = Player.BLUE;}
+        if (playerInTurn.equals(Player.RED)) {
+            playerInTurn = Player.BLUE;}
         else {
 
             playerInTurn = Player.RED;
             age = ageStrategy.CalculateAge(age);
-            winner = winnerStrategy.winner(this);
 
             for (int i= 0; i< GameConstants.WORLDSIZE; i++) {
                 for  (int j = 0; j < GameConstants.WORLDSIZE;j++) {
@@ -141,6 +153,8 @@ public class GameImpl implements Game {
             }
             // TODO more end-of-round processing
         }
+
+        winner = winnerStrategy.winner(this);
     }
 
 
@@ -153,18 +167,15 @@ public class GameImpl implements Game {
     }
     public void performUnitActionAt( Position p ) {
         Unit u = getUnitAt(p);
-        String type = u.getTypeString();
-        int i = p.getRow();
-        int j = p.getColumn();
 
-        if (type.equals("archer")) {
-
-           Archer a = (Archer) u;
-           a.fortify();
-        }
-        if (type.equals("settler")) {
-            cityTable[i][j] = new CityImpl(playerInTurn);
-            unitTable[i][j] = null;
+        Object o = unitActionStrategy.performUnitAction(u,this);
+        if (o != null) {
+            int i = p.getRow();
+            int j = p.getColumn();
+            if (o.getClass() == City.class && cityTable[i][j] == null) {
+                cityTable[i][j] = (City) o;
+                unitTable[i][j] = null;
+            }
         }
     }
 

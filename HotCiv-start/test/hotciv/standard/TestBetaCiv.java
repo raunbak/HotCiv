@@ -3,8 +3,11 @@ package hotciv.standard;
 import hotciv.age.DecreasingAgeStrategy;
 import hotciv.framework.*;
 
+import hotciv.unitaction.NoActionStrategy;
+import hotciv.unitaction.SettlerAndArcherActionStrategy;
 import hotciv.winner.RedWinsAtAge3000BC;
 import hotciv.winner.WinByConquestStrategy;
+import hotciv.world.SimpleLayoutStrategy;
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -18,14 +21,17 @@ import static org.junit.Assert.assertEquals;
  */
 public class TestBetaCiv {
     private Game game;
+
     @Before
     public void setUp() {
-        game = new GameImpl(new DecreasingAgeStrategy(),new WinByConquestStrategy());
+        game = new GameImpl(new DecreasingAgeStrategy(),new WinByConquestStrategy(),new SimpleLayoutStrategy(),new NoActionStrategy());
     }
+
     @Test
     public void works(){
         assertEquals("hej",1,1);
     }
+
     @Test
     public  void blueCanConquerARedCity(){
         game.endOfTurn();
@@ -35,7 +41,7 @@ public class TestBetaCiv {
         makeGameRunNturns(1);
         game.moveUnit(new Position(2,1),new Position(1,1));
 
-        assertEquals("a", GameConstants.LEGION, game.getUnitAt(new Position(1, 1)).getTypeString());
+        assertEquals("The legion should now be in position (1,1)", GameConstants.LEGION, game.getUnitAt(new Position(1, 1)).getTypeString());
         City c = game.getCityAt(new Position(1,1));
         assertEquals("Blue should be owner of town at (1,1) now",Player.BLUE,c.getOwner());
     }
@@ -50,9 +56,10 @@ public class TestBetaCiv {
         game.moveUnit(new Position(2,1),new Position(1,1));
         makeGameRunNturns(1);
 
-       assertEquals("a", GameConstants.LEGION, game.getUnitAt(new Position(1, 1)).getTypeString());
+       assertEquals("The legion should now be in position (1,1)", GameConstants.LEGION, game.getUnitAt(new Position(1, 1)).getTypeString());
        assertEquals("Blue should be the winner!",Player.BLUE,game.getWinner());
     }
+
     @Test
     public void redShouldWinWhenItConquersBlueCityAt4_1() {
        game.moveUnit(new Position(4,3),new Position(4,2));
@@ -60,7 +67,7 @@ public class TestBetaCiv {
        game.moveUnit(new Position(4, 2), new Position(4, 1));
        makeGameRunNturns(1);
 
-       assertEquals("a", GameConstants.SETTLER, game.getUnitAt(new Position(4, 1)).getTypeString());
+       assertEquals("Should have settler at (4,1)", GameConstants.SETTLER, game.getUnitAt(new Position(4, 1)).getTypeString());
        assertEquals("Red should be the winner!",Player.RED,game.getWinner());
     }
 
