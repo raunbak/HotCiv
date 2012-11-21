@@ -12,16 +12,16 @@ public class SimpleLayoutStrategy implements WorldStrategy {
     private Unit[][] unitTable = new Unit[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
 
 
-    public SimpleLayoutStrategy(){
+    public SimpleLayoutStrategy() {
         // Initialize the tile array with plains on every tile, with the responding positions.
-        for (int i=0; i<GameConstants.WORLDSIZE; i++) {
-            for (int j=0; j<GameConstants.WORLDSIZE; j++) {
-                tileTable[i][j] = new TileImpl(new Position(i,j), GameConstants.PLAINS);
+        for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
+            for (int j = 0; j < GameConstants.WORLDSIZE; j++) {
+                tileTable[i][j] = new TileImpl(new Position(i, j), GameConstants.PLAINS);
             }
         }
-        tileTable[1][0] = new TileImpl(new Position(1,0), GameConstants.OCEANS);
-        tileTable[0][1] = new TileImpl(new Position(0,1), GameConstants.HILLS);
-        tileTable[2][2] = new TileImpl(new Position(2,2), GameConstants.MOUNTAINS);
+        tileTable[1][0] = new TileImpl(new Position(1, 0), GameConstants.OCEANS);
+        tileTable[0][1] = new TileImpl(new Position(0, 1), GameConstants.HILLS);
+        tileTable[2][2] = new TileImpl(new Position(2, 2), GameConstants.MOUNTAINS);
         cityTable[1][1] = new CityImpl(Player.RED);
         cityTable[4][1] = new CityImpl(Player.BLUE);
         unitTable[2][0] = new Archer(Player.RED);

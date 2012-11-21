@@ -13,8 +13,9 @@ public class TileImpl implements Tile {
     private String type;
 
     /**
-     *  Constructor for TileImpl.
-     * @param p (the position of the tile)
+     * Constructor for TileImpl.
+     *
+     * @param p    (the position of the tile)
      * @param type (the type of tile, String value)
      */
     public TileImpl(Position p,

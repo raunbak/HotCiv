@@ -74,7 +74,9 @@ HotCiv build management.
     <javac srcdir="${source-directory}"
 	   destdir="${build-directory}"
 	   debug="on" 
-	   includeantruntime="no" 
+	   includeantruntime="no"
+       source="1.6"
+       target="1.6"
 	   >
       <classpath refid="class-path"/>
     </javac>
@@ -84,7 +86,9 @@ HotCiv build management.
     <javac srcdir="${test-source-directory}"
 	   destdir="${build-directory}"
 	   debug = "on"
-	   includeantruntime="no" 
+	   includeantruntime="no"
+       source="1.6"
+       target="1.6"
 	   >
       <classpath refid="class-path"/>
     </javac>
@@ -131,7 +135,7 @@ HotCiv build management.
 	      columns="name,class,method,block"
               classname="org.junit.runner.JUnitCore">
       <html/>
-      <arg value="hotciv.standard.TestAlphaCiv"/>
+      <arg value="hotciv.standard.TestAll"/>
       <classpath refid="class-path"/>
     </emmajava>
   </target>

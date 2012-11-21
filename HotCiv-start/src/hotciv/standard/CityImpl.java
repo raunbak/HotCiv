@@ -10,8 +10,10 @@ public class CityImpl implements City {
     private Player owner;
     private int production;
     private String unitInProduction;
+
     /**
      * Constructor for CityImpl
+     *
      * @param player The owner of this city.
      */
     public CityImpl(Player player) {
@@ -48,6 +50,7 @@ public class CityImpl implements City {
         return production -= amount;
 
     }
+
     @Override
     public int increaseAmountOfProduction(int amount) {
         return production += amount;
