@@ -42,8 +42,25 @@ public class Position {
    */
   public int getColumn() { return c; }
 
-  public int distanceBetween(Position p) {
+  public int distanceTo(Position p) {
       return Math.max(Math.abs(p.getRow() - r), Math.abs(p.getColumn() - c));
+  }
+
+  public void add(Position pVector) {
+      r += pVector.getRow();
+      c += pVector.getColumn();
+  }
+
+  public void rotate90clockwise() {
+      // if (r,c) is a vector, then (r,-c) is that vector rotated 90 degrees clockwise.
+      int rOld = r;
+      r = c;
+      c = - rOld;
+  }
+
+  public boolean isValidWorldPosition() {
+      return (0 <= r && r < GameConstants.WORLDSIZE
+           && 0 <= c && c < GameConstants.WORLDSIZE);
   }
 
   public boolean equals(Object o) {
@@ -51,6 +68,11 @@ public class Position {
     if (o.getClass() != Position.class) { return false; }
     Position other = (Position) o;
     return r==other.r && c==other.c;
+  }
+
+  @Override
+  public Position clone() {
+      return new Position(r,c);
   }
 
   public int hashCode() {

@@ -15,16 +15,18 @@ public class TileImpl implements Tile {
     /**
      *  Constructor for TileImpl.
      * @param p (the position of the tile)
-     * @param type (the tupe of tile, String value)
+     * @param type (the type of tile, String value)
      */
-    public TileImpl(Position p, String type) {
+    public TileImpl(Position p,
+                    String type) {
+
         position = p;
         this.type = type;
     }
 
     @Override
     public Position getPosition() {
-        return null;    // TODO return position
+        return position;
     }
 
     @Override

@@ -4,27 +4,23 @@ import hotciv.age.DecreasingAgeStrategy;
 import hotciv.framework.*;
 
 import hotciv.unitaction.NoActionStrategy;
-import hotciv.unitaction.SettlerAndArcherActionStrategy;
-import hotciv.winner.RedWinsAtAge3000BC;
 import hotciv.winner.WinByConquestStrategy;
 import hotciv.world.SimpleLayoutStrategy;
 import org.junit.*;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 15-11-12
- * Time: 11:05
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class TestBetaCiv {
     private Game game;
 
     @Before
     public void setUp() {
-        game = new GameImpl(new DecreasingAgeStrategy(),new WinByConquestStrategy(),new SimpleLayoutStrategy(),new NoActionStrategy());
+        game = new GameImpl(new DecreasingAgeStrategy(),
+                            new WinByConquestStrategy(),
+                            new SimpleLayoutStrategy(),
+                            new NoActionStrategy());
     }
 
     @Test
@@ -73,7 +69,6 @@ public class TestBetaCiv {
 
 
     private void makeGameRunNturns(int Nturns) {
-        // TODO works for two players only
         for (int i=0; i<2*Nturns; i++) {   // age should increment by 100 each time both player's turn has ended, 2*1000/100 = 20.
             game.endOfTurn();
         }

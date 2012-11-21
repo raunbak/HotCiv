@@ -4,11 +4,7 @@ import hotciv.framework.*;
 import hotciv.standard.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 19-11-12
- * Time: 14:26
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class SimpleLayoutStrategy implements WorldStrategy {
     private Tile[][] tileTable = new Tile[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];

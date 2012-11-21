@@ -62,13 +62,6 @@ public class TestAlphaCiv {
         assertEquals("New round begins, should be red's turn", Player.RED, p3);
     }
 
-    // TODO this is redundant as it is tested in the test above.
-    @Test
-    public void redShouldBeFirstPlayer() {
-        Player p = game.getPlayerInTurn();
-        assertEquals("Red should be the first player in turn", Player.RED, p);
-    }
-
     @Test
     public void shouldHaveOceanAt1_0() {
         Tile t = game.getTileAt(new Position(1,0));
@@ -178,7 +171,7 @@ public class TestAlphaCiv {
     }
 
     @Test
-    public void ShouldLowerProductionAmountInRed1_1_CityFrom30to10(){
+    public void shouldLowerProductionAmountInRed1_1_CityFrom30to10(){
         makeGameRunNturns(5);
         City c = game.getCityAt(new Position(1,1));
         c.reduceAmountOfProduction(20);
@@ -224,16 +217,19 @@ public class TestAlphaCiv {
     }
 
     @Test
-    public void startByPlacingTheUnit2TilesToTheNorthWhenNoFreeTilesInAOneTileRadius() {
+    public void blueCityShouldPlaceItsNinthUnitTwoTilesToTheNorth() {
+
+        // Run the game until the round just before the blue city has enough to produce 9 archers.
+        makeGameRunNturns((int)Math.ceil(9 * GameConstants.ARCHERCOST / 6.0) - 1);
         game.changeProductionInCityAt(new Position(4,1), GameConstants.ARCHER);
-        // Run the game until the blue city has produced 9 archers.
-        makeGameRunNturns((int)Math.ceil(9 * GameConstants.ARCHERCOST / 6.0));
+        // After next round all the 9 archers should be produced.
+        makeGameRunNturns(1);
         Unit u = game.getUnitAt(new Position(2,1));
         assertEquals("The 9'th archer should be placed at (2,1).", GameConstants.ARCHER, u.getTypeString());
     }
 
     @Test
-    public void ThereShouldBeAUnitInCity1_1andOneAbove(){
+    public void thereShouldBeAUnitInCity1_1andOneAbove(){
         makeGameRunNturns(3);
         game.changeProductionInCityAt(new Position(1,1),GameConstants.ARCHER);
 
@@ -246,12 +242,39 @@ public class TestAlphaCiv {
     }
 
 
-    // TODO Test at units-actions ikke har nogen effekt.
-    // TODO skriv alle constructors i produktionskoden så de har én parameter pr. linje.
+
+    // Testing that unit-actions has no effect:
+    @Test
+    public void archerAt2_0Should_NOT_HaveIncreasedDefStrength(){
+        assertEquals("Should have def of 3",3,game.getUnitAt(new Position(2,0)).getDefensiveStrength());
+        game.performUnitActionAt(new Position(2,0));
+        assertEquals("Should have def of 3",3,game.getUnitAt(new Position(2,0)).getDefensiveStrength());
+    }
+
+    @Test
+    public void archerAt2_0SHOULDBeAbleToMove() {
+        game.performUnitActionAt(new Position(2,0));
+        makeGameRunNturns(1);
+        assertNotNull("There should be an unit here",game.getUnitAt(new Position(2,0)));
+        game.moveUnit(new Position(2,0),new Position(2,1));
+        assertNotNull("The unit should now be here",game.getUnitAt(new Position(2,1)));
+    }
+
+    @Test
+    public void settlerShouldNotBeAbleToBuildACityAt4_3() {
+        game.performUnitActionAt(new Position(4,3));
+        assertNull("There should not be a city here (4,3)",game.getCityAt(new Position(4,3)));
+
+    }
+
+    @Test
+    public void thereShouldStillBeASettlerAt4_3AfterItsAction() {
+        game.performUnitActionAt(new Position(4,3));
+        assertNotNull("The settler should still be here, since its unit action does nothing",game.getUnitAt(new Position(4,3)));
+    }
 
 
     private void makeGameRunNturns(int Nturns) {
-        // TODO works for two players only
         for (int i=0; i<2*Nturns; i++) {   // age should increment by 100 each time both player's turn has ended, 2*1000/100 = 20.
             game.endOfTurn();
         }

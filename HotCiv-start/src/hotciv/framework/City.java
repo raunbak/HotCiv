@@ -52,7 +52,7 @@ public interface City {
 
   public int reduceAmountOfProduction(int amount);
 
-  public int addAmountTofProduction(int amount);
+  public int increaseAmountOfProduction(int amount);
 
   public void setProduction(String unit);
 

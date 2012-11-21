@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
   { TestAlphaCiv.class,
     TestBetaCiv.class,
     TestDecreasingAgeStrategy.class,
-    TestGammaCiv.class
+    TestGammaCiv.class,
+    TestDeltaCiv.class
          })
 
 public class TestAll {

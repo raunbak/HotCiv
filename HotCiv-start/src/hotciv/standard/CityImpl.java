@@ -12,7 +12,7 @@ public class CityImpl implements City {
     private String unitInProduction;
     /**
      * Constructor for CityImpl
-     * @param player
+     * @param player The owner of this city.
      */
     public CityImpl(Player player) {
         owner = player;
@@ -30,17 +30,17 @@ public class CityImpl implements City {
 
     @Override
     public String getProduction() {
-        return unitInProduction;  //To change body of implemented methods use File | Settings | File Templates.
+        return unitInProduction;
     }
 
     @Override
     public String getWorkforceFocus() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     @Override
     public int getCurrentAmountOfProduction() {
-        return production;  //To change body of implemented methods use File | Settings | File Templates.
+        return production;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class CityImpl implements City {
 
     }
     @Override
-    public int addAmountTofProduction(int amount) {
+    public int increaseAmountOfProduction(int amount) {
         return production += amount;
     }
 

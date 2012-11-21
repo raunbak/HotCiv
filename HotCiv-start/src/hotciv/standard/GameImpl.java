@@ -6,10 +6,7 @@ import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.world.WorldStrategy;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 
 /** Skeleton implementation of HotCiv.
 
@@ -57,9 +54,9 @@ public class GameImpl implements Game {
         this.winnerStrategy = winnerStrategy;
         this.worldStrategy = worldStrategy;
         this.unitActionStrategy = unitActionStrategy;
-        tileTable = worldStrategy.getTileArray();
-        cityTable = worldStrategy.getCityArray();
-        unitTable = worldStrategy.getUnitArray();
+        tileTable = this.worldStrategy.getTileArray();
+        cityTable = this.worldStrategy.getCityArray();
+        unitTable = this.worldStrategy.getUnitArray();
 
     }
 
@@ -90,7 +87,7 @@ public class GameImpl implements Game {
 
         if (!playerInTurn.equals(unitFrom.getOwner())) {return false;}
 
-        int distanceToBeMoved = from.distanceBetween(to);
+        int distanceToBeMoved = from.distanceTo(to);
         if (distanceToBeMoved > unitFrom.getMoveCount()) {return false;}
 
 
@@ -121,59 +118,140 @@ public class GameImpl implements Game {
         else {
 
             playerInTurn = Player.RED;
-            age = ageStrategy.CalculateAge(age);
+            age = ageStrategy.calculateAge(age);
 
-            for (int i= 0; i< GameConstants.WORLDSIZE; i++) {
-                for  (int j = 0; j < GameConstants.WORLDSIZE;j++) {
-                    if (cityTable[i][j] != null) {
-
-                        cityTable[i][j].addAmountTofProduction(6); // Constant amount of 6 in AlphaCiv.
-                        String unittype = cityTable[i][j].getProduction();
-                        int productionAmount = cityTable[i][j].getCurrentAmountOfProduction();
-
-                        // If the city the city is currently set to produce a type of unit
-                        //    and the the city has enough production amount to afford it, then create the unit.
-                        while (unittype!=null && GameConstants.COSTMAP.get(unittype) <= productionAmount) {
-                            if (produceUnit(new Position(i,j),unittype)) {
-                                cityTable[i][j].reduceAmountOfProduction(GameConstants.COSTMAP.get(unittype));
-                                productionAmount = cityTable[i][j].getCurrentAmountOfProduction();
-                            }
-                        }
-
-                    }
-                }
-            }
-
-            for (int i=0; i<GameConstants.WORLDSIZE; i++) {
-                for (int j=0; j<GameConstants.WORLDSIZE; j++) {
+            // Loop through all the positions in the world.
+            for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
+                for  (int j = 0; j < GameConstants.WORLDSIZE; j++) {
+                    // Restore the move count of all the units.
                     if (unitTable[i][j] != null) {
                         unitTable[i][j].restoreMoveCount();
                     }
+
+                    // For each city, add 6 to the current amount of production, and produce as many units as it can afford.
+                    if (cityTable[i][j] != null) {
+                        cityTable[i][j].increaseAmountOfProduction(6); // Constant amount of 6 in AlphaCiv.
+
+                        Position p = new Position(i,j);
+                        // produce units! The int returned is the number of units that got produced.
+                        int nUnitsProduced = produceUnitsInCityAt(p);
+
+                        // TODO delete this temporary print (debugging purposes)
+                        if (nUnitsProduced > 0) { System.out.println("Units produced in city at "+p+": "+nUnitsProduced); }
+
+                    }
                 }
             }
-            // TODO more end-of-round processing
         }
 
+        // the winner (if there is one) is determined each turn, not only each round.
         winner = winnerStrategy.winner(this);
+    }
+
+    /**
+     * A method for producing as many units around a city as it can afford, provided there are enough free tiles.
+     * The city will also have the production cost of the units produced subtracted from its production amount.
+     * Precondition: there is a city at position pCity.
+     * @param pCity The position of the city that should produce units.
+     * @return the number of units produced.
+     */
+    private int produceUnitsInCityAt(Position pCity) {
+        int nUnitsProduced = 0;  // the number of units produced by this method-call.
+        City city = getCityAt(pCity);
+        String unittype = city.getProduction();
+
+        if (unittype != null) {
+            int unitcost = GameConstants.COSTMAP.get(unittype);
+
+            // integer division in Java gets rounded down, which is correct here.
+            int nUnitsAffordable = city.getCurrentAmountOfProduction() / unitcost;
+
+            // The number of steps needed to take in current direction before making a turn.
+            int stepLimit = 1;
+
+            // Begin at the same position as the city itself
+            Position p = pCity.clone();
+
+            // this "Position" represents the direction-vector, eg. (i,j)+(-1,0) --> (i-1,j).
+            // the starting direction is North, since the worldmap has origo in the top-left corner and the row-axis points downwards.
+            Position stepDirection = new Position(-1,0);
+
+            while (stepLimit < GameConstants.WORLDSIZE && nUnitsProduced < nUnitsAffordable) {
+                int stepsTakenSinceLastTurn = 0;
+
+                while (stepsTakenSinceLastTurn < stepLimit && nUnitsProduced < nUnitsAffordable) {
+                    // If p is not a position inside the worldmap,
+                    //      or if there is already a unit of the tile at position p,
+                    //      of if the tile is a mountain or an ocean,
+                    //      then skip this position and thus don't create the new unit here.
+                    if (p.isValidWorldPosition()
+                            && getUnitAt(p) == null
+                            && !getTileAt(p).getTypeString().equals(GameConstants.MOUNTAINS)
+                            && !getTileAt(p).getTypeString().equals(GameConstants.OCEANS)) {
+
+                        nUnitsProduced++;  // now one more unit is being created.
+                        Unit u = null;
+                        // Initialize the unit to be created depending on the unittype. (hardcoded)
+                        if (unittype.equals(GameConstants.ARCHER)) { u = new Archer(getPlayerInTurn()); }
+                        else if (unittype.equals(GameConstants.LEGION)) { u = new Legion(getPlayerInTurn()); }
+                        else if (unittype.equals(GameConstants.SETTLER)) { u = new Settler(getPlayerInTurn()); }
+                        unitTable[p.getRow()][p.getColumn()] = u;
+
+                        /* Alternative (polymorphic) code for creating a unit of the correct type.
+                        // Below we need the name of our unitclass. Since we used the same name as the unittypes in GameConstants
+                        //    but with capital first-letter, we can get the relevant classname at runtime using the following:
+                        String className = Character.toUpperCase(unittype.charAt(0)) + unittype.substring(1);
+                        // Now, we use the following code to create an instance of the relevant unit
+                        //     at the right position in unitTable (again completely polymorphic).
+                        try {
+                            Class<?> unitClass = Class.forName("hotciv.standard."+className);
+                            Constructor<?> cons = unitClass.getConstructor(Player.class);
+                            Object object = cons.newInstance(getPlayerInTurn());
+                            unitTable[p.getRow()][p.getColumn()] = (Unit) object;
+                        } catch (Exception e) { e.printStackTrace(); }
+                        */
+                    }
+
+                    // Add the stepping "vector" to the current position to get the next position.
+                    p.add(stepDirection);
+
+                    // Increment stepsTakenSinceLastTurn so we know when we should turn the next corner.
+                    stepsTakenSinceLastTurn++;
+                }
+
+                // Make a turn 90 degrees clockwise.
+                stepDirection.rotate90clockwise();
+
+                // Only increment the step-limit when making a turn at either a North-East or South-West corner.
+                // An equivalent condition is: (stepDirection.getRow() != 0).
+                if (stepDirection.getColumn() == 0) { stepLimit++; }
+            }
+
+            // city needs to pay for the produced units.
+            city.reduceAmountOfProduction(nUnitsProduced * unitcost);
+        }
+        return nUnitsProduced;
     }
 
 
     public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
+
     public void changeProductionInCityAt( Position p, String unitType ) {
 
         City c = getCityAt(p);
 
         c.setProduction(unitType);
     }
+
     public void performUnitActionAt( Position p ) {
         Unit u = getUnitAt(p);
 
-        Object o = unitActionStrategy.performUnitAction(u,this);
-        if (o != null) {
+        Object obj = unitActionStrategy.performUnitAction(u,this);
+        if (obj != null) {
             int i = p.getRow();
             int j = p.getColumn();
-            if (o.getClass() == City.class && cityTable[i][j] == null) {
-                cityTable[i][j] = (City) o;
+            if (obj.getClass().equals(CityImpl.class) && cityTable[i][j] == null) {
+                cityTable[i][j] = (City) obj;
                 unitTable[i][j] = null;
             }
         }
@@ -181,10 +259,10 @@ public class GameImpl implements Game {
 
     @Override
     public City[] getAllCities() {
-        City[] citylist = new City[100];
+        City[] citylist = new City[GameConstants.WORLDSIZE * GameConstants.WORLDSIZE];
         int k = 0;
-        for (int i= 0; i< GameConstants.WORLDSIZE; i++) {
-            for  (int j = 0; j < GameConstants.WORLDSIZE;j++) {
+        for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
+            for  (int j = 0; j < GameConstants.WORLDSIZE; j++) {
 
                 if ( cityTable[i][j] != null) {
                     citylist[k] = cityTable[i][j];
@@ -193,109 +271,7 @@ public class GameImpl implements Game {
 
             }
         }
-        return citylist;
-    }
 
-    private boolean produceUnit(Position pCity, String unittype) {
-        if (validateUnitCreation(pCity, unittype)) { return true; }
-
-        int r = pCity.getRow();
-        int c = pCity.getColumn();
-        int tmax = 2;
-        int a = 0;
-        int b = 1;
-
-        while (tmax < GameConstants.WORLDSIZE) {
-            int t = tmax / 2;
-            int i = r - t;
-            int j = c;
-            for (int side = 0; side < 5; side++) {
-                while (t > 0) {
-                    // TODO Avoid positions outside of the 16x16 world. Either here, or by checking in validateUnitCreation()?.
-                    // Check if this tile is free and of a type that can hold units.
-                    // If yes, then it will be created in the other method with returnvalue true.
-                    if (validateUnitCreation(new Position(i,j), unittype)) { return true; }
-
-                    // Add the "vector" (a,b) to (i,j) to get the new position.
-                    i += a;
-                    j += b;
-                    // Decrement t so we know when we should turn the next corner.
-                    t--;
-                }
-
-                // When we reach the top horizontal row again, make sure to only check the tiles to the left of the starting tile.
-                if (side == 4) { t = tmax / 2 - 1; }
-                else { t = tmax; }
-
-                // if (a,b) is a vector, then (b,-a) is that vector rotated 90 degrees clockwise.
-                int atmp = a;
-                a = b;
-                b = - atmp;
-            }
-            tmax *= 2;
-        }
-        // At this point, there are no possible tiles left, so return false (no unit has been produced).
-        return false;
-    }
-
-
-    private boolean validateUnitCreation(Position p, String unittype) {
-        // If there is already a unit of the tile at position p, don't create the new unit here.
-        if (getUnitAt(p) != null) { return false; }
-        String tileType = getTileAt(p).getTypeString();
-        // Also skip it if the tile is a mountain or an ocean, then don't create the new unit on this tile.
-        if (tileType.equals(GameConstants.MOUNTAINS)
-                || tileType.equals(GameConstants.OCEANS)) { return false; }
-
-        // Below we need the name of our unitclass. Since we used the same name as the unittypes in GameConstants
-        //    but with capital first-letter, we can get the relevant classname at runtime using the following:
-        String className = Character.toUpperCase(unittype.charAt(0)) + unittype.substring(1);
-        // Now, we use the following code to create an instance of the relevant unit
-        //     at the right position in unitTable (again completely polymorphic).
-        try {
-            Class<?> unitClass = Class.forName("hotciv.standard."+className);
-            Constructor<?> cons = unitClass.getConstructor(Player.class);
-            Object object = cons.newInstance(getPlayerInTurn());
-
-            unitTable[p.getRow()][p.getColumn()] = (Unit) object;
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
-
-
-
-    /**
-     * Setup of AlphaCiv
-     * Adds the number of units and city, also a map layout required by AlphaCiv.
-     */
-    private void SetupOfAlphaCiv(){
-        // Initialize the tile array with plains on every tile, with the responding positions.
-        for (int i=0; i<GameConstants.WORLDSIZE; i++) {
-            for (int j=0; j<GameConstants.WORLDSIZE; j++) {
-                tileTable[i][j] = new TileImpl(new Position(i,j), GameConstants.PLAINS);
-            }
-        }
-
-        tileTable[1][0] = new TileImpl(new Position(1,0), GameConstants.OCEANS);
-        tileTable[0][1] = new TileImpl(new Position(0,1), GameConstants.HILLS);
-        tileTable[2][2] = new TileImpl(new Position(2,2), GameConstants.MOUNTAINS);
-        cityTable[1][1] = new CityImpl(Player.RED);
-        cityTable[4][1] = new CityImpl(Player.BLUE);
-        unitTable[2][0] = new Archer(Player.RED);
-        unitTable[4][3] = new Settler(Player.RED);
-        unitTable[3][2] = new Legion(Player.BLUE);
-
-
+        return Arrays.copyOf(citylist, k);
     }
 }

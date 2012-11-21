@@ -1,13 +1,10 @@
 package hotciv.standard;
 
-import hotciv.age.DecreasingAgeStrategy;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.framework.Game;
 import hotciv.framework.Position;
-import hotciv.framework.Unit;
 import hotciv.unitaction.SettlerAndArcherActionStrategy;
 import hotciv.winner.RedWinsAtAge3000BC;
-import hotciv.winner.WinByConquestStrategy;
 import hotciv.world.SimpleLayoutStrategy;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,11 +14,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 17-11-12
- * Time: 14:31
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class TestGammaCiv {
     private Game game;
@@ -55,7 +48,7 @@ public class TestGammaCiv {
     @Test
     public void thereShouldBeACityAt4_3() {
         game.performUnitActionAt(new Position(4,3));
-        assertNotNull("There should be a city here (4,3)",game.getCityAt(new Position(4,3)));
+        assertNotNull("There should now be a city here (4,3)",game.getCityAt(new Position(4,3)));
 
     }
 
@@ -66,7 +59,6 @@ public class TestGammaCiv {
     }
 
     private void makeGameRunNturns(int Nturns) {
-        // TODO works for two players only
         for (int i=0; i<2*Nturns; i++) {   // age should increment by 100 each time both player's turn has ended, 2*1000/100 = 20.
             game.endOfTurn();
         }

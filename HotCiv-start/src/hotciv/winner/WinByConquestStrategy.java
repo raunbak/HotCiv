@@ -2,35 +2,33 @@ package hotciv.winner;
 
 import hotciv.framework.City;
 import hotciv.framework.Game;
-import hotciv.framework.GameConstants;
 import hotciv.framework.Player;
-import hotciv.winner.WinnerStrategy;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 15-11-12
- * Time: 12:20
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class WinByConquestStrategy implements WinnerStrategy{
 
+    /**
+     * Precondition: There are at least two cities in the game.
+     * @param game The game that should have its winner determined.
+     * @return The winner of the game or null if there is no winner yet.
+     */
     @Override
     public Player winner(Game game) {
 
-        Player winningplayer;
         City[] citylist = game.getAllCities();
+        Player winnerSoFar = citylist[0].getOwner();
 
-        // TODO Skal laves til flere byer!!!!!
-        if (citylist[0].getOwner() == citylist[1].getOwner()) {
-           return citylist[0].getOwner();
+        for (int i = 1; i < citylist.length; i++) {
+            // If one of the cities has a different owner than winnerSoFar,
+            //      then there is no winner yet, and null should be returned.
+            if (! citylist[i].getOwner().equals(winnerSoFar)) {
+                winnerSoFar = null;
+                break;
+            }
         }
-        /**for (int i = 0; i<=1;i++) {
 
-            if (citylist)
-            System.out.println(citylist[i].getOwner());
-        }
-        */
-        return  null;
+        return winnerSoFar;
     }
 }
