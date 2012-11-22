@@ -4,7 +4,7 @@ import hotciv.age.LinearAgeStrategy;
 import hotciv.framework.*;
 
 import hotciv.unitaction.NoActionStrategy;
-import hotciv.winner.RedWinsAtAge3000BC;
+import hotciv.winner.RedWinsAtAge3000BCStrategy;
 import hotciv.world.SimpleLayoutStrategy;
 import org.junit.*;
 
@@ -35,7 +35,7 @@ public class TestAlphaCiv {
      */
     @Before
     public void setUp() {
-        game = new GameImpl(new LinearAgeStrategy(), new RedWinsAtAge3000BC(), new SimpleLayoutStrategy(), new NoActionStrategy());
+        game = new GameImpl(new LinearAgeStrategy(), new RedWinsAtAge3000BCStrategy(), new SimpleLayoutStrategy(), new NoActionStrategy());
     }
 
     @Test

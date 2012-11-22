@@ -6,7 +6,7 @@ import hotciv.framework.Player;
 /**
  *
  */
-public class RedWinsAtAge3000BC implements WinnerStrategy {
+public class RedWinsAtAge3000BCStrategy implements WinnerStrategy {
     @Override
     public Player winner(Game game) {
         if (game.getAge() >= -3000) {

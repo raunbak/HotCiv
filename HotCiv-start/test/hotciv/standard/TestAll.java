@@ -9,7 +9,9 @@ import org.junit.runners.Suite;
                 TestBetaCiv.class,
                 TestDecreasingAgeStrategy.class,
                 TestGammaCiv.class,
-                TestDeltaCiv.class
+                TestDeltaCiv.class,
+                TestUtility.class,
+                TestWinByAttacksStrategy.class
         })
 
 public class TestAll {

@@ -6,7 +6,7 @@ import hotciv.framework.GameConstants;
 import hotciv.framework.Position;
 import hotciv.framework.Tile;
 import hotciv.unitaction.NoActionStrategy;
-import hotciv.winner.RedWinsAtAge3000BC;
+import hotciv.winner.RedWinsAtAge3000BCStrategy;
 import hotciv.world.AdvancedLayoutStrategy;
 import org.junit.*;
 
@@ -20,7 +20,7 @@ public class TestDeltaCiv {
 
     @Before
     public void setUp() {
-        game = new GameImpl(new LinearAgeStrategy(), new RedWinsAtAge3000BC(), new AdvancedLayoutStrategy(), new NoActionStrategy());
+        game = new GameImpl(new LinearAgeStrategy(), new RedWinsAtAge3000BCStrategy(), new AdvancedLayoutStrategy(), new NoActionStrategy());
     }
 
     @Test

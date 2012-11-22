@@ -4,7 +4,7 @@ import hotciv.age.LinearAgeStrategy;
 import hotciv.framework.Game;
 import hotciv.framework.Position;
 import hotciv.unitaction.SettlerAndArcherActionStrategy;
-import hotciv.winner.RedWinsAtAge3000BC;
+import hotciv.winner.RedWinsAtAge3000BCStrategy;
 import hotciv.world.SimpleLayoutStrategy;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +21,7 @@ public class TestGammaCiv {
 
     @Before
     public void setUp() {
-        game = new GameImpl(new LinearAgeStrategy(), new RedWinsAtAge3000BC(), new SimpleLayoutStrategy(), new SettlerAndArcherActionStrategy());
+        game = new GameImpl(new LinearAgeStrategy(), new RedWinsAtAge3000BCStrategy(), new SimpleLayoutStrategy(), new SettlerAndArcherActionStrategy());
     }
 
     @Test

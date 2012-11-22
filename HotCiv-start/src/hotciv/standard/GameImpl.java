@@ -7,6 +7,7 @@ import hotciv.winner.WinnerStrategy;
 import hotciv.world.WorldStrategy;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Skeleton implementation of HotCiv.
@@ -44,6 +45,8 @@ public class GameImpl implements Game {
     private WinnerStrategy winnerStrategy;
     private WorldStrategy worldStrategy;
     private UnitActionStrategy unitActionStrategy;
+    private HashMap<Player,Integer> attacksWon;
+
 
     public GameImpl(AgeStrategy ageStrategy,
                     WinnerStrategy winnerStrategy,
@@ -57,6 +60,10 @@ public class GameImpl implements Game {
         tileTable = this.worldStrategy.getTileArray();
         cityTable = this.worldStrategy.getCityArray();
         unitTable = this.worldStrategy.getUnitArray();
+
+        attacksWon = new HashMap<Player, Integer>();
+        attacksWon.put(Player.RED,0);
+        attacksWon.put(Player.BLUE,0);
 
     }
 
@@ -77,6 +84,11 @@ public class GameImpl implements Game {
     }
 
     public Player getWinner() {
+        // the winner
+        if (winner != null) {
+            return winner;
+        }
+        winner = winnerStrategy.winner(this);
         return winner;
     }
 
@@ -112,6 +124,7 @@ public class GameImpl implements Game {
             if (unitFrom.getOwner().equals(unitTo.getOwner())) {
                 return false;
             }
+            attacksWon.put(playerInTurn,attacksWon.get(playerInTurn)+1);
             // Because the attack-strategy used, the attacking unit always wins. So no need to check if a unit of different owner is at position "to".
         }
         // Now, move the unit:
@@ -157,9 +170,6 @@ public class GameImpl implements Game {
                 }
             }
         }
-
-        // the winner (if there is one) is determined each turn, not only each round.
-        winner = winnerStrategy.winner(this);
     }
 
     /**
@@ -291,5 +301,9 @@ public class GameImpl implements Game {
         }
 
         return Arrays.copyOf(citylist, k);
+    }
+
+    public HashMap<Player,Integer> getAttackWonMap () {
+        return (HashMap<Player, Integer>) attacksWon.clone();
     }
 }
