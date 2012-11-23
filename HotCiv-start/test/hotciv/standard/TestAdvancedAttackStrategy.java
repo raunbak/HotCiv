@@ -8,6 +8,8 @@ import hotciv.world.WorldStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Raunbak
@@ -31,9 +33,9 @@ public class TestAdvancedAttackStrategy {
 
     private class BattleLayoutStub implements WorldStrategy {
 
-        private Tile[][] tileTable = new Tile[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
-        private City[][] cityTable = new City[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
-        private Unit[][] unitTable = new Unit[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
+        private HashMap<Position, Tile> tileMap = new HashMap<Position, Tile>();
+        private HashMap<Position, City> cityMap = new HashMap<Position, City>();
+        private HashMap<Position, Unit> unitMap = new HashMap<Position, Unit>();
 
 
 
@@ -42,7 +44,8 @@ public class TestAdvancedAttackStrategy {
             // Initialize the tile array with plains on every tile, with the responding positions.
             for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
                 for (int j = 0; j < GameConstants.WORLDSIZE; j++) {
-                    tileTable[i][j] = new TileImpl(new Position(i, j), GameConstants.PLAINS);
+                    Position p = new Position(i, j);
+                    tileMap.put(p, new TileImpl(p, GameConstants.PLAINS));
                 }
             }
             //tileTable[1][0] = new TileImpl(new Position(1, 0), GameConstants.OCEANS);
@@ -51,26 +54,29 @@ public class TestAdvancedAttackStrategy {
             //cityTable[1][1] = new CityImpl(Player.RED);
             //cityTable[4][1] = new CityImpl(Player.BLUE);
 
-            unitTable[0][0] = new Archer(Player.RED);
-            unitTable[0][1] = new Settler(Player.RED);
-            unitTable[0][2] = new Legion(Player.RED);
-
-            unitTable[1][1] = new Legion(Player.BLUE);
+            Position p = new Position(0, 0);
+            unitMap.put(p, new Archer(Player.RED));
+            p = new Position(0,1);
+            unitMap.put(p, new Settler(Player.RED));
+            p = new Position(0,2);
+            unitMap.put(p, new Legion(Player.RED));
+            p = new Position(1,1);
+            unitMap.put(p, new Legion(Player.BLUE));
         }
 
         @Override
-        public Tile[][] getTileArray() {
-            return tileTable;  //To change body of implemented methods use File | Settings | File Templates.
+        public HashMap<Position, Tile> getTileArray() {
+            return tileMap;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
-        public Unit[][] getUnitArray() {
-            return unitTable;  //To change body of implemented methods use File | Settings | File Templates.
+        public HashMap<Position, Unit> getUnitArray() {
+            return unitMap;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
-        public City[][] getCityArray() {
-            return cityTable;  //To change body of implemented methods use File | Settings | File Templates.
+        public HashMap<Position, City> getCityArray() {
+            return cityMap;  //To change body of implemented methods use File | Settings | File Templates.
         }
     }
     private void makeGameRunNturns(int Nturns) {

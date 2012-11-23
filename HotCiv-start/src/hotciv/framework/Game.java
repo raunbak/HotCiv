@@ -1,5 +1,7 @@
 package hotciv.framework;
 
+import java.util.HashMap;
+
 /**
  * Game is the central interface allowing a client to access and
  * modify the state of a HotCiv game.
@@ -147,5 +149,5 @@ public interface Game {
 
     /* Returns all city in the game
     */
-    public City[] getAllCities();
+    public HashMap<Position, City> getAllCities();
 }

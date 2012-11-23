@@ -6,7 +6,6 @@ import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.world.WorldStrategy;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -36,9 +35,10 @@ public class GameImpl implements Game {
      */
     private Player playerInTurn = Player.RED;
     // 2-dimensional arrays for storing the tiles/cities/units:
-    private Tile[][] tileTable;
-    private City[][] cityTable;
-    private Unit[][] unitTable;
+    //private Tile[][] tileMap;
+    private HashMap<Position,Tile> tileMap;
+    private HashMap<Position, City> cityMap;
+    private HashMap<Position, Unit> unitMap;
     private int age = -4000;   // Game starts in year 4000 BC
     private Player winner = null;
     private AgeStrategy ageStrategy;
@@ -57,9 +57,9 @@ public class GameImpl implements Game {
         this.winnerStrategy = winnerStrategy;
         this.worldStrategy = worldStrategy;
         this.unitActionStrategy = unitActionStrategy;
-        tileTable = this.worldStrategy.getTileArray();
-        cityTable = this.worldStrategy.getCityArray();
-        unitTable = this.worldStrategy.getUnitArray();
+        tileMap = this.worldStrategy.getTileArray();
+        cityMap = this.worldStrategy.getCityArray();
+        unitMap = this.worldStrategy.getUnitArray();
 
         attacksWon = new HashMap<Player, Integer>();
         attacksWon.put(Player.RED,0);
@@ -68,15 +68,15 @@ public class GameImpl implements Game {
     }
 
     public Tile getTileAt(Position p) {
-        return tileTable[p.getRow()][p.getColumn()];
+        return tileMap.get(p);
     }
 
     public Unit getUnitAt(Position p) {
-        return unitTable[p.getRow()][p.getColumn()];
+        return unitMap.get(p);
     }
 
     public City getCityAt(Position p) {
-        return cityTable[p.getRow()][p.getColumn()];
+        return cityMap.get(p);
     }
 
     public Player getPlayerInTurn() {
@@ -128,8 +128,8 @@ public class GameImpl implements Game {
             // Because the attack-strategy used, the attacking unit always wins. So no need to check if a unit of different owner is at position "to".
         }
         // Now, move the unit:
-        unitTable[to.getRow()][to.getColumn()] = unitFrom;
-        unitTable[from.getRow()][from.getColumn()] = null;
+        unitMap.put(to,unitFrom);
+        unitMap.remove(from);
         unitFrom.reduceMoveCountBy(distanceToBeMoved);
 
         if (getCityAt(to) != null && getCityAt(to).getOwner() != getPlayerInTurn()) {
@@ -150,24 +150,18 @@ public class GameImpl implements Game {
             playerInTurn = Player.RED;
             age = ageStrategy.calculateAge(age);
 
-            // Loop through all the positions in the world.
-            for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
-                for (int j = 0; j < GameConstants.WORLDSIZE; j++) {
-                    // Restore the move count of all the units.
-                    if (unitTable[i][j] != null) {
-                        unitTable[i][j].restoreMoveCount();
-                    }
+            // Restore the move count of all the units.
+            for (Position p : unitMap.keySet()) {
+                unitMap.get(p).restoreMoveCount();
+            }
 
-                    // For each city, add 6 to the current amount of production, and produce as many units as it can afford.
-                    if (cityTable[i][j] != null) {
-                        cityTable[i][j].increaseAmountOfProduction(6); // Constant amount of 6 in AlphaCiv.
+            // For each city, add 6 to the current amount of production, and produce as many units as it can afford.
+            for (Position p : cityMap.keySet()) {
 
-                        Position p = new Position(i, j);
-                        // produce units!
-                        produceUnitsInCityAt(p);
+                cityMap.get(p).increaseAmountOfProduction(6);  // Constant amount of 6 in AlphaCiv.
 
-                    }
-                }
+                // produce units!
+                produceUnitsInCityAt(p);
             }
         }
     }
@@ -233,7 +227,7 @@ public class GameImpl implements Game {
                         // For now, we are relying on the earlier call to GameConstants.COSTMAP
                         //      to cast a NullPointerException if the unittype is invalid.
                         //      Thus, u will never remain null after the if-statements above.
-                        unitTable[p.getRow()][p.getColumn()] = u;
+                        unitMap.put(p, u);
                     }
 
                     // Add the stepping "vector" to the current position to get the next position.
@@ -272,13 +266,13 @@ public class GameImpl implements Game {
     public void performUnitActionAt(Position p) {
         Unit u = getUnitAt(p);
 
+
+        // TODO change this to avoid getting an object back?
         Object obj = unitActionStrategy.performUnitAction(u, this);
         if (obj != null) {
-            int i = p.getRow();
-            int j = p.getColumn();
-            if (obj.getClass().equals(CityImpl.class) && cityTable[i][j] == null) {
-                cityTable[i][j] = (City) obj;
-                unitTable[i][j] = null;
+            if (obj.getClass().equals(CityImpl.class) && !cityMap.containsKey(p)) {
+                cityMap.put(p, (City) obj);
+                unitMap.remove(p);
             }
         }
 
@@ -286,21 +280,8 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public City[] getAllCities() {
-        City[] citylist = new City[GameConstants.WORLDSIZE * GameConstants.WORLDSIZE];
-        int k = 0;
-        for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
-            for (int j = 0; j < GameConstants.WORLDSIZE; j++) {
-
-                if (cityTable[i][j] != null) {
-                    citylist[k] = cityTable[i][j];
-                    k++;
-                }
-
-            }
-        }
-
-        return Arrays.copyOf(citylist, k);
+    public HashMap<Position, City> getAllCities() {
+        return cityMap;
     }
 
     public HashMap<Player,Integer> getAttackWonMap () {
