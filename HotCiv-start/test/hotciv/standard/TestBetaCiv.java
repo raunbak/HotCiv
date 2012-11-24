@@ -1,5 +1,6 @@
 package hotciv.standard;
 
+import hotciv.GameFactory.BetaCivFactory;
 import hotciv.age.DecreasingAgeStrategy;
 import hotciv.framework.*;
 
@@ -18,10 +19,7 @@ public class TestBetaCiv {
 
     @Before
     public void setUp() {
-        game = new GameImpl(new DecreasingAgeStrategy(),
-                new WinByConquestStrategy(),
-                new SimpleLayoutStrategy(),
-                new NoActionStrategy());
+        game = new GameImpl(new BetaCivFactory());
     }
 
     @Test

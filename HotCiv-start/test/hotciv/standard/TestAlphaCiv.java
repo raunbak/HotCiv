@@ -1,5 +1,6 @@
 package hotciv.standard;
 
+import hotciv.GameFactory.AlphaCivFactory;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.framework.*;
 
@@ -35,7 +36,7 @@ public class TestAlphaCiv {
      */
     @Before
     public void setUp() {
-        game = new GameImpl(new LinearAgeStrategy(), new RedWinsAtAge3000BCStrategy(), new SimpleLayoutStrategy(), new NoActionStrategy());
+        game = new GameImpl(new AlphaCivFactory());
     }
 
     @Test

@@ -1,6 +1,8 @@
 package hotciv.standard;
 
+import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.age.AgeStrategy;
+import hotciv.attackStrategy.AttackStrategy;
 import hotciv.framework.*;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
@@ -46,21 +48,25 @@ public class GameImpl implements Game {
     private WorldStrategy worldStrategy;
     private UnitActionStrategy unitActionStrategy;
     private HashMap<Player,Integer> attacksWon;
+    private AttackStrategy attackStrategy;
 
 
-    public GameImpl(AgeStrategy ageStrategy,
-                    WinnerStrategy winnerStrategy,
-                    WorldStrategy worldStrategy,
-                    UnitActionStrategy unitActionStrategy) {
+    public GameImpl(AbstractGameFactory GameFactory) {
 
-        this.ageStrategy = ageStrategy;
-        this.winnerStrategy = winnerStrategy;
-        this.worldStrategy = worldStrategy;
-        this.unitActionStrategy = unitActionStrategy;
-        tileMap = this.worldStrategy.getTileArray();
-        cityMap = this.worldStrategy.getCityArray();
-        unitMap = this.worldStrategy.getUnitArray();
+        // Create all needed Strategies
+        ageStrategy = GameFactory.createAgeStrategy();
+        winnerStrategy = GameFactory.createWinnerStrategy();
+        worldStrategy = GameFactory.createWorldStrategy();
+        unitActionStrategy = GameFactory.createUnitActionStrategy();
+        attackStrategy = GameFactory.createAttackStrategy();
 
+
+         // Get Arrays from the world strategy.
+        tileMap = worldStrategy.getTileArray();
+        cityMap = worldStrategy.getCityArray();
+        unitMap = worldStrategy.getUnitArray();
+
+        // No player has won any attackts at the start of the game.
         attacksWon = new HashMap<Player, Integer>();
         attacksWon.put(Player.RED,0);
         attacksWon.put(Player.BLUE,0);
@@ -120,15 +126,26 @@ public class GameImpl implements Game {
             return false;
         }
 
+        Unit unitToBeMoved;
+
         if (unitTo != null) {
             if (unitFrom.getOwner().equals(unitTo.getOwner())) {
                 return false;
             }
-            attacksWon.put(playerInTurn,attacksWon.get(playerInTurn)+1);
+            Unit winningUnit = attackStrategy.outcomeOfBattle(this,from,to);
+
+            if (winningUnit.getOwner() == playerInTurn) {
+                attacksWon.put(playerInTurn,attacksWon.get(playerInTurn)+1);
+            }
+
+            unitToBeMoved = winningUnit;
             // Because the attack-strategy used, the attacking unit always wins. So no need to check if a unit of different owner is at position "to".
         }
+        else {
+            unitToBeMoved = unitFrom;
+        }
         // Now, move the unit:
-        unitMap.put(to,unitFrom);
+        unitMap.put(to,unitToBeMoved);
         unitMap.remove(from);
         unitFrom.reduceMoveCountBy(distanceToBeMoved);
 

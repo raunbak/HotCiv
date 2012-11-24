@@ -1,5 +1,6 @@
 package hotciv.standard;
 
+import hotciv.GameFactory.GammaCivFactory;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.framework.Game;
 import hotciv.framework.Position;
@@ -21,7 +22,7 @@ public class TestGammaCiv {
 
     @Before
     public void setUp() {
-        game = new GameImpl(new LinearAgeStrategy(), new RedWinsAtAge3000BCStrategy(), new SimpleLayoutStrategy(), new SettlerAndArcherActionStrategy());
+        game = new GameImpl(new GammaCivFactory());
     }
 
     @Test

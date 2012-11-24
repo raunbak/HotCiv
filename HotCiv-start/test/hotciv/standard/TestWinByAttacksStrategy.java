@@ -1,9 +1,15 @@
 package hotciv.standard;
 
+import hotciv.GameFactory.AbstractGameFactory;
+import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
+import hotciv.attackStrategy.AdvancedAttackStrategy;
+import hotciv.attackStrategy.AttackStrategy;
 import hotciv.framework.*;
 import hotciv.unitaction.NoActionStrategy;
+import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinBy3WonAttacksStrategy;
+import hotciv.winner.WinnerStrategy;
 import hotciv.world.WorldStrategy;
 import org.junit.*;
 
@@ -20,7 +26,7 @@ public class TestWinByAttacksStrategy {
 
     @Before
     public void setUp() {
-        game = new GameImpl(new LinearAgeStrategy(), new WinBy3WonAttacksStrategy(), new BattleLayoutStub(), new NoActionStrategy());
+        game = new GameImpl(new TestFactoryStub());
 
     }
 
@@ -78,6 +84,34 @@ public class TestWinByAttacksStrategy {
         @Override
         public HashMap<Position, City> getCityArray() {
             return cityMap;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+    }
+
+    private class TestFactoryStub implements AbstractGameFactory{
+
+        @Override
+        public AgeStrategy createAgeStrategy() {
+            return new LinearAgeStrategy();
+        }
+
+        @Override
+        public WinnerStrategy createWinnerStrategy() {
+            return new WinBy3WonAttacksStrategy();
+        }
+
+        @Override
+        public WorldStrategy createWorldStrategy() {
+            return new BattleLayoutStub();
+        }
+
+        @Override
+        public UnitActionStrategy createUnitActionStrategy() {
+            return new NoActionStrategy();
+        }
+
+        @Override
+        public AttackStrategy createAttackStrategy() {
+            return new AdvancedAttackStrategy();
         }
     }
 

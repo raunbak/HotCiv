@@ -1,9 +1,15 @@
 package hotciv.standard;
 
+import hotciv.GameFactory.AbstractGameFactory;
+import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
+import hotciv.attackStrategy.AdvancedAttackStrategy;
+import hotciv.attackStrategy.AttackStrategy;
 import hotciv.framework.*;
 import hotciv.unitaction.NoActionStrategy;
+import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinBy3WonAttacksStrategy;
+import hotciv.winner.WinnerStrategy;
 import hotciv.world.WorldStrategy;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,15 +17,19 @@ import org.junit.Test;
 import java.util.HashMap;
 
 /**
- *
+ * Created with IntelliJ IDEA.
+ * User: Raunbak
+ * Date: 22-11-12
+ * Time: 11:50
+ * To change this template use File | Settings | File Templates.
  */
 public class TestAdvancedAttackStrategy {
     private Game game;
-
+    private AttackStrategy attStrategy;
     @Before
     public void setUp() {
-        game = new GameImpl(new LinearAgeStrategy(), new WinBy3WonAttacksStrategy(), new BattleLayoutStub(), new NoActionStrategy());
-
+        game = new GameImpl(new TestFactoryStub());
+        attStrategy = new AdvancedAttackStrategy();
     }
 
     @Test
@@ -75,8 +85,33 @@ public class TestAdvancedAttackStrategy {
             return cityMap;  //To change body of implemented methods use File | Settings | File Templates.
         }
     }
+    private class TestFactoryStub implements AbstractGameFactory {
 
+        @Override
+        public AgeStrategy createAgeStrategy() {
+            return new LinearAgeStrategy();
+        }
 
+        @Override
+        public WinnerStrategy createWinnerStrategy() {
+            return new WinBy3WonAttacksStrategy();
+        }
+
+        @Override
+        public WorldStrategy createWorldStrategy() {
+            return new BattleLayoutStub();
+        }
+
+        @Override
+        public UnitActionStrategy createUnitActionStrategy() {
+            return new NoActionStrategy();
+        }
+
+        @Override
+        public AttackStrategy createAttackStrategy() {
+            return new AdvancedAttackStrategy();
+        }
+    }
     private void makeGameRunNturns(int Nturns) {
         for (int i = 0; i < 2 * Nturns; i++) {   // age should increment by 100 each time both player's turn has ended, 2*1000/100 = 20.
             game.endOfTurn();
