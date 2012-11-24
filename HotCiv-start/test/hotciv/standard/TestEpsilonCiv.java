@@ -8,11 +8,7 @@ import hotciv.world.SimpleLayoutStrategy;
 import org.junit.Before;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 22-11-12
- * Time: 10:39
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class TestEpsilonCiv {
     private Game game;

@@ -181,7 +181,12 @@ public class GameImpl implements Game {
         String unittype = city.getProduction();
 
         if (unittype != null) {
-            int unitcost = GameConstants.COSTMAP.get(unittype);   // TODO Do something with the NullPointerException thrown exception if unittype is not found.
+            int unitcost;
+            try {
+                unitcost = GameConstants.COSTMAP.get(unittype);
+            } catch (NullPointerException npEx) {
+                throw new InvalidUnittypeException("Unittype not found in GameConstants.COSTMAP");
+            }
 
             // integer division in Java gets rounded down, which is correct here.
             int nUnitsAffordable = city.getCurrentAmountOfProduction() / unitcost;
@@ -223,10 +228,10 @@ public class GameImpl implements Game {
                             u = new Legion(getPlayerInTurn());
                         } else if (unittype.equals(GameConstants.SETTLER)) {
                             u = new Settler(getPlayerInTurn());
+                        } else {
+                            // the unittype is invalid.
+                            throw new InvalidUnittypeException("Unittype not listed was not listed as a possible class in GameImpl.produceUnitsInCityAt().");
                         }
-                        // For now, we are relying on the earlier call to GameConstants.COSTMAP
-                        //      to cast a NullPointerException if the unittype is invalid.
-                        //      Thus, u will never remain null after the if-statements above.
                         unitMap.put(p, u);
                     }
 
@@ -241,8 +246,8 @@ public class GameImpl implements Game {
                 stepDirection.rotate90clockwise();
 
                 // Only increment the step-limit when making a turn at either a North-East or South-West corner.
-                // An equivalent condition is: (stepDirection.getRowCoordinate() != 0).
-                if (stepDirection.getColumnCoordinate() == 0) {
+                // An equivalent condition is: (stepDirection.getRowComponent() != 0).
+                if (stepDirection.getColumnComponent() == 0) {
                     stepLimit++;
                 }
             }

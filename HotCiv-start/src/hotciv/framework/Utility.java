@@ -1,6 +1,5 @@
 package hotciv.framework;
 
-import hotciv.framework.*;
 import java.util.*;
 
 /** Collection of utility methods for speeding up
@@ -57,8 +56,8 @@ public class Utility {
         // cities overrule underlying terrain
         if ( game.getCityAt(position) != null ) { return 3; }
         Tile t = game.getTileAt(position);
-        if ( t.getTypeString() == GameConstants.FOREST ||
-                t.getTypeString() == GameConstants.HILLS ) {
+        if ( t.getTypeString().equals(GameConstants.FOREST) ||
+                t.getTypeString().equals(GameConstants.HILLS) ) {
             return 2;
         }
         return 1;

@@ -11,11 +11,7 @@ import org.junit.Test;
 import java.util.HashMap;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 22-11-12
- * Time: 11:50
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class TestAdvancedAttackStrategy {
     private Game game;
@@ -79,6 +75,8 @@ public class TestAdvancedAttackStrategy {
             return cityMap;  //To change body of implemented methods use File | Settings | File Templates.
         }
     }
+
+
     private void makeGameRunNturns(int Nturns) {
         for (int i = 0; i < 2 * Nturns; i++) {   // age should increment by 100 each time both player's turn has ended, 2*1000/100 = 20.
             game.endOfTurn();
