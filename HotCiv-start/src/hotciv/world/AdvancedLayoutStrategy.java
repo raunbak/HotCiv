@@ -5,13 +5,15 @@ import hotciv.standard.Archer;
 import hotciv.standard.CityImpl;
 import hotciv.standard.TileImpl;
 
+import java.util.HashMap;
+
 /**
  *
  */
 public class AdvancedLayoutStrategy implements WorldStrategy {
-    private Tile[][] tileTable = new Tile[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
-    private City[][] cityTable = new City[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
-    private Unit[][] unitTable = new Unit[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
+    private HashMap<Position, Tile> tileMap = new HashMap<Position, Tile>();
+    private HashMap<Position, City> cityMap = new HashMap<Position, City>();
+    private HashMap<Position, Unit> unitMap = new HashMap<Position, Unit>();
 
 
     String[] tilelayout = new String[]{
@@ -35,9 +37,12 @@ public class AdvancedLayoutStrategy implements WorldStrategy {
 
     public AdvancedLayoutStrategy() {
         defineTilesOfWorld();
-        cityTable[8][12] = new CityImpl(Player.RED);
-        cityTable[4][5] = new CityImpl(Player.BLUE);
-        unitTable[2][0] = new Archer(Player.RED);
+        Position p = new Position(8,12);
+        cityMap.put(p, new CityImpl(Player.RED));
+        p = new Position(4,5);
+        cityMap.put(p, new CityImpl(Player.BLUE));
+        p = new Position(2,0);
+        unitMap.put(p, new Archer(Player.RED));
     }
 
     private void defineTilesOfWorld() {
@@ -63,7 +68,8 @@ public class AdvancedLayoutStrategy implements WorldStrategy {
                     type = GameConstants.HILLS;
                 }
 
-                tileTable[r][c] = new TileImpl(new Position(r, c), type);
+                Position p = new Position(r,c);
+                tileMap.put(p, new TileImpl(p, type));
 
             }
         }
@@ -71,17 +77,17 @@ public class AdvancedLayoutStrategy implements WorldStrategy {
 
 
     @Override
-    public Tile[][] getTileArray() {
-        return tileTable;
+    public HashMap<Position, Tile> getTileArray() {
+        return tileMap;
     }
 
     @Override
-    public Unit[][] getUnitArray() {
-        return unitTable;
+    public HashMap<Position, Unit> getUnitArray() {
+        return unitMap;
     }
 
     @Override
-    public City[][] getCityArray() {
-        return cityTable;
+    public HashMap<Position, City> getCityArray() {
+        return cityMap;
     }
 }

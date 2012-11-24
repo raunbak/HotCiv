@@ -1,8 +1,11 @@
 package hotciv.world;
 
 import hotciv.framework.City;
+import hotciv.framework.Position;
 import hotciv.framework.Tile;
 import hotciv.framework.Unit;
+
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,9 +16,9 @@ import hotciv.framework.Unit;
  */
 public interface WorldStrategy {
 
-    public Tile[][] getTileArray();
+    public HashMap<Position, Tile> getTileArray();
 
-    public Unit[][] getUnitArray();
+    public HashMap<Position, Unit> getUnitArray();
 
-    public City[][] getCityArray();
+    public HashMap<Position, City> getCityArray();
 }

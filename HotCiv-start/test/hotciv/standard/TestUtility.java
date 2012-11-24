@@ -231,8 +231,8 @@ class GameStubForBattleTesting implements Game {
     public void performUnitActionAt( Position p ) {}
 
     @Override
-    public City[] getAllCities() {
-        return new City[0];  //To change body of implemented methods use File | Settings | File Templates.
+    public HashMap<Position, City> getAllCities() {
+        return null;
     }
 
     // Remove these if the Game interface for the AlphaCiv exercise is used.
