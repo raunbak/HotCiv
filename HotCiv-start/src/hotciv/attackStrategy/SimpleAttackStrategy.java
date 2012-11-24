@@ -14,7 +14,7 @@ import hotciv.framework.Unit;
 public class SimpleAttackStrategy implements AttackStrategy {
     @Override
     public Unit outcomeOfBattle(Game game, Position unitAttacting, Position unitDefending) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return game.getUnitAt(unitAttacting);
 
     }
 

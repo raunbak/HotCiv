@@ -19,7 +19,7 @@ public class TestEpsilonCiv {
 
     @Before
     public void setUp() {
-        game = new GameImpl(new LinearAgeStrategy(), new WinBy3WonAttacksStrategy(), new SimpleLayoutStrategy(), new NoActionStrategy());
+        //game = new GameImpl(new EpsilonCivFactory());
 
     }
 }

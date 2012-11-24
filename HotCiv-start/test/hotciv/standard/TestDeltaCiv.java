@@ -1,5 +1,6 @@
 package hotciv.standard;
 
+import hotciv.GameFactory.DeltaCivFactory;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.framework.Game;
 import hotciv.framework.GameConstants;
@@ -20,7 +21,7 @@ public class TestDeltaCiv {
 
     @Before
     public void setUp() {
-        game = new GameImpl(new LinearAgeStrategy(), new RedWinsAtAge3000BCStrategy(), new AdvancedLayoutStrategy(), new NoActionStrategy());
+        game = new GameImpl(new DeltaCivFactory());
     }
 
     @Test
