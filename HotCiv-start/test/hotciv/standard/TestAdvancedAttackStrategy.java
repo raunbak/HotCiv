@@ -1,12 +1,16 @@
 package hotciv.standard;
 
 import hotciv.age.LinearAgeStrategy;
+import hotciv.attackStrategy.AdvancedAttackStrategy;
+import hotciv.attackStrategy.AttackStrategy;
 import hotciv.framework.*;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.winner.WinBy3WonAttacksStrategy;
 import hotciv.world.WorldStrategy;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,16 +21,18 @@ import org.junit.Test;
  */
 public class TestAdvancedAttackStrategy {
     private Game game;
+    private AttackStrategy attStrategy;
 
     @Before
     public void setUp() {
         game = new GameImpl(new LinearAgeStrategy(), new WinBy3WonAttacksStrategy(), new BattleLayoutStub(), new NoActionStrategy());
-
+        attStrategy = new AdvancedAttackStrategy();
     }
 
     @Test
-    public void redUnitAt0_0ShouldWinVsBlueAt1_1() {
-
+    public void redSettlerAt0_1ShouldNotWinVsBlueLegionAt1_1() {
+        Unit winningunit = attStrategy.outcomeOfBattle(game, new Position(0, 1), new Position(1, 1));
+        assertEquals("Should be a Blue unit", Player.BLUE, winningunit.getOwner());
     }
 
     private class BattleLayoutStub implements WorldStrategy {
