@@ -5,6 +5,7 @@ import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.attackStrategy.AdvancedAttackStrategy;
 import hotciv.attackStrategy.AttackStrategy;
+import hotciv.attackStrategy.SimpleAttackStrategy;
 import hotciv.framework.*;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
@@ -115,7 +116,7 @@ public class TestWinByAttacksStrategy {
 
         @Override
         public AttackStrategy createAttackStrategy() {
-            return new AdvancedAttackStrategy();
+            return new SimpleAttackStrategy();
         }
     }
 
