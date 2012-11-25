@@ -202,37 +202,39 @@ public class TestAlphaCiv {
 
     @Test
     public void shouldPlaceUnitAtNextFreeTileIfCityIsOccupied() {
-        game.changeProductionInCityAt(new Position(1, 1), GameConstants.ARCHER);
+        String unittype = GameConstants.ARCHER;
+        game.changeProductionInCityAt(new Position(1, 1), unittype);
         // Run game until red city has produced enough to make 2 archers.
-        makeGameRunNturns((int) Math.ceil(2 * GameConstants.ARCHERCOST / 6.0));
+        makeGameRunNturns((int) Math.ceil(2 * GameConstants.COSTMAP.get(unittype) / 6.0));
         Unit u = game.getUnitAt(new Position(0, 1));
-        assertEquals("There should now be an archer at (0,1)", GameConstants.ARCHER, u.getTypeString());
+        assertEquals("There should now be an archer at (0,1)", unittype, u.getTypeString());
     }
 
     @Test
     public void shouldSkipOccupiedTileWhenPlacingUnit() {
+        String unittype = GameConstants.SETTLER;
         game.endOfTurn();
-        game.changeProductionInCityAt(new Position(4, 1), GameConstants.SETTLER);
+        game.changeProductionInCityAt(new Position(4, 1), unittype);
         // Run the game until the blue city tries to produce a third settler.
-        makeGameRunNturns((int) Math.ceil(3 * GameConstants.SETTLERCOST / 6.0));
+        makeGameRunNturns((int) Math.ceil(3 * GameConstants.COSTMAP.get(unittype) / 6.0));
         Unit uLegion = game.getUnitAt(new Position(3, 2));
         assertEquals("The legion should still be there (3,2).", GameConstants.LEGION, uLegion.getTypeString());
         Unit uSettler3 = game.getUnitAt(new Position(4, 2));
-        assertEquals("The third settler should have been placed here (4,2).", GameConstants.SETTLER, uSettler3.getTypeString());
+        assertEquals("The third settler should have been placed here (4,2).", unittype, uSettler3.getTypeString());
 
     }
 
     @Test
     public void blueCityShouldPlaceItsNinthUnitTwoTilesToTheNorth() {
-
+        String unittype = GameConstants.ARCHER;
         // Run the game until the round just before the blue city has enough to produce 9 archers.
-        makeGameRunNturns((int) Math.ceil(9 * GameConstants.ARCHERCOST / 6.0) - 1);
+        makeGameRunNturns((int) Math.ceil(9 * GameConstants.COSTMAP.get(unittype) / 6.0) - 1);
         game.endOfTurn();
-        game.changeProductionInCityAt(new Position(4, 1), GameConstants.ARCHER);
+        game.changeProductionInCityAt(new Position(4, 1), unittype);
         // After next round all the 9 archers should be produced.
         game.endOfTurn();
         Unit u = game.getUnitAt(new Position(2, 1));
-        assertEquals("The 9'th archer should be placed at (2,1).", GameConstants.ARCHER, u.getTypeString());
+        assertEquals("The 9'th archer should be placed at (2,1).", unittype, u.getTypeString());
     }
 
     @Test

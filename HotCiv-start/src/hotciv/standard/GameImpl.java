@@ -236,18 +236,7 @@ public class GameImpl implements Game {
                             && !getTileAt(p).getTypeString().equals(GameConstants.OCEANS)) {
 
                         nUnitsProduced++;  // now one more unit is being created.
-                        Unit u;
-                        // Initialize the unit to be created depending on the unittype. (hardcoded)
-                        if (unittype.equals(GameConstants.ARCHER)) {
-                            u = new Archer(getPlayerInTurn(), mutatorKey);
-                        } else if (unittype.equals(GameConstants.LEGION)) {
-                            u = new Legion(getPlayerInTurn(), mutatorKey);
-                        } else if (unittype.equals(GameConstants.SETTLER)) {
-                            u = new Settler(getPlayerInTurn(), mutatorKey);
-                        } else {
-                            // the unittype is invalid.
-                            throw new InvalidUnittypeException("Unittype not listed was not listed as a possible class in GameImpl.produceUnitsInCityAt().");
-                        }
+                        Unit u = new UnitImpl(playerInTurn, unittype, mutatorKey);
                         world.unitMap.put(p, u);
                     }
 

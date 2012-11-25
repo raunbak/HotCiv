@@ -174,6 +174,11 @@ class StubUnit implements Unit {
         return 0;
     }
 
+    @Override
+    public int getTotalMoves() {
+        return 0;
+    }
+
     public int getDefensiveStrength() {
         return 0;
     }
@@ -190,6 +195,14 @@ class StubUnit implements Unit {
     @Override
     public void restoreMoveCount(MutatorKey mKey) {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void setTotalMoves(int totalMoves, MutatorKey mutatorKey) {
+    }
+
+    @Override
+    public void setDefensiveStrength(int defStrength, MutatorKey mutatorKey) {
     }
 }
 
@@ -260,7 +273,7 @@ class GameStubForBattleTesting implements Game {
                 }
 
                 @Override
-                public void setProduction(String unit, MutatorKey mKey) {
+                public void setProduction(String unittype, MutatorKey mKey) {
                 }
 
                 @Override

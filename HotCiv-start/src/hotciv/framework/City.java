@@ -23,6 +23,7 @@ package hotciv.framework;
  * commercial use, see http://www.baerbak.com/
  */
 public interface City {
+    // === Accessor methods ===================================
     /**
      * return the owner of this city.
      *
@@ -60,12 +61,30 @@ public interface City {
      */
     public int getCurrentAmountOfProduction();
 
+
+    // === Mutator methods ======================================
+    /**
+     * Reduce the amount of production in the city. Used when producing units.
+     * @param amount the amount to be subtracted from the current amount.
+     */
     public void reduceAmountOfProduction(int amount, MutatorKey mutatorKey);
 
+    /**
+     * Increase the amount of production in the city. Used after each round.
+     * @param amount the amount to be added to the current amount.
+     */
     public void increaseAmountOfProduction(int amount, MutatorKey mutatorKey);
 
-    public void setProduction(String unit, MutatorKey mutatorKey);
+    /**
+     * Set the type of unit that the city should produce.
+     * @param unittype the new type of unit to be produced.
+     */
+    public void setProduction(String unittype, MutatorKey mutatorKey);
 
+    /**
+     * Set the owner of the city.
+     * @param player the new owner of the city.
+     */
     public void setOwner(Player player, MutatorKey mutatorKey);
 
 }

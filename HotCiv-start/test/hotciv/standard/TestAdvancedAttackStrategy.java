@@ -60,13 +60,13 @@ public class TestAdvancedAttackStrategy {
             //cityTable[4][1] = new CityImpl(Player.BLUE);
 
             Position p = new Position(0, 0);
-            unitMap.put(p, new Archer(Player.RED, mutatorKey));
+            unitMap.put(p, new UnitImpl(Player.RED, GameConstants.ARCHER, mutatorKey));
             p = new Position(0, 1);
-            unitMap.put(p, new Settler(Player.RED, mutatorKey));
+            unitMap.put(p, new UnitImpl(Player.RED, GameConstants.SETTLER, mutatorKey));
             p = new Position(0, 2);
-            unitMap.put(p, new Legion(Player.RED, mutatorKey));
+            unitMap.put(p, new UnitImpl(Player.RED, GameConstants.LEGION, mutatorKey));
             p = new Position(1, 1);
-            unitMap.put(p, new Legion(Player.BLUE, mutatorKey));
+            unitMap.put(p, new UnitImpl(Player.BLUE, GameConstants.LEGION, mutatorKey));
         }
 
         @Override

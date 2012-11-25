@@ -4,7 +4,6 @@ import hotciv.framework.GameConstants;
 import hotciv.framework.MutatorKey;
 import hotciv.framework.Position;
 import hotciv.framework.Unit;
-import hotciv.standard.Archer;
 import hotciv.standard.CityImpl;
 import hotciv.standard.World;
 
@@ -19,13 +18,24 @@ public class SettlerAndArcherActionStrategy implements UnitActionStrategy {
         String type = u.getTypeString();
 
         if (type.equals(GameConstants.ARCHER)) {
-            Archer a = (Archer) u;
-            a.fortify(mKey);
+            // Toggle the fortify state.
+            switch (u.getTotalMoves()) {
+                case 1:
+                    u.setDefensiveStrength(6, mKey);
+                    u.setTotalMoves(0, mKey);
+                    u.restoreMoveCount(mKey);
+                    break;
+                case 0:
+                    u.setDefensiveStrength(3, mKey);
+                    u.setTotalMoves(1, mKey);
+                    u.restoreMoveCount(mKey);
+                    break;
+            }
         }
 
         if (type.equals(GameConstants.SETTLER)
                 && !world.cityMap.containsKey(p)) {
-
+            // Build a city at the cost of the settler.
             world.cityMap.put(p, new CityImpl(u.getOwner(), mKey));
             world.unitMap.remove(p);
         }

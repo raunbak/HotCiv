@@ -27,10 +27,6 @@ import java.util.Map;
 public class GameConstants {
     // The size of the world is set permanently to a 16x16 grid
     public static final int WORLDSIZE = 16;
-    // Valid unit types
-    public static final String ARCHER = "archer";
-    public static final String LEGION = "legion";
-    public static final String SETTLER = "settler";
     // Valid terrain types
     public static final String PLAINS = "plains";
     public static final String OCEANS = "ocean";
@@ -40,19 +36,67 @@ public class GameConstants {
     // Valid production balance types
     public static final String productionFocus = "hammer";
     public static final String foodFocus = "apple";
-    // Valid costs of units
-    public static final int ARCHERCOST = 10;
-    public static final int LEGIONCOST = 15;
-    public static final int SETTLERCOST = 30;
+
+    // == Valid unit types and stats ====================
+    // Archer
+    public static final String ARCHER = "archer";
+    private static final int ARCHER_COST = 10;
+    private static final int ARCHER_DEFENSIVE = 3;
+    private static final int ARCHER_ATTACKING = 2;
+    private static final int ARCHER_TOTAL_MOVES = 1;
+
+    // Legion
+    public static final String LEGION = "legion";
+    private static final int LEGION_COST = 15;
+    private static final int LEGION_DEFENSIVE = 2;
+    private static final int LEGION_ATTACKING = 4;
+    private static final int LEGION_TOTAL_MOVES = 1;
+
+    // Settler
+    public static final String SETTLER = "settler";
+    private static final int SETTLER_COST = 30;
+    private static final int SETTLER_DEFENSIVE = 3;
+    private static final int SETTLER_ATTACKING = 0;
+    private static final int SETTLER_TOTAL_MOVES = 1;
+
 
     // Cost map of units.
     public static final Map<String, Integer> COSTMAP;
-
     static {
         Map<String, Integer> aMap = new HashMap<String, Integer>();
-        aMap.put(ARCHER, ARCHERCOST);
-        aMap.put(LEGION, LEGIONCOST);
-        aMap.put(SETTLER, SETTLERCOST);
+        aMap.put(ARCHER, ARCHER_COST);
+        aMap.put(LEGION, LEGION_COST);
+        aMap.put(SETTLER, SETTLER_COST);
         COSTMAP = Collections.unmodifiableMap(aMap);
+    }
+
+    // Defensive strength map of units.
+    public static final Map<String, Integer> DEFMAP;
+    static {
+        Map<String, Integer> aMap = new HashMap<String, Integer>();
+        aMap.put(ARCHER, ARCHER_DEFENSIVE);
+        aMap.put(LEGION, LEGION_DEFENSIVE);
+        aMap.put(SETTLER, SETTLER_DEFENSIVE);
+        DEFMAP = Collections.unmodifiableMap(aMap);
+    }
+
+    // Attacking strength map of units.
+    public static final Map<String, Integer> ATTMAP;
+    static {
+        Map<String, Integer> aMap = new HashMap<String, Integer>();
+        aMap.put(ARCHER, ARCHER_ATTACKING);
+        aMap.put(LEGION, LEGION_ATTACKING);
+        aMap.put(SETTLER, SETTLER_ATTACKING);
+        ATTMAP = Collections.unmodifiableMap(aMap);
+    }
+
+    // Total moves map for units.
+    public static final Map<String, Integer> MOVEMAP;
+    static {
+        Map<String, Integer> aMap = new HashMap<String, Integer>();
+        aMap.put(ARCHER, ARCHER_TOTAL_MOVES);
+        aMap.put(LEGION, LEGION_TOTAL_MOVES);
+        aMap.put(SETTLER, SETTLER_TOTAL_MOVES);
+        MOVEMAP = Collections.unmodifiableMap(aMap);
     }
 }

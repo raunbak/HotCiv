@@ -1,9 +1,9 @@
 package hotciv.world;
 
 import hotciv.framework.*;
-import hotciv.standard.Archer;
 import hotciv.standard.CityImpl;
 import hotciv.standard.TileImpl;
+import hotciv.standard.UnitImpl;
 
 import java.util.HashMap;
 
@@ -37,14 +37,16 @@ public class AdvancedLayoutStrategy implements WorldStrategy {
     };
 
     public AdvancedLayoutStrategy() {
+        // Generate the key to use for mutating cities and units.
         mutatorKey = new MutatorKey();
+
         defineTilesOfWorld();
         Position p = new Position(8, 12);
         cityMap.put(p, new CityImpl(Player.RED, mutatorKey));
         p = new Position(4, 5);
         cityMap.put(p, new CityImpl(Player.BLUE, mutatorKey));
         p = new Position(2, 0);
-        unitMap.put(p, new Archer(Player.RED, mutatorKey));
+        unitMap.put(p, new UnitImpl(Player.RED, GameConstants.ARCHER, mutatorKey));
     }
 
     private void defineTilesOfWorld() {

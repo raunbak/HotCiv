@@ -25,6 +25,7 @@ package hotciv.framework;
  * commercial use, see http://www.baerbak.com/
  */
 public interface Unit {
+    // === Accessor methods ===================================
     /**
      * return the type of the unit
      *
@@ -53,6 +54,12 @@ public interface Unit {
     public int getMoveCount();
 
     /**
+     *
+     * @return the total moves currently allowed each turn.
+     */
+    public int getTotalMoves();
+
+    /**
      * return the defensive strength of this unit
      *
      * @return defensive strength
@@ -66,6 +73,8 @@ public interface Unit {
      */
     public int getAttackingStrength();
 
+
+    // === Mutator methods ======================================
     /**
      * Reduces a units movecount by int move amount.
      * Precondition: moves <= moveCount
@@ -75,7 +84,14 @@ public interface Unit {
     public void reduceMoveCountBy(int moves, MutatorKey mutatorKey);
 
     /**
-     * Restores a units movecount back to it's original value.
+     * Restores a units movecount back to the total moves each round.
      */
     public void restoreMoveCount(MutatorKey mutatorKey);
+
+    /**
+     * Set the number of moves allowed per round.
+     */
+    public void setTotalMoves(int totalMoves, MutatorKey mutatorKey);
+
+    public void setDefensiveStrength(int defStrength, MutatorKey mutatorKey);
 }

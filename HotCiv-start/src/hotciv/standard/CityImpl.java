@@ -63,9 +63,9 @@ public class CityImpl implements City {
     }
 
     @Override
-    public void setProduction(String unit, MutatorKey mKey) {
+    public void setProduction(String unittype, MutatorKey mKey) {
         if (mutatorKey.equals(mKey)) {
-            unitInProduction = unit;
+            unitInProduction = unittype;
         }
     }
 

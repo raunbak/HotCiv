@@ -15,7 +15,9 @@ public class SimpleLayoutStrategy implements WorldStrategy {
     private MutatorKey mutatorKey;
 
     public SimpleLayoutStrategy() {
+        // Generate the key to use for mutating cities and units.
         mutatorKey = new MutatorKey();
+
         // Initialize the tile array with plains on every tile, with the responding positions.
         for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
             for (int j = 0; j < GameConstants.WORLDSIZE; j++) {
@@ -34,11 +36,11 @@ public class SimpleLayoutStrategy implements WorldStrategy {
         p = new Position(4, 1);
         cityMap.put(p, new CityImpl(Player.BLUE, mutatorKey));
         p = new Position(2, 0);
-        unitMap.put(p, new Archer(Player.RED, mutatorKey));
+        unitMap.put(p, new UnitImpl(Player.RED, GameConstants.ARCHER, mutatorKey));
         p = new Position(4, 3);
-        unitMap.put(p, new Settler(Player.RED, mutatorKey));
+        unitMap.put(p, new UnitImpl(Player.RED, GameConstants.SETTLER, mutatorKey));
         p = new Position(3, 2);
-        unitMap.put(p, new Legion(Player.BLUE, mutatorKey));
+        unitMap.put(p, new UnitImpl(Player.BLUE, GameConstants.LEGION, mutatorKey));
     }
 
     @Override
