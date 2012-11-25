@@ -1,7 +1,7 @@
 package hotciv.unitaction;
 
-import hotciv.framework.Game;
-import hotciv.framework.Unit;
+import hotciv.framework.Position;
+import hotciv.standard.World;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,5 +11,5 @@ import hotciv.framework.Unit;
  * To change this template use File | Settings | File Templates.
  */
 public interface UnitActionStrategy {
-    public Object performUnitAction(Unit u, Game game);
+    public void performUnitAction(World world, Position p);
 }

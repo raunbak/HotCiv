@@ -79,17 +79,6 @@ public class Position {
                 && 0 <= c && c < GameConstants.WORLDSIZE);
     }
 
-    /**
-     * Get a clone of this position.
-     * Added by L&M.
-     *
-     * @return A new position object with the same coordinates as this.
-     */
-    @Override
-    public Position clone() {
-        return new Position(r, c);
-    }
-
     public boolean equals(Object o) {
         if (o == null) {
             return false;

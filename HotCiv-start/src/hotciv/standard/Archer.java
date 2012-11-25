@@ -1,6 +1,7 @@
 package hotciv.standard;
 
 import hotciv.framework.GameConstants;
+import hotciv.framework.MutatorKey;
 import hotciv.framework.Player;
 
 /**
@@ -9,28 +10,30 @@ import hotciv.framework.Player;
  */
 public class Archer extends AbstractUnit {
 
-    public Archer(Player owner) {
+    public Archer(Player owner, MutatorKey mKey) {
         unittype = GameConstants.ARCHER;
         this.owner = owner;
         attackingStrength = 2;
         defensiveStrength = 3;
         totalMoves = 1;
         moveCount = totalMoves;
-
+        mutatorKey = mKey;
     }
 
-    public void fortify() {
-        switch (totalMoves) {
-            case 1:
-                defensiveStrength = 6;
-                totalMoves = 0;
-                moveCount = 0;
-                break;
-            case 0:
-                defensiveStrength = 3;
-                totalMoves = 1;
-                moveCount = 1;
-                break;
+    public void fortify(MutatorKey mKey) {
+        if (mutatorKey.equals(mKey)) {
+            switch (totalMoves) {
+                case 1:
+                    defensiveStrength = 6;
+                    totalMoves = 0;
+                    moveCount = 0;
+                    break;
+                case 0:
+                    defensiveStrength = 3;
+                    totalMoves = 1;
+                    moveCount = 1;
+                    break;
+            }
         }
 
 

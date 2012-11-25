@@ -1,15 +1,11 @@
 package hotciv.standard;
 
 import hotciv.GameFactory.BetaCivFactory;
-import hotciv.age.DecreasingAgeStrategy;
 import hotciv.framework.*;
+import org.junit.Before;
+import org.junit.Test;
 
-import hotciv.unitaction.NoActionStrategy;
-import hotciv.winner.WinByConquestStrategy;
-import hotciv.world.SimpleLayoutStrategy;
-import org.junit.*;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  *

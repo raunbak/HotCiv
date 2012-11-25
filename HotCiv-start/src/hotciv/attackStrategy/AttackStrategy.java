@@ -12,5 +12,5 @@ import hotciv.framework.Unit;
  * To change this template use File | Settings | File Templates.
  */
 public interface AttackStrategy {
-    public Unit outcomeOfBattle(Game game, Position unitAttacting, Position unitDefending);
+    public Unit outcomeOfBattle(Game game, Position pAttacking, Position pDefending);
 }

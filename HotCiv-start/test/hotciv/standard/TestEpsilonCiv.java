@@ -1,10 +1,6 @@
 package hotciv.standard;
 
-import hotciv.age.LinearAgeStrategy;
 import hotciv.framework.Game;
-import hotciv.unitaction.NoActionStrategy;
-import hotciv.winner.WinBy3WonAttacksStrategy;
-import hotciv.world.SimpleLayoutStrategy;
 import org.junit.Before;
 
 /**

@@ -1,6 +1,6 @@
 package hotciv.framework;
 
-import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Game is the central interface allowing a client to access and
@@ -147,7 +147,9 @@ public interface Game {
      */
     public void performUnitActionAt(Position p);
 
-    /* Returns all city in the game
-    */
-    public HashMap<Position, City> getAllCities();
+    /**
+     * Returns a set containing all the positions at which there are cities.
+     * Added by L&M.
+     */
+    public Set<Position> getCityPositions();
 }

@@ -1,13 +1,9 @@
 package hotciv.standard;
 
 import hotciv.GameFactory.AlphaCivFactory;
-import hotciv.age.LinearAgeStrategy;
 import hotciv.framework.*;
-
-import hotciv.unitaction.NoActionStrategy;
-import hotciv.winner.RedWinsAtAge3000BCStrategy;
-import hotciv.world.SimpleLayoutStrategy;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 
@@ -176,14 +172,16 @@ public class TestAlphaCiv {
         assertEquals("Since a turn has passed, this City should have 6 production", 6, c.getCurrentAmountOfProduction());
     }
 
+    // TODO with the MutatorKey-system, mutators cannot be called without the key, so such a test would require the use of a test-implementation of AbstractGameFactory.
+    /*
     @Test
     public void shouldLowerProductionAmountInRed1_1_CityFrom30to10() {
         makeGameRunNturns(5);
         City c = game.getCityAt(new Position(1, 1));
         c.reduceAmountOfProduction(20);
         assertEquals("Should be 10 production in this city now", 10, c.getCurrentAmountOfProduction());
-
     }
+    */
 
     @Test
     public void canChangeProductionInRedCity1_1() {
@@ -195,6 +193,7 @@ public class TestAlphaCiv {
 
     @Test
     public void blueCityAt4_1_WillProduceALegionIn3Turns() {
+        game.endOfTurn();
         game.changeProductionInCityAt(new Position(4, 1), GameConstants.LEGION);
         makeGameRunNturns(3);
         Unit u = game.getUnitAt(new Position(4, 1));
@@ -212,6 +211,7 @@ public class TestAlphaCiv {
 
     @Test
     public void shouldSkipOccupiedTileWhenPlacingUnit() {
+        game.endOfTurn();
         game.changeProductionInCityAt(new Position(4, 1), GameConstants.SETTLER);
         // Run the game until the blue city tries to produce a third settler.
         makeGameRunNturns((int) Math.ceil(3 * GameConstants.SETTLERCOST / 6.0));
@@ -227,9 +227,10 @@ public class TestAlphaCiv {
 
         // Run the game until the round just before the blue city has enough to produce 9 archers.
         makeGameRunNturns((int) Math.ceil(9 * GameConstants.ARCHERCOST / 6.0) - 1);
+        game.endOfTurn();
         game.changeProductionInCityAt(new Position(4, 1), GameConstants.ARCHER);
         // After next round all the 9 archers should be produced.
-        makeGameRunNturns(1);
+        game.endOfTurn();
         Unit u = game.getUnitAt(new Position(2, 1));
         assertEquals("The 9'th archer should be placed at (2,1).", GameConstants.ARCHER, u.getTypeString());
     }

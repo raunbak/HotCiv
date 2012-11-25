@@ -19,6 +19,7 @@ public class Vector {
 
     /**
      * Get a new position object with the same coordinates as p, but with this vector added.
+     * This method is kept here and not in the Position class, as it would make Position mutable.
      *
      * @param p the position that this vector should be added to in the returned position.
      * @return a position that is the result of adding this vector to p.

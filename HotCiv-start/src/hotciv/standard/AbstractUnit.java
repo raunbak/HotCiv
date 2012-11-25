@@ -1,5 +1,6 @@
 package hotciv.standard;
 
+import hotciv.framework.MutatorKey;
 import hotciv.framework.Player;
 import hotciv.framework.Unit;
 
@@ -14,6 +15,7 @@ public abstract class AbstractUnit implements Unit {
     protected int attackingStrength;
     protected int moveCount;
     protected int totalMoves;
+    protected MutatorKey mutatorKey;
 
     @Override
     public String getTypeString() {
@@ -41,13 +43,17 @@ public abstract class AbstractUnit implements Unit {
     }
 
     @Override
-    public void reduceMoveCountBy(int moves) {
-        moveCount -= moves;
+    public void reduceMoveCountBy(int moves, MutatorKey mKey) {
+        if (mutatorKey.equals(mKey)) {
+            moveCount -= moves;
+        }
     }
 
     @Override
-    public void restoreMoveCount() {
-        moveCount = totalMoves;
+    public void restoreMoveCount(MutatorKey mKey) {
+        if (mutatorKey.equals(mKey)) {
+            moveCount = totalMoves;
+        }
     }
 
 }

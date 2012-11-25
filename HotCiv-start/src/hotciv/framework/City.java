@@ -60,12 +60,12 @@ public interface City {
      */
     public int getCurrentAmountOfProduction();
 
-    public int reduceAmountOfProduction(int amount);
+    public void reduceAmountOfProduction(int amount, MutatorKey mutatorKey);
 
-    public int increaseAmountOfProduction(int amount);
+    public void increaseAmountOfProduction(int amount, MutatorKey mutatorKey);
 
-    public void setProduction(String unit);
+    public void setProduction(String unit, MutatorKey mutatorKey);
 
-    public void setOwner(Player player);
+    public void setOwner(Player player, MutatorKey mutatorKey);
 
 }

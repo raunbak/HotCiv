@@ -11,7 +11,8 @@ import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinBy3WonAttacksStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.world.WorldStrategy;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.HashMap;
 
@@ -33,14 +34,14 @@ public class TestWinByAttacksStrategy {
     @Test
     public void blueShouldWinAfter3Att() {
         game.endOfTurn();
-        game.moveUnit(new Position(1,1),new Position(0,0));
-        assertEquals("Blue should be here",Player.BLUE,Player.BLUE);
+        game.moveUnit(new Position(1, 1), new Position(0, 0));
+        assertEquals("Blue should be here", Player.BLUE, Player.BLUE);
         makeGameRunNturns(1);
-        game.moveUnit(new Position(0,0),new Position(0,1));
+        game.moveUnit(new Position(0, 0), new Position(0, 1));
         makeGameRunNturns(1);
-        game.moveUnit(new Position(0,1),new Position(0,2));
+        game.moveUnit(new Position(0, 1), new Position(0, 2));
 
-        assertEquals("Blue should be the winner now",Player.BLUE,game.getWinner());
+        assertEquals("Blue should be the winner now", Player.BLUE, game.getWinner());
 
     }
 
@@ -50,9 +51,11 @@ public class TestWinByAttacksStrategy {
         private HashMap<Position, Tile> tileMap = new HashMap<Position, Tile>();
         private HashMap<Position, City> cityMap = new HashMap<Position, City>();
         private HashMap<Position, Unit> unitMap = new HashMap<Position, Unit>();
+        private MutatorKey mutatorKey;
 
 
         public BattleLayoutStub() {
+            mutatorKey = new MutatorKey();
             // Initialize the tile array with plains on every tile, with the responding positions.
             for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
                 for (int j = 0; j < GameConstants.WORLDSIZE; j++) {
@@ -62,32 +65,37 @@ public class TestWinByAttacksStrategy {
             }
 
             Position p = new Position(0, 0);
-            unitMap.put(p, new Archer(Player.RED));
-            p = new Position(0,1);
-            unitMap.put(p, new Settler(Player.RED));
-            p = new Position(0,2);
-            unitMap.put(p, new Legion(Player.RED));
-            p = new Position(1,1);
-            unitMap.put(p, new Legion(Player.BLUE));
+            unitMap.put(p, new Archer(Player.RED, mutatorKey));
+            p = new Position(0, 1);
+            unitMap.put(p, new Settler(Player.RED, mutatorKey));
+            p = new Position(0, 2);
+            unitMap.put(p, new Legion(Player.RED, mutatorKey));
+            p = new Position(1, 1);
+            unitMap.put(p, new Legion(Player.BLUE, mutatorKey));
         }
 
         @Override
-        public HashMap<Position, Tile> getTileArray() {
+        public HashMap<Position, Tile> getTileMap() {
             return tileMap;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
-        public HashMap<Position, Unit> getUnitArray() {
+        public HashMap<Position, Unit> getUnitMap() {
             return unitMap;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
-        public HashMap<Position, City> getCityArray() {
+        public HashMap<Position, City> getCityMap() {
             return cityMap;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public MutatorKey getMutatorKey() {
+            return mutatorKey;
         }
     }
 
-    private class TestFactoryStub implements AbstractGameFactory{
+    private class TestFactoryStub implements AbstractGameFactory {
 
         @Override
         public AgeStrategy createAgeStrategy() {

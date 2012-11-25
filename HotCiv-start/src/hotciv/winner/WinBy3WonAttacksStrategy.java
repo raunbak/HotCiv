@@ -14,19 +14,18 @@ import java.util.HashMap;
  * To change this template use File | Settings | File Templates.
  */
 public class WinBy3WonAttacksStrategy implements WinnerStrategy {
-    private GameImpl gameimpl;
     @Override
     public Player winner(Game game) {
-        gameimpl =  (GameImpl) game;
+        GameImpl gameimpl = (GameImpl) game;
 
-        HashMap<Player,Integer> attacktsWon = gameimpl.getAttackWonMap();
+        HashMap<Player, Integer> attacksWon = gameimpl.getAttacksWonMap();
 
-        for (Player p: attacktsWon.keySet()) {
-            if (attacktsWon.get(p) >=3) {
-               return p;
+        for (Player p : attacksWon.keySet()) {
+            if (attacksWon.get(p) >= 3) {
+                return p;
             }
         }
-     return null;
 
+        return null;
     }
 }

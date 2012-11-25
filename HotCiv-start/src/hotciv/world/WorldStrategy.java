@@ -1,9 +1,6 @@
 package hotciv.world;
 
-import hotciv.framework.City;
-import hotciv.framework.Position;
-import hotciv.framework.Tile;
-import hotciv.framework.Unit;
+import hotciv.framework.*;
 
 import java.util.HashMap;
 
@@ -16,9 +13,11 @@ import java.util.HashMap;
  */
 public interface WorldStrategy {
 
-    public HashMap<Position, Tile> getTileArray();
+    public HashMap<Position, Tile> getTileMap();
 
-    public HashMap<Position, Unit> getUnitArray();
+    public HashMap<Position, Unit> getUnitMap();
 
-    public HashMap<Position, City> getCityArray();
+    public HashMap<Position, City> getCityMap();
+
+    public MutatorKey getMutatorKey();
 }

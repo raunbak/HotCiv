@@ -16,8 +16,12 @@ import hotciv.world.WorldStrategy;
 public interface AbstractGameFactory {
 
     public AgeStrategy createAgeStrategy();
+
     public WinnerStrategy createWinnerStrategy();
+
     public WorldStrategy createWorldStrategy();
+
     public UnitActionStrategy createUnitActionStrategy();
+
     public AttackStrategy createAttackStrategy();
 }

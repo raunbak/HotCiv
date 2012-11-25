@@ -13,8 +13,8 @@ import hotciv.framework.Unit;
  */
 public class SimpleAttackStrategy implements AttackStrategy {
     @Override
-    public Unit outcomeOfBattle(Game game, Position unitAttacting, Position unitDefending) {
-        return game.getUnitAt(unitAttacting);
+    public Unit outcomeOfBattle(Game game, Position pAttacking, Position pDefending) {
+        return game.getUnitAt(pAttacking);
 
     }
 

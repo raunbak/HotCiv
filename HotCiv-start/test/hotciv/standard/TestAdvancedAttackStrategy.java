@@ -25,11 +25,10 @@ import java.util.HashMap;
  */
 public class TestAdvancedAttackStrategy {
     private Game game;
-    private AttackStrategy attStrategy;
+
     @Before
     public void setUp() {
         game = new GameImpl(new TestFactoryStub());
-        attStrategy = new AdvancedAttackStrategy();
     }
 
     @Test
@@ -42,11 +41,11 @@ public class TestAdvancedAttackStrategy {
         private HashMap<Position, Tile> tileMap = new HashMap<Position, Tile>();
         private HashMap<Position, City> cityMap = new HashMap<Position, City>();
         private HashMap<Position, Unit> unitMap = new HashMap<Position, Unit>();
+        private MutatorKey mutatorKey;
 
 
-
-        public BattleLayoutStub()  {
-
+        public BattleLayoutStub() {
+            mutatorKey = new MutatorKey();
             // Initialize the tile array with plains on every tile, with the responding positions.
             for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
                 for (int j = 0; j < GameConstants.WORLDSIZE; j++) {
@@ -61,30 +60,36 @@ public class TestAdvancedAttackStrategy {
             //cityTable[4][1] = new CityImpl(Player.BLUE);
 
             Position p = new Position(0, 0);
-            unitMap.put(p, new Archer(Player.RED));
-            p = new Position(0,1);
-            unitMap.put(p, new Settler(Player.RED));
-            p = new Position(0,2);
-            unitMap.put(p, new Legion(Player.RED));
-            p = new Position(1,1);
-            unitMap.put(p, new Legion(Player.BLUE));
+            unitMap.put(p, new Archer(Player.RED, mutatorKey));
+            p = new Position(0, 1);
+            unitMap.put(p, new Settler(Player.RED, mutatorKey));
+            p = new Position(0, 2);
+            unitMap.put(p, new Legion(Player.RED, mutatorKey));
+            p = new Position(1, 1);
+            unitMap.put(p, new Legion(Player.BLUE, mutatorKey));
         }
 
         @Override
-        public HashMap<Position, Tile> getTileArray() {
+        public HashMap<Position, Tile> getTileMap() {
             return tileMap;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
-        public HashMap<Position, Unit> getUnitArray() {
+        public HashMap<Position, Unit> getUnitMap() {
             return unitMap;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
-        public HashMap<Position, City> getCityArray() {
+        public HashMap<Position, City> getCityMap() {
             return cityMap;  //To change body of implemented methods use File | Settings | File Templates.
         }
+
+        @Override
+        public MutatorKey getMutatorKey() {
+            return null;
+        }
     }
+
     private class TestFactoryStub implements AbstractGameFactory {
 
         @Override
@@ -112,6 +117,7 @@ public class TestAdvancedAttackStrategy {
             return new AdvancedAttackStrategy();
         }
     }
+
     private void makeGameRunNturns(int Nturns) {
         for (int i = 0; i < 2 * Nturns; i++) {   // age should increment by 100 each time both player's turn has ended, 2*1000/100 = 20.
             game.endOfTurn();

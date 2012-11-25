@@ -1,6 +1,7 @@
 package hotciv.standard;
 
 import hotciv.framework.City;
+import hotciv.framework.MutatorKey;
 import hotciv.framework.Player;
 
 /**
@@ -10,14 +11,16 @@ public class CityImpl implements City {
     private Player owner;
     private int production;
     private String unitInProduction;
+    private MutatorKey mutatorKey;
 
     /**
      * Constructor for CityImpl
      *
      * @param player The owner of this city.
      */
-    public CityImpl(Player player) {
+    public CityImpl(Player player, MutatorKey mKey) {
         owner = player;
+        mutatorKey = mKey;
     }
 
     @Override
@@ -46,24 +49,31 @@ public class CityImpl implements City {
     }
 
     @Override
-    public int reduceAmountOfProduction(int amount) {
-        return production -= amount;
-
+    public void reduceAmountOfProduction(int amount, MutatorKey mKey) {
+        if (mutatorKey.equals(mKey)) {
+            production -= amount;
+        }
     }
 
     @Override
-    public int increaseAmountOfProduction(int amount) {
-        return production += amount;
+    public void increaseAmountOfProduction(int amount, MutatorKey mKey) {
+        if (mutatorKey.equals(mKey)) {
+            production += amount;
+        }
     }
 
     @Override
-    public void setProduction(String unit) {
-        unitInProduction = unit;
+    public void setProduction(String unit, MutatorKey mKey) {
+        if (mutatorKey.equals(mKey)) {
+            unitInProduction = unit;
+        }
     }
 
     @Override
-    public void setOwner(Player player) {
-        owner = player;
+    public void setOwner(Player player, MutatorKey mKey) {
+        if (mutatorKey.equals(mKey)) {
+            owner = player;
+        }
     }
 
 }

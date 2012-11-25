@@ -12,7 +12,7 @@ public class InvalidUnittypeException extends RuntimeException {
     }
 
     @Override
-   public String getMessage() {
-       return message;
-   }
+    public String getMessage() {
+        return message;
+    }
 }

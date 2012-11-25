@@ -9,6 +9,7 @@ import hotciv.winner.WinnerStrategy;
 import hotciv.world.WorldStrategy;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Skeleton implementation of HotCiv.
@@ -36,53 +37,52 @@ public class GameImpl implements Game {
      * Fields for GameImpl.
      */
     private Player playerInTurn = Player.RED;
-    // 2-dimensional arrays for storing the tiles/cities/units:
-    //private Tile[][] tileMap;
-    private HashMap<Position,Tile> tileMap;
-    private HashMap<Position, City> cityMap;
-    private HashMap<Position, Unit> unitMap;
     private int age = -4000;   // Game starts in year 4000 BC
     private Player winner = null;
     private AgeStrategy ageStrategy;
     private WinnerStrategy winnerStrategy;
     private WorldStrategy worldStrategy;
     private UnitActionStrategy unitActionStrategy;
-    private HashMap<Player,Integer> attacksWon;
+    private HashMap<Player, Integer> attacksWon;
     private AttackStrategy attackStrategy;
+    private World world;  // holds all tiles, cities, units.
+    private MutatorKey mutatorKey;
 
 
-    public GameImpl(AbstractGameFactory GameFactory) {
+    public GameImpl(AbstractGameFactory gameFactory) {
 
         // Create all needed Strategies
-        ageStrategy = GameFactory.createAgeStrategy();
-        winnerStrategy = GameFactory.createWinnerStrategy();
-        worldStrategy = GameFactory.createWorldStrategy();
-        unitActionStrategy = GameFactory.createUnitActionStrategy();
-        attackStrategy = GameFactory.createAttackStrategy();
+        ageStrategy = gameFactory.createAgeStrategy();
+        winnerStrategy = gameFactory.createWinnerStrategy();
+        worldStrategy = gameFactory.createWorldStrategy();
+        unitActionStrategy = gameFactory.createUnitActionStrategy();
+        attackStrategy = gameFactory.createAttackStrategy();
 
+        mutatorKey = worldStrategy.getMutatorKey();
 
-         // Get Arrays from the world strategy.
-        tileMap = worldStrategy.getTileArray();
-        cityMap = worldStrategy.getCityArray();
-        unitMap = worldStrategy.getUnitArray();
+        // Get HashMaps from the world strategy.
+        world = new World(worldStrategy.getTileMap(),
+                worldStrategy.getCityMap(),
+                worldStrategy.getUnitMap(),
+                mutatorKey);
 
         // No player has won any attackts at the start of the game.
         attacksWon = new HashMap<Player, Integer>();
-        attacksWon.put(Player.RED,0);
-        attacksWon.put(Player.BLUE,0);
+        attacksWon.put(Player.RED, 0);
+        attacksWon.put(Player.BLUE, 0);
 
     }
 
     public Tile getTileAt(Position p) {
-        return tileMap.get(p);
+        return world.tileMap.get(p);
     }
 
     public Unit getUnitAt(Position p) {
-        return unitMap.get(p);
+        return world.unitMap.get(p);
     }
 
     public City getCityAt(Position p) {
-        return cityMap.get(p);
+        return world.cityMap.get(p);
     }
 
     public Player getPlayerInTurn() {
@@ -112,45 +112,44 @@ public class GameImpl implements Game {
         Unit unitTo = getUnitAt(to);
         Tile tileTo = getTileAt(to);
 
-        if (!playerInTurn.equals(unitFrom.getOwner())) {
-            return false;
-        }
-
         int distanceToBeMoved = from.distanceTo(to);
-        if (distanceToBeMoved > unitFrom.getMoveCount()) {
-            return false;
-        }
-
-
-        if (tileTo.getTypeString().equals(GameConstants.MOUNTAINS)) {
+        /* Cannot move a unit:
+         * - owned by another player
+         * - too long a distance
+         * - to a mountain- or ocean-tile
+         */
+        if (!playerInTurn.equals(unitFrom.getOwner())
+                || distanceToBeMoved > unitFrom.getMoveCount()
+                || tileTo.getTypeString().equals(GameConstants.MOUNTAINS)
+                || tileTo.getTypeString().equals(GameConstants.OCEANS)) {
             return false;
         }
 
         Unit unitToBeMoved;
-
         if (unitTo != null) {
+            // Don't move the unit to a position occupied by a unit of the same owner.
             if (unitFrom.getOwner().equals(unitTo.getOwner())) {
                 return false;
             }
-            Unit winningUnit = attackStrategy.outcomeOfBattle(this,from,to);
+
+            Unit winningUnit = attackStrategy.outcomeOfBattle(this, from, to);
 
             if (winningUnit.getOwner() == playerInTurn) {
-                attacksWon.put(playerInTurn,attacksWon.get(playerInTurn)+1);
+                attacksWon.put(playerInTurn, attacksWon.get(playerInTurn) + 1);
             }
 
             unitToBeMoved = winningUnit;
-            // Because the attack-strategy used, the attacking unit always wins. So no need to check if a unit of different owner is at position "to".
-        }
-        else {
+        } else {
             unitToBeMoved = unitFrom;
         }
         // Now, move the unit:
-        unitMap.put(to,unitToBeMoved);
-        unitMap.remove(from);
-        unitFrom.reduceMoveCountBy(distanceToBeMoved);
+        world.unitMap.put(to, unitToBeMoved);
+        world.unitMap.remove(from);
+        unitFrom.reduceMoveCountBy(distanceToBeMoved, mutatorKey);
 
-        if (getCityAt(to) != null && getCityAt(to).getOwner() != getPlayerInTurn()) {
-            getCityAt(to).setOwner(getPlayerInTurn());
+        if (getCityAt(to) != null
+                && getCityAt(to).getOwner() != getPlayerInTurn()) {
+            getCityAt(to).setOwner(getPlayerInTurn(), mutatorKey);
         }
 
         return true;
@@ -168,14 +167,14 @@ public class GameImpl implements Game {
             age = ageStrategy.calculateAge(age);
 
             // Restore the move count of all the units.
-            for (Position p : unitMap.keySet()) {
-                unitMap.get(p).restoreMoveCount();
+            for (Position p : world.unitMap.keySet()) {
+                world.unitMap.get(p).restoreMoveCount(mutatorKey);
             }
 
             // For each city, add 6 to the current amount of production, and produce as many units as it can afford.
-            for (Position p : cityMap.keySet()) {
+            for (Position p : world.cityMap.keySet()) {
 
-                cityMap.get(p).increaseAmountOfProduction(6);  // Constant amount of 6 in AlphaCiv.
+                world.cityMap.get(p).increaseAmountOfProduction(6, mutatorKey);  // Constant amount of 6 in AlphaCiv.
 
                 // produce units!
                 produceUnitsInCityAt(p);
@@ -212,7 +211,7 @@ public class GameImpl implements Game {
             int stepLimit = 1;
 
             // Begin at the same position as the city itself
-            Position p = pCity.clone();
+            Position p = pCity;
 
             // this "Position" represents the direction-vector, eg. (i,j)+(-1,0) --> (i-1,j).
             // the starting direction is North, since the worldmap has origo in the top-left corner
@@ -237,19 +236,19 @@ public class GameImpl implements Game {
                             && !getTileAt(p).getTypeString().equals(GameConstants.OCEANS)) {
 
                         nUnitsProduced++;  // now one more unit is being created.
-                        Unit u = null;
+                        Unit u;
                         // Initialize the unit to be created depending on the unittype. (hardcoded)
                         if (unittype.equals(GameConstants.ARCHER)) {
-                            u = new Archer(getPlayerInTurn());
+                            u = new Archer(getPlayerInTurn(), mutatorKey);
                         } else if (unittype.equals(GameConstants.LEGION)) {
-                            u = new Legion(getPlayerInTurn());
+                            u = new Legion(getPlayerInTurn(), mutatorKey);
                         } else if (unittype.equals(GameConstants.SETTLER)) {
-                            u = new Settler(getPlayerInTurn());
+                            u = new Settler(getPlayerInTurn(), mutatorKey);
                         } else {
                             // the unittype is invalid.
                             throw new InvalidUnittypeException("Unittype not listed was not listed as a possible class in GameImpl.produceUnitsInCityAt().");
                         }
-                        unitMap.put(p, u);
+                        world.unitMap.put(p, u);
                     }
 
                     // Add the stepping "vector" to the current position to get the next position.
@@ -270,7 +269,7 @@ public class GameImpl implements Game {
             }
 
             // city needs to pay for the produced units.
-            city.reduceAmountOfProduction(nUnitsProduced * unitcost);
+            city.reduceAmountOfProduction(nUnitsProduced * unitcost, mutatorKey);
         }
     }
 
@@ -279,34 +278,25 @@ public class GameImpl implements Game {
     }
 
     public void changeProductionInCityAt(Position p, String unitType) {
-
         City c = getCityAt(p);
-
-        c.setProduction(unitType);
+        if (c.getOwner().equals(playerInTurn)) {
+            c.setProduction(unitType, mutatorKey);
+        }
     }
 
     public void performUnitActionAt(Position p) {
         Unit u = getUnitAt(p);
-
-
-        // TODO change this to avoid getting an object back?
-        Object obj = unitActionStrategy.performUnitAction(u, this);
-        if (obj != null) {
-            if (obj.getClass().equals(CityImpl.class) && !cityMap.containsKey(p)) {
-                cityMap.put(p, (City) obj);
-                unitMap.remove(p);
-            }
+        if (u.getOwner().equals(playerInTurn)) {
+            unitActionStrategy.performUnitAction(world, p);
         }
-
-
     }
 
-    @Override
-    public HashMap<Position, City> getAllCities() {
-        return cityMap;
+    public Set<Position> getCityPositions() {
+        return world.cityMap.keySet();
     }
 
-    public HashMap<Player,Integer> getAttackWonMap () {
+    @SuppressWarnings("unchecked")
+    public HashMap<Player, Integer> getAttacksWonMap() {
         return (HashMap<Player, Integer>) attacksWon.clone();
     }
 }

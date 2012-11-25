@@ -1,10 +1,8 @@
 package hotciv.attackStrategy;
 
 import hotciv.framework.Game;
-import hotciv.framework.Player;
 import hotciv.framework.Position;
 import hotciv.framework.Unit;
-import hotciv.standard.Legion;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +13,8 @@ import hotciv.standard.Legion;
  */
 public class AdvancedAttackStrategy implements AttackStrategy {
     @Override
-    public Unit outcomeOfBattle(Game game, Position unitAttacting, Position unitDefending) {
-        return new Legion(Player.BLUE);  //To change body of implemented methods use File | Settings | File Templates.
+    public Unit outcomeOfBattle(Game game, Position pAttacking, Position pDefending) {
+        // TODO implement the features!
+        return game.getUnitAt(pAttacking);
     }
 }

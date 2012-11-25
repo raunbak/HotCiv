@@ -72,10 +72,10 @@ public interface Unit {
      *
      * @param moves the number of moves to be subtracted from the move count.
      */
-    public void reduceMoveCountBy(int moves);
+    public void reduceMoveCountBy(int moves, MutatorKey mutatorKey);
 
     /**
      * Restores a units movecount back to it's original value.
      */
-    public void restoreMoveCount();
+    public void restoreMoveCount(MutatorKey mutatorKey);
 }

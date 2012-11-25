@@ -1,17 +1,14 @@
 package hotciv.standard;
 
 import hotciv.GameFactory.DeltaCivFactory;
-import hotciv.age.LinearAgeStrategy;
 import hotciv.framework.Game;
 import hotciv.framework.GameConstants;
 import hotciv.framework.Position;
 import hotciv.framework.Tile;
-import hotciv.unitaction.NoActionStrategy;
-import hotciv.winner.RedWinsAtAge3000BCStrategy;
-import hotciv.world.AdvancedLayoutStrategy;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  *

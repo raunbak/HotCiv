@@ -1,11 +1,10 @@
 package hotciv.winner;
 
-import hotciv.framework.City;
 import hotciv.framework.Game;
 import hotciv.framework.Player;
 import hotciv.framework.Position;
 
-import java.util.HashMap;
+import java.util.Set;
 
 /**
  *
@@ -21,17 +20,17 @@ public class WinByConquestStrategy implements WinnerStrategy {
     @Override
     public Player winner(Game game) {
 
-        HashMap<Position,City> cityMap = game.getAllCities();
+        Set<Position> cityKeySet = game.getCityPositions();
         Player winnerSoFar = null;
 
-        for (Position p : cityMap.keySet()) {
+        for (Position p : cityKeySet) {
             if (winnerSoFar == null) {
-                winnerSoFar = cityMap.get(p).getOwner();
+                winnerSoFar = game.getCityAt(p).getOwner();
             }
 
             // If one of the cities has a different owner than winnerSoFar,
             //      then there is no winner yet, and null should be returned.
-            if (!cityMap.get(p).getOwner().equals(winnerSoFar)) {
+            if (!game.getCityAt(p).getOwner().equals(winnerSoFar)) {
                 winnerSoFar = null;
                 break;
             }
