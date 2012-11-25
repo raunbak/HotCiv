@@ -47,7 +47,7 @@ public class GameImpl implements Game {
     private AttackStrategy attackStrategy;
     private World world;  // holds all tiles, cities, units.
     private MutatorKey mutatorKey;
-
+    private int roundsPlayed;
 
     public GameImpl(AbstractGameFactory gameFactory) {
 
@@ -70,6 +70,9 @@ public class GameImpl implements Game {
         attacksWon = new HashMap<Player, Integer>();
         attacksWon.put(Player.RED, 0);
         attacksWon.put(Player.BLUE, 0);
+
+        // Number of rounds played.
+        roundsPlayed = 0;
 
     }
 
@@ -179,6 +182,8 @@ public class GameImpl implements Game {
                 // produce units!
                 produceUnitsInCityAt(p);
             }
+            // Add to the counter of rounds played in the game.
+            roundsPlayed++;
         }
     }
 
@@ -278,6 +283,12 @@ public class GameImpl implements Game {
         if (u.getOwner().equals(playerInTurn)) {
             unitActionStrategy.performUnitAction(world, p);
         }
+
+
+    }
+
+    public int getRoundsPlayed(){
+        return roundsPlayed;
     }
 
     public Set<Position> getCityPositions() {
