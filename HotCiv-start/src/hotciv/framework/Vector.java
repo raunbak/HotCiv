@@ -37,11 +37,11 @@ public class Vector {
         c = -rOld;
     }
 
-    public int getRowCoordinate() {
+    public int getRowComponent() {
         return r;
     }
 
-    public int getColumnCoordinate() {
+    public int getColumnComponent() {
         return c;
     }
 }

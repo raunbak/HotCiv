@@ -19,11 +19,7 @@ import java.util.HashMap;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 22-11-12
- * Time: 11:09
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class TestWinByAttacksStrategy {
 
@@ -36,7 +32,7 @@ public class TestWinByAttacksStrategy {
     }
 
     @Test
-    public void blueShouldWinAfter3Att(){
+    public void blueShouldWinAfter3Att() {
         game.endOfTurn();
         game.moveUnit(new Position(1,1),new Position(0,0));
         assertEquals("Blue should be here",Player.BLUE,Player.BLUE);
