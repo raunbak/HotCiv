@@ -17,7 +17,7 @@ import java.util.Set;
  */
 
 public class GameImpl implements Game {
-    /**
+    /*
      * Fields for GameImpl.
      */
     private Player playerInTurn = Player.RED;
@@ -70,11 +70,13 @@ public class GameImpl implements Game {
     }
 
     public Player getWinner() {
-        // the winner
-        if (winner != null) {
-            return winner;
+        // If there isn't already a winner, determine who the winner is.
+        // We know that this is not strictly an invariant accessor,
+        // but otherwise this code would have to be in both endOfTurn(), moveUnit(),
+        // and performUnitActionAt() to be sure.
+        if (winner == null) {
+            winner = winnerStrategy.winner(this);
         }
-        winner = winnerStrategy.winner(this);
         return winner;
     }
 
@@ -82,11 +84,6 @@ public class GameImpl implements Game {
         return age;
     }
 
-    /**
-     * @param from the position that the unit has now
-     * @param to   the position the unit should move to
-     * @return true if the unit will move. false if not allowed to move.
-     */
     public boolean moveUnit(Position from, Position to) {
         Unit unitFrom = getUnitAt(from);
         Unit unitTo = getUnitAt(to);
@@ -136,33 +133,34 @@ public class GameImpl implements Game {
         return true;
     }
 
-    /**
-     *
-     */
     public void endOfTurn() {
+        // If red is the player in turn, change player in turn to blue and nothing else.
         if (playerInTurn.equals(Player.RED)) {
             playerInTurn = Player.BLUE;
-        } else {
-
-            playerInTurn = Player.RED;
-            age = ageStrategy.calculateAge(age);
-
-            // Restore the move count of all the units.
-            for (Position p : world.unitMap().keySet()) {
-                world.unitMap().get(p).restoreMoveCount();
-            }
-
-            // For each city, add 6 to the current amount of production, and produce as many units as it can afford.
-            for (Position p : world.cityMap().keySet()) {
-
-                world.cityMap().get(p).increaseAmountOfProduction(6);  // Constant amount of 6 in AlphaCiv.
-
-                // produce units!
-                produceUnitsInCityAt(p);
-            }
-            // Add to the counter of rounds played in the game.
-            roundsPlayed++;
+            return;
         }
+
+        // If blue is in turn, change player in turn to red and do end-of-round processing.
+        playerInTurn = Player.RED;
+
+        // Calculate the age of the game in the next round.
+        age = ageStrategy.calculateAge(age);
+
+        // Restore the move count of all the units.
+        for (Position p : world.unitMap().keySet()) {
+            world.unitMap().get(p).restoreMoveCount();
+        }
+
+        // For each city, add 6 to the current amount of production, and produce as many units as it can afford.
+        for (Position p : world.cityMap().keySet()) {
+
+            world.cityMap().get(p).increaseAmountOfProduction(6);  // Constant amount of 6 in AlphaCiv.
+
+            // produce units!
+            produceUnitsInCityAt(p);
+        }
+        // Add to the counter of rounds played in the game.
+        roundsPlayed++;
     }
 
     /**
@@ -171,6 +169,7 @@ public class GameImpl implements Game {
      * starting from the position of the city and then the position just above it.
      * The city will also have the production cost of the units produced subtracted from its production amount.
      * Precondition: there is a city at position pCity.
+     * Added by L&M.
      *
      * @param pCity The position of the city that should produce units.
      */
@@ -179,70 +178,74 @@ public class GameImpl implements Game {
         CityImpl city = (CityImpl) getCityAt(pCity);
         String unittype = city.getProduction();
 
-        if (unittype != null) {
-            int unitcost;
-            try {
-                unitcost = GameConstants.COSTMAP.get(unittype);
-            } catch (NullPointerException npEx) {
-                throw new InvalidUnittypeException(unittype);
-            }
-
-            // integer division in Java gets rounded down, which is correct here.
-            int nUnitsAffordable = city.getCurrentAmountOfProduction() / unitcost;
-
-            // The number of steps needed to take in current direction before making a turn.
-            int stepLimit = 1;
-
-            // Begin at the same position as the city itself
-            Position p = pCity;
-
-            // this "Position" represents the direction-vector, eg. (i,j)+(-1,0) --> (i-1,j).
-            // the starting direction is North, since the worldmap has origo in the top-left corner
-            //      and the row-axis points downwards.
-            Vector stepDirection = new Vector(-1, 0);
-
-            // Keep stepping around to find the next free position as long as we are
-            //      not yet stepping around in a square bigger than the world map,
-            //      and the city can still afford to produce more units.
-            while (stepLimit < GameConstants.WORLDSIZE && nUnitsProduced < nUnitsAffordable) {
-                int stepsTakenSinceLastTurn = 0;
-
-                // Keep stepping forward in stepDirection until we need to turn a corner.
-                while (stepsTakenSinceLastTurn < stepLimit && nUnitsProduced < nUnitsAffordable) {
-                    // If p is not a position inside the worldmap,
-                    //      or if there is already a unit of the tile at position p,
-                    //      of if the tile is a mountain or an ocean,
-                    //      then skip this position and thus don't create the new unit here.
-                    if (p.isValidWorldPosition()
-                            && getUnitAt(p) == null
-                            && !getTileAt(p).getTypeString().equals(GameConstants.MOUNTAINS)
-                            && !getTileAt(p).getTypeString().equals(GameConstants.OCEANS)) {
-
-                        nUnitsProduced++;  // now one more unit is being created.
-                        UnitImpl u = new UnitImpl(playerInTurn, unittype);
-                        world.unitMap().put(p, u);
-                    }
-
-                    // Add the stepping "vector" to the current position to get the next position.
-                    p = stepDirection.addToPosition(p);
-
-                    // Increment stepsTakenSinceLastTurn so we know when we should turn the next corner.
-                    stepsTakenSinceLastTurn++;
-                }
-
-                // Make a turn 90 degrees clockwise.
-                stepDirection.rotate90clockwise();
-
-                // Only increment the step-limit when making a turn at either a North-East or South-West corner.
-                // An equivalent condition is: (stepDirection.getRowComponent() != 0).
-                if (stepDirection.getColumnComponent() == 0) {
-                    stepLimit++;
-                }
-            }
-
-            // city needs to pay for the produced units.
-            city.reduceAmountOfProduction(nUnitsProduced * unitcost);
+        // If the city has not currently a production set, then there is nothing to produce.
+        if (unittype == null) {
+            return;
         }
+
+        // Find the cost of the relevant unittype.
+        int unitcost;
+        try {
+            unitcost = GameConstants.COSTMAP.get(unittype);
+        } catch (NullPointerException npEx) {
+            throw new InvalidUnittypeException(unittype);
+        }
+
+        // integer division in Java gets rounded down, which is correct here.
+        int nUnitsAffordable = city.getCurrentAmountOfProduction() / unitcost;
+
+        // The number of steps needed to take in current direction before making a turn.
+        int stepLimit = 1;
+
+        // Begin at the same position as the city itself
+        Position p = pCity;
+
+        // this "Position" represents the direction-vector, eg. (i,j)+(-1,0) --> (i-1,j).
+        // the starting direction is North, since the worldmap has origo in the top-left corner
+        //      and the row-axis points downwards.
+        Vector stepDirection = new Vector(-1, 0);
+
+        // Keep stepping around to find the next free position as long as we are
+        //      not yet stepping around in a square bigger than the world map,
+        //      and the city can still afford to produce more units.
+        while (stepLimit < GameConstants.WORLDSIZE && nUnitsProduced < nUnitsAffordable) {
+            int stepsTakenSinceLastTurn = 0;
+
+            // Keep stepping forward in stepDirection until we need to turn a corner.
+            while (stepsTakenSinceLastTurn < stepLimit && nUnitsProduced < nUnitsAffordable) {
+                // If p is not a position inside the worldmap,
+                //      or if there is already a unit of the tile at position p,
+                //      of if the tile is a mountain or an ocean,
+                //      then skip this position and thus don't create the new unit here.
+                if (p.isValidWorldPosition()
+                        && getUnitAt(p) == null
+                        && !getTileAt(p).getTypeString().equals(GameConstants.MOUNTAINS)
+                        && !getTileAt(p).getTypeString().equals(GameConstants.OCEANS)) {
+
+                    UnitImpl u = new UnitImpl(playerInTurn, unittype);
+                    world.unitMap().put(p, u);
+                    nUnitsProduced++;  // now one more unit has been created.
+                }
+
+                // Add the stepping "vector" to the current position to get the next position.
+                p = stepDirection.addToPosition(p);
+
+                // Increment stepsTakenSinceLastTurn so we know when we should turn the next corner.
+                stepsTakenSinceLastTurn++;
+            }
+
+            // Make a turn 90 degrees clockwise.
+            stepDirection.rotate90clockwise();
+
+            // Only increment the step-limit when making a turn at either a North-East or South-West corner.
+            // An equivalent condition is: (stepDirection.getRowComponent() != 0).
+            if (stepDirection.getColumnComponent() == 0) {
+                stepLimit++;
+            }
+        }
+
+        // city needs to pay for the produced units.
+        city.reduceAmountOfProduction(nUnitsProduced * unitcost);
     }
 
 
