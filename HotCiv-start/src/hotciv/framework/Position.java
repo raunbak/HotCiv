@@ -5,6 +5,8 @@ package hotciv.framework;
  * <p/>
  * Responsibilities:
  * 1) Know a specific location (row,column).
+ * 2) Determine if the location is a valid position on the world map (added by L&M).
+ * 3) Calculate the distance to another position (added by L&M).
  * <p/>
  * This source code is from the book
  * "Flexible, Reliable Software:

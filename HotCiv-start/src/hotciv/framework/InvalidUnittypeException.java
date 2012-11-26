@@ -7,8 +7,8 @@ package hotciv.framework;
 public class InvalidUnittypeException extends RuntimeException {
     private String message;
 
-    public InvalidUnittypeException(String message) {
-        this.message = message;
+    public InvalidUnittypeException(String unittype) {
+        this.message = "\""+unittype+"\" was not found as a unittype in one of the maps in GameConstants.";
     }
 
     @Override

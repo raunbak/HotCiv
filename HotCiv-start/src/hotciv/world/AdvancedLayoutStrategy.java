@@ -4,6 +4,7 @@ import hotciv.framework.*;
 import hotciv.standard.CityImpl;
 import hotciv.standard.TileImpl;
 import hotciv.standard.UnitImpl;
+import hotciv.standard.World;
 
 import java.util.HashMap;
 
@@ -76,19 +77,8 @@ public class AdvancedLayoutStrategy implements WorldStrategy {
         }
     }
 
-
     @Override
-    public HashMap<Position, TileImpl> getTileMap() {
-        return tileMap;
-    }
-
-    @Override
-    public HashMap<Position, UnitImpl> getUnitMap() {
-        return unitMap;
-    }
-
-    @Override
-    public HashMap<Position, CityImpl> getCityMap() {
-        return cityMap;
+    public World getWorld() {
+        return new World(tileMap, cityMap, unitMap);
     }
 }

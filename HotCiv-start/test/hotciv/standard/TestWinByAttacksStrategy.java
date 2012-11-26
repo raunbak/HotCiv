@@ -74,19 +74,10 @@ public class TestWinByAttacksStrategy {
             unitMap.put(p, new UnitImpl(Player.BLUE, GameConstants.LEGION));
         }
 
-        @Override
-        public HashMap<Position, TileImpl> getTileMap() {
-            return tileMap;  //To change body of implemented methods use File | Settings | File Templates.
-        }
 
         @Override
-        public HashMap<Position, UnitImpl> getUnitMap() {
-            return unitMap;  //To change body of implemented methods use File | Settings | File Templates.
-        }
-
-        @Override
-        public HashMap<Position, CityImpl> getCityMap() {
-            return cityMap;  //To change body of implemented methods use File | Settings | File Templates.
+        public World getWorld() {
+            return new World(tileMap, cityMap, unitMap);
         }
     }
 

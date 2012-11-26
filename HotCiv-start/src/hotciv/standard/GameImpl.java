@@ -12,24 +12,8 @@ import java.util.HashMap;
 import java.util.Set;
 
 /**
- * Skeleton implementation of HotCiv.
- * <p/>
- * This source code is from the book
- * "Flexible, Reliable Software:
- * Using Patterns and Agile Development"
- * published 2010 by CRC Press.
- * Author:
- * Henrik B Christensen
- * Computer Science Department
- * Aarhus University
- * <p/>
- * This source code is provided WITHOUT ANY WARRANTY either
- * expressed or implied. You may study, use, modify, and
- * distribute it for non-commercial purposes. For any
- * commercial use, see http://www.baerbak.com/
- * <p/>
- * -------------------------
- * Additional changes made by MR and LM
+ * An implementation of Game. Based on the skeleton implementation from Henrik B Christensen.
+ * Additional changes made by Mads Raunbak and Laurids M. Jepsen.
  */
 
 public class GameImpl implements Game {
@@ -41,7 +25,6 @@ public class GameImpl implements Game {
     private Player winner = null;
     private AgeStrategy ageStrategy;
     private WinnerStrategy winnerStrategy;
-    private WorldStrategy worldStrategy;
     private UnitActionStrategy unitActionStrategy;
     private HashMap<Player, Integer> attacksWon;
     private AttackStrategy attackStrategy;
@@ -53,14 +36,12 @@ public class GameImpl implements Game {
         // Create all needed Strategies
         ageStrategy = gameFactory.createAgeStrategy();
         winnerStrategy = gameFactory.createWinnerStrategy();
-        worldStrategy = gameFactory.createWorldStrategy();
+        WorldStrategy worldStrategy = gameFactory.createWorldStrategy();
         unitActionStrategy = gameFactory.createUnitActionStrategy();
         attackStrategy = gameFactory.createAttackStrategy();
 
-        // Get HashMaps from the world strategy.
-        world = new World(worldStrategy.getTileMap(),
-                worldStrategy.getCityMap(),
-                worldStrategy.getUnitMap());
+        // Get a world-instance from the world strategy containing the initial layout of Tiles, Cities and Units.
+        world = worldStrategy.getWorld();
 
         // No player has won any attacks at the start of the game.
         attacksWon = new HashMap<Player, Integer>();
@@ -203,7 +184,7 @@ public class GameImpl implements Game {
             try {
                 unitcost = GameConstants.COSTMAP.get(unittype);
             } catch (NullPointerException npEx) {
-                throw new InvalidUnittypeException("Unittype not found in GameConstants.COSTMAP");
+                throw new InvalidUnittypeException(unittype);
             }
 
             // integer division in Java gets rounded down, which is correct here.

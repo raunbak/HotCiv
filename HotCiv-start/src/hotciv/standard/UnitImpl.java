@@ -21,7 +21,7 @@ public class UnitImpl implements Unit {
             attackingStrength = GameConstants.ATTMAP.get(unittype);
             totalMoves = GameConstants.MOVEMAP.get(unittype);
         } catch (NullPointerException npEx) {
-            throw new InvalidUnittypeException("Unittype not found in one of the stat-maps in GameConstants.");
+            throw new InvalidUnittypeException(unittype);
         }
         moveCount = totalMoves;
     }
