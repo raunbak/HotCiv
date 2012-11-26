@@ -3,6 +3,7 @@ package hotciv.winner;
 import hotciv.framework.Game;
 import hotciv.framework.Player;
 import hotciv.framework.Position;
+import hotciv.standard.GameImpl;
 
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public class WinByConquestStrategy implements WinnerStrategy {
     @Override
     public Player winner(Game game) {
 
-        Set<Position> cityKeySet = game.getCityPositions();
+        Set<Position> cityKeySet = ((GameImpl) game).getCityPositions();
         Player winnerSoFar = null;
 
         for (Position p : cityKeySet) {

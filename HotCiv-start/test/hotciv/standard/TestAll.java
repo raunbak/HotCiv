@@ -12,7 +12,8 @@ import org.junit.runners.Suite;
                 TestDeltaCiv.class,
                 TestUtility.class,
                 TestWinByAttacksStrategy.class,
-                TestAdvancedAttackStrategy.class
+                TestAdvancedAttackStrategy.class,
+                TestEpsilonCiv.class
         })
 
 public class TestAll {

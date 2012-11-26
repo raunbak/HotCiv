@@ -76,6 +76,13 @@ public interface Game {
      */
     public int getAge();
 
+    /**
+     * Get the number of rounds played so far.
+     * Added by L&M.
+     * @return Number of rounds played
+     */
+    public int getRoundsPlayed();
+
     // === Mutator methods ======================================
 
     /**
@@ -146,10 +153,4 @@ public interface Game {
      *          Nothing happens in case the unit has no associated action.
      */
     public void performUnitActionAt(Position p);
-
-    /**
-     * Returns a set containing all the positions at which there are cities.
-     * Added by L&M.
-     */
-    public Set<Position> getCityPositions();
 }

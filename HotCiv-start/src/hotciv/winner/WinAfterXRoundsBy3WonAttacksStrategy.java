@@ -11,21 +11,20 @@ import java.util.HashMap;
  * Should only be used with AlternatingWinStrategy.
  */
 public class WinAfterXRoundsBy3WonAttacksStrategy implements WinnerStrategy {
-    private GameImpl gameimpl;
     private HashMap<Player,Integer> wonAttacksAt20Rounds;
+
     @Override
-
     public Player winner(Game game) {
-        gameimpl =  (GameImpl) game;
+        GameImpl gameimpl = (GameImpl) game;
 
-        if (wonAttacksAt20Rounds.isEmpty()) {
-            wonAttacksAt20Rounds = gameimpl.getAttackWonMap();
+        if (wonAttacksAt20Rounds == null) {
+            wonAttacksAt20Rounds = gameimpl.getAttacksWonMap();
         }
 
-        HashMap<Player,Integer> attacktsWon = gameimpl.getAttackWonMap();
+        HashMap<Player,Integer> attacksWon = gameimpl.getAttacksWonMap();
 
-        for (Player p: attacktsWon.keySet()) {
-            if ((attacktsWon.get(p)- wonAttacksAt20Rounds.get(p))>=3) {
+        for (Player p : attacksWon.keySet()) {
+            if ((attacksWon.get(p) - wonAttacksAt20Rounds.get(p)) >= 3) {
                 return p;
             }
         }

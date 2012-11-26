@@ -66,7 +66,7 @@ public class GameImpl implements Game {
                 worldStrategy.getUnitMap(),
                 mutatorKey);
 
-        // No player has won any attackts at the start of the game.
+        // No player has won any attacks at the start of the game.
         attacksWon = new HashMap<Player, Integer>();
         attacksWon.put(Player.RED, 0);
         attacksWon.put(Player.BLUE, 0);
@@ -291,6 +291,10 @@ public class GameImpl implements Game {
         return roundsPlayed;
     }
 
+    /**
+     * Returns a set containing all the positions at which there are cities.
+     * Added by L&M.
+     */
     public Set<Position> getCityPositions() {
         return world.cityMap.keySet();
     }

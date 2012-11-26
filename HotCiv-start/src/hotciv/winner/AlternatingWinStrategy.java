@@ -12,15 +12,19 @@ import hotciv.standard.GameImpl;
  * To change this template use File | Settings | File Templates.
  */
 public class AlternatingWinStrategy implements WinnerStrategy {
-    private WinnerStrategy before20RoundsStrategy, after20RoundsStrategy,currentStrategy;
-    public AlternatingWinStrategy (WinnerStrategy before20RoundsStrategy, WinnerStrategy after20RoundsStrategy){
+    private WinnerStrategy before20RoundsStrategy,
+            after20RoundsStrategy,
+            currentStrategy;
+
+    public AlternatingWinStrategy (WinnerStrategy before20RoundsStrategy,
+                                   WinnerStrategy after20RoundsStrategy) {
         this.before20RoundsStrategy = before20RoundsStrategy;
         this.after20RoundsStrategy = after20RoundsStrategy;
         this.currentStrategy = null;
     }
     @Override
     public Player winner(Game game) {
-        if (((GameImpl) game).getRoundsPlayed() <= 20) {
+        if (game.getRoundsPlayed() <= 20) {
             currentStrategy = before20RoundsStrategy;
         }
         else {

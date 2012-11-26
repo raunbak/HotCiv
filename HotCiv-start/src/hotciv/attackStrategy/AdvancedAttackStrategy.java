@@ -1,7 +1,6 @@
 package hotciv.attackStrategy;
 
 import hotciv.framework.*;
-import hotciv.standard.Legion;
 
 /**
  * Created with IntelliJ IDEA.

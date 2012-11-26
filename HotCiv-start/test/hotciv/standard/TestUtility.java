@@ -314,9 +314,13 @@ class GameStubForBattleTesting implements Game {
     public void performUnitActionAt(Position p) {
     }
 
-    @Override
     public Set<Position> getCityPositions() {
         return null;
+    }
+
+    @Override
+    public int getRoundsPlayed() {
+        return 0;
     }
 
     // Remove these if the Game interface for the AlphaCiv exercise is used.
