@@ -24,7 +24,7 @@ public class AlternatingWinStrategy implements WinnerStrategy {
     }
     @Override
     public Player winner(Game game) {
-        if (game.getRoundsPlayed() <= 20) {
+        if (((GameImpl) game).getRoundsPlayed() <= 20) {
             currentStrategy = before20RoundsStrategy;
         }
         else {

@@ -76,13 +76,6 @@ public interface Game {
      */
     public int getAge();
 
-    /**
-     * Get the number of rounds played so far.
-     * Added by L&M.
-     * @return Number of rounds played
-     */
-    public int getRoundsPlayed();
-
     // === Mutator methods ======================================
 
     /**

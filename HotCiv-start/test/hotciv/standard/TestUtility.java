@@ -186,24 +186,6 @@ class StubUnit implements Unit {
     public int getAttackingStrength() {
         return 0;
     }
-
-    @Override
-    public void reduceMoveCountBy(int moves, MutatorKey mKey) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void restoreMoveCount(MutatorKey mKey) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void setTotalMoves(int totalMoves, MutatorKey mutatorKey) {
-    }
-
-    @Override
-    public void setDefensiveStrength(int defStrength, MutatorKey mutatorKey) {
-    }
 }
 
 
@@ -264,22 +246,6 @@ class GameStubForBattleTesting implements Game {
                     return 0;  //To change body of implemented methods use File | Settings | File Templates.
                 }
 
-                @Override
-                public void reduceAmountOfProduction(int amount, MutatorKey mKey) {
-                }
-
-                @Override
-                public void increaseAmountOfProduction(int amount, MutatorKey mKey) {
-                }
-
-                @Override
-                public void setProduction(String unittype, MutatorKey mKey) {
-                }
-
-                @Override
-                public void setOwner(Player player, MutatorKey mKey) {
-                }
-
             };
         }
         return null;
@@ -312,15 +278,6 @@ class GameStubForBattleTesting implements Game {
     }
 
     public void performUnitActionAt(Position p) {
-    }
-
-    public Set<Position> getCityPositions() {
-        return null;
-    }
-
-    @Override
-    public int getRoundsPlayed() {
-        return 0;
     }
 
     // Remove these if the Game interface for the AlphaCiv exercise is used.

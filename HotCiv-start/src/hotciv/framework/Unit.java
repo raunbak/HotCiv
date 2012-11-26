@@ -72,26 +72,4 @@ public interface Unit {
      * @return attack strength
      */
     public int getAttackingStrength();
-
-
-    // === Mutator methods ======================================
-    /**
-     * Reduces a units movecount by int move amount.
-     * Precondition: moves <= moveCount
-     *
-     * @param moves the number of moves to be subtracted from the move count.
-     */
-    public void reduceMoveCountBy(int moves, MutatorKey mutatorKey);
-
-    /**
-     * Restores a units movecount back to the total moves each round.
-     */
-    public void restoreMoveCount(MutatorKey mutatorKey);
-
-    /**
-     * Set the number of moves allowed per round.
-     */
-    public void setTotalMoves(int totalMoves, MutatorKey mutatorKey);
-
-    public void setDefensiveStrength(int defStrength, MutatorKey mutatorKey);
 }

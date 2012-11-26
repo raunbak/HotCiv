@@ -11,10 +11,9 @@ import java.util.HashMap;
  *
  */
 public class AdvancedLayoutStrategy implements WorldStrategy {
-    private HashMap<Position, Tile> tileMap = new HashMap<Position, Tile>();
-    private HashMap<Position, City> cityMap = new HashMap<Position, City>();
-    private HashMap<Position, Unit> unitMap = new HashMap<Position, Unit>();
-    private MutatorKey mutatorKey;
+    private HashMap<Position, TileImpl> tileMap = new HashMap<Position, TileImpl>();
+    private HashMap<Position, CityImpl> cityMap = new HashMap<Position, CityImpl>();
+    private HashMap<Position, UnitImpl> unitMap = new HashMap<Position, UnitImpl>();
 
 
     String[] tilelayout = new String[]{
@@ -37,16 +36,14 @@ public class AdvancedLayoutStrategy implements WorldStrategy {
     };
 
     public AdvancedLayoutStrategy() {
-        // Generate the key to use for mutating cities and units.
-        mutatorKey = new MutatorKey();
 
         defineTilesOfWorld();
         Position p = new Position(8, 12);
-        cityMap.put(p, new CityImpl(Player.RED, mutatorKey));
+        cityMap.put(p, new CityImpl(Player.RED));
         p = new Position(4, 5);
-        cityMap.put(p, new CityImpl(Player.BLUE, mutatorKey));
+        cityMap.put(p, new CityImpl(Player.BLUE));
         p = new Position(2, 0);
-        unitMap.put(p, new UnitImpl(Player.RED, GameConstants.ARCHER, mutatorKey));
+        unitMap.put(p, new UnitImpl(Player.RED, GameConstants.ARCHER));
     }
 
     private void defineTilesOfWorld() {
@@ -81,22 +78,17 @@ public class AdvancedLayoutStrategy implements WorldStrategy {
 
 
     @Override
-    public HashMap<Position, Tile> getTileMap() {
+    public HashMap<Position, TileImpl> getTileMap() {
         return tileMap;
     }
 
     @Override
-    public HashMap<Position, Unit> getUnitMap() {
+    public HashMap<Position, UnitImpl> getUnitMap() {
         return unitMap;
     }
 
     @Override
-    public HashMap<Position, City> getCityMap() {
+    public HashMap<Position, CityImpl> getCityMap() {
         return cityMap;
-    }
-
-    @Override
-    public MutatorKey getMutatorKey() {
-        return mutatorKey;
     }
 }

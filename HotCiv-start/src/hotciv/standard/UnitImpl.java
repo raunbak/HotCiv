@@ -6,18 +6,16 @@ import hotciv.framework.*;
  * UnitImpl is an implementation of Unit.
  */
 public class UnitImpl implements Unit {
-    protected Player owner;
-    protected String unittype;
-    protected int defensiveStrength;
-    protected int attackingStrength;
-    protected int moveCount;
-    protected int totalMoves;
-    protected MutatorKey mutatorKey;
+    private Player owner;
+    private String unittype;
+    private int defensiveStrength;
+    private int attackingStrength;
+    private int moveCount;
+    private int totalMoves;
 
-    public UnitImpl(Player owner, String unittype, MutatorKey mutatorKey) {
+    public UnitImpl(Player owner, String unittype) {
         this.owner = owner;
         this.unittype = unittype;
-        this.mutatorKey = mutatorKey;
         try {
             defensiveStrength = GameConstants.DEFMAP.get(unittype);
             attackingStrength = GameConstants.ATTMAP.get(unittype);
@@ -59,32 +57,20 @@ public class UnitImpl implements Unit {
     }
 
 
-    @Override
-    public void reduceMoveCountBy(int moves, MutatorKey mKey) {
-        if (mutatorKey.equals(mKey)) {
-            moveCount -= moves;
-        }
+    public void reduceMoveCountBy(int moves) {
+        moveCount -= moves;
     }
 
-    @Override
-    public void restoreMoveCount(MutatorKey mKey) {
-        if (mutatorKey.equals(mKey)) {
-            moveCount = totalMoves;
-        }
+    public void restoreMoveCount() {
+        moveCount = totalMoves;
     }
 
-    @Override
-    public void setTotalMoves(int totalMoves, MutatorKey mKey) {
-        if (mutatorKey.equals(mKey)) {
-            this.totalMoves = totalMoves;
-        }
+    public void setTotalMoves(int totalMoves) {
+        this.totalMoves = totalMoves;
     }
 
-    @Override
-    public void setDefensiveStrength(int defStrength, MutatorKey mKey) {
-        if (mutatorKey.equals(mKey)) {
-            defensiveStrength = defStrength;
-        }
+    public void setDefensiveStrength(int defStrength) {
+        defensiveStrength = defStrength;
     }
 
 }

@@ -172,16 +172,13 @@ public class TestAlphaCiv {
         assertEquals("Since a turn has passed, this City should have 6 production", 6, c.getCurrentAmountOfProduction());
     }
 
-    // TODO with the MutatorKey-system, mutators cannot be called without the key, so such a test would require the use of a test-implementation of AbstractGameFactory.
-    /*
     @Test
     public void shouldLowerProductionAmountInRed1_1_CityFrom30to10() {
         makeGameRunNturns(5);
-        City c = game.getCityAt(new Position(1, 1));
+        CityImpl c = (CityImpl) game.getCityAt(new Position(1, 1));
         c.reduceAmountOfProduction(20);
         assertEquals("Should be 10 production in this city now", 10, c.getCurrentAmountOfProduction());
     }
-    */
 
     @Test
     public void canChangeProductionInRedCity1_1() {

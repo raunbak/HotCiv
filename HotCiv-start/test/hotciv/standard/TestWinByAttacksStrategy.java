@@ -49,15 +49,12 @@ public class TestWinByAttacksStrategy {
 
     private class BattleLayoutStub implements WorldStrategy {
 
-        private HashMap<Position, Tile> tileMap = new HashMap<Position, Tile>();
-        private HashMap<Position, City> cityMap = new HashMap<Position, City>();
-        private HashMap<Position, Unit> unitMap = new HashMap<Position, Unit>();
-        private MutatorKey mutatorKey;
+        private HashMap<Position, TileImpl> tileMap = new HashMap<Position, TileImpl>();
+        private HashMap<Position, CityImpl> cityMap = new HashMap<Position, CityImpl>();
+        private HashMap<Position, UnitImpl> unitMap = new HashMap<Position, UnitImpl>();
 
 
         public BattleLayoutStub() {
-            // Generate the key to use for mutating cities and units.
-            mutatorKey = new MutatorKey();
 
             // Initialize the tile array with plains on every tile, with the responding positions.
             for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
@@ -68,33 +65,28 @@ public class TestWinByAttacksStrategy {
             }
 
             Position p = new Position(0, 0);
-            unitMap.put(p, new UnitImpl(Player.RED, GameConstants.ARCHER, mutatorKey));
+            unitMap.put(p, new UnitImpl(Player.RED, GameConstants.ARCHER));
             p = new Position(0, 1);
-            unitMap.put(p, new UnitImpl(Player.RED, GameConstants.SETTLER, mutatorKey));
+            unitMap.put(p, new UnitImpl(Player.RED, GameConstants.SETTLER));
             p = new Position(0, 2);
-            unitMap.put(p, new UnitImpl(Player.RED, GameConstants.LEGION, mutatorKey));
+            unitMap.put(p, new UnitImpl(Player.RED, GameConstants.LEGION));
             p = new Position(1, 1);
-            unitMap.put(p, new UnitImpl(Player.BLUE, GameConstants.LEGION, mutatorKey));
+            unitMap.put(p, new UnitImpl(Player.BLUE, GameConstants.LEGION));
         }
 
         @Override
-        public HashMap<Position, Tile> getTileMap() {
+        public HashMap<Position, TileImpl> getTileMap() {
             return tileMap;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
-        public HashMap<Position, Unit> getUnitMap() {
+        public HashMap<Position, UnitImpl> getUnitMap() {
             return unitMap;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
-        public HashMap<Position, City> getCityMap() {
+        public HashMap<Position, CityImpl> getCityMap() {
             return cityMap;  //To change body of implemented methods use File | Settings | File Templates.
-        }
-
-        @Override
-        public MutatorKey getMutatorKey() {
-            return mutatorKey;
         }
     }
 

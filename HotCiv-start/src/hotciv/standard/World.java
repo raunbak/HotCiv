@@ -11,22 +11,28 @@ import java.util.HashMap;
  * to other objects which should be able to make modifications.
  */
 public class World {
-    public HashMap<Position, Tile> tileMap;
-    public HashMap<Position, City> cityMap;
-    public HashMap<Position, Unit> unitMap;
-    private MutatorKey mutatorKey;
+    private HashMap<Position, TileImpl> tileMap;
+    private HashMap<Position, CityImpl> cityMap;
+    private HashMap<Position, UnitImpl> unitMap;
 
-    public World(HashMap<Position, Tile> tileMap,
-                 HashMap<Position, City> cityMap,
-                 HashMap<Position, Unit> unitMap,
-                 MutatorKey mutatorKey) {
+    public World(HashMap<Position, TileImpl> tileMap,
+                 HashMap<Position, CityImpl> cityMap,
+                 HashMap<Position, UnitImpl> unitMap) {
         this.tileMap = tileMap;
         this.cityMap = cityMap;
         this.unitMap = unitMap;
-        this.mutatorKey = mutatorKey;
     }
 
-    public MutatorKey getMutatorKey() {
-        return mutatorKey;
+    public HashMap<Position, TileImpl> tileMap() {
+        return tileMap;
     }
+
+    public HashMap<Position, CityImpl> cityMap() {
+        return cityMap;
+    }
+
+    public HashMap<Position, UnitImpl> unitMap() {
+        return unitMap;
+    }
+
 }
