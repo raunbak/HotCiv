@@ -12,39 +12,36 @@ import hotciv.framework.*;
 public class AdvancedAttackStrategy implements AttackStrategy {
     Utility utility;
     @Override
-    public Unit outcomeOfBattle(Game game, Position unitAttacting, Position unitDefending) {
+    public Unit outcomeOfBattle(Game game, Position pAttacking, Position pDefending) {
 
-        int CombinedAttStrength;
-        int CombinedDefStrength;
+        Unit unitAttacking = game.getUnitAt(pAttacking);
+        Unit unitDefending = game.getUnitAt(pDefending);
 
         // Getting all values needed to calculate winner.
-        int AttStrength = game.getUnitAt(unitAttacting).getAttackingStrength();
-        int DefStrength = game.getUnitAt(unitDefending).getDefensiveStrength();
-        int AttSupport = utility.getFriendlySupport(game, unitAttacting, game.getUnitAt(unitAttacting).getOwner());
-        int DefSupport = utility.getFriendlySupport(game, unitDefending, game.getUnitAt(unitDefending).getOwner());
+        int attStrength = unitAttacking.getAttackingStrength();
+        int defStrength = unitDefending.getDefensiveStrength();
 
-        int AttTerrainFactor =   utility.getTerrainFactor(game, unitAttacting);
-        int DefTerrainFactor =   utility.getTerrainFactor(game, unitDefending);
+        int attSupport = utility.getFriendlySupport(game, pAttacking, unitAttacking.getOwner());
+        int defSupport = utility.getFriendlySupport(game, pDefending, unitDefending.getOwner());
+
+        int attTerrainFactor =   utility.getTerrainFactor(game, pAttacking);
+        int defTerrainFactor =   utility.getTerrainFactor(game, pDefending);
 
 
-        // Finding combined strength by : ( Att + support ) times terrainfactor
-        CombinedAttStrength = ( AttStrength + AttSupport ) * AttTerrainFactor;
-        CombinedDefStrength = ( DefStrength + DefSupport ) * DefTerrainFactor;
+        // Finding combined strength by: ( strength + support ) times terrainfactor
+        int combinedAttStrength = ( attStrength + attSupport ) * attTerrainFactor;
+        int combinedDefStrength = ( defStrength + defSupport ) * defTerrainFactor;
 
-        // This might be overkill. But had a die class already made.
-        Die AttDie = new Die(6);
-        Die DefDie = new Die(6);
-        AttDie.roll();
-        DefDie.roll();
+        // Die-rolls
+        Die die = new Die(6);
+        int attDieRoll = die.roll();
+        int defDieRoll = die.roll();
 
-        int AttDieRoll = AttDie.getEyes();
-        int DefDieRoll = DefDie.getEyes();
-
-        if (CombinedAttStrength * AttDieRoll > CombinedDefStrength * DefDieRoll) {
-            return game.getUnitAt(unitAttacting);
+        if (combinedAttStrength * attDieRoll > combinedDefStrength * defDieRoll) {
+            return unitAttacking;
         }
         else {
-            return  game.getUnitAt(unitDefending);
+            return unitDefending;
         }
 
     }

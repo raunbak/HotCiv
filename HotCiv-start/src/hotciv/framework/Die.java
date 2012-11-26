@@ -1,6 +1,7 @@
 package hotciv.framework;
 /**
  * A die class, for random number rolling.
+ * Added by L&M.
  */
 
 public class Die{
@@ -25,8 +26,8 @@ public class Die{
      * Roll, uses Math.random() to make a new number, between 1 and sides.
      * So, it is possible to make a 6 or n-sided die.
      */
-    public void roll(){
-        eyes = (int)((Math.random()*sides)+1);
+    public int roll(){
+        return eyes = (int)((Math.random() * sides) + 1);
     }
 
     /**

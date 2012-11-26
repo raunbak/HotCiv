@@ -12,6 +12,7 @@ package hotciv.framework;
  * but then all the mutators would need to be put in Game, which again would lead to
  * GUIs being able make direct modifications on the objects through Game. Using MutatorKeys,
  * no extra mutators are needed either in the Game-interface nor in the implementation.
+ * Added by L&M.
  */
 public class MutatorKey {
     private double doubleKey;
