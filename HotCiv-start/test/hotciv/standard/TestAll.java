@@ -16,7 +16,8 @@ import org.junit.runners.Suite;
                 TestEpsilonCiv.class,
                 TestInvalidUnitCreation.class,
                 TestAdvancedAttackStrategy.class,
-                TestZetaCiv.class
+                TestZetaCiv.class,
+                TestEtaCiv.class
         })
 
 public class TestAll {

@@ -9,6 +9,9 @@ public class CityImpl implements ModifiableCity {
     private Player owner;
     private int production;
     private String unitInProduction;
+    private String workForceFocus;
+    private int food;
+    private int size;
 
     /**
      * Constructor for CityImpl
@@ -17,6 +20,7 @@ public class CityImpl implements ModifiableCity {
      */
     public CityImpl(Player player) {
         owner = player;
+        size = 1;
     }
 
     @Override
@@ -26,7 +30,7 @@ public class CityImpl implements ModifiableCity {
 
     @Override
     public int getSize() {
-        return 1;
+        return size;
     }
 
     @Override
@@ -35,8 +39,8 @@ public class CityImpl implements ModifiableCity {
     }
 
     @Override
-    public String getWorkforceFocus() {
-        return null;
+    public String getWorkForceFocus() {
+        return workForceFocus;
     }
 
     @Override
@@ -57,6 +61,31 @@ public class CityImpl implements ModifiableCity {
     @Override
     public void setProduction(String unittype) {
         unitInProduction = unittype;
+    }
+
+    @Override
+    public void setWorkForceFocus(String focus) {
+        workForceFocus = focus;
+    }
+
+    @Override
+    public int getCurrentAmountOfFood() {
+        return food;
+    }
+
+    @Override
+    public void increaseAmountOfFood(int amount) {
+        food += amount;
+    }
+
+    @Override
+    public void reduceAmountOfFood(int amount) {
+        food -= amount;
+    }
+
+    @Override
+    public void addToPopulation(int numberOfPeople) {
+        size += numberOfPeople;
     }
 
     @Override
@@ -82,7 +111,7 @@ public class CityImpl implements ModifiableCity {
         try {
             unitcost = GameConstants.COSTMAP.get(unittype);
         } catch (NullPointerException npEx) {
-            throw new InvalidUnittypeException(unittype);
+            throw new InvalidTypeException(unittype);
         }
 
         // the number of units produced by this method-call.

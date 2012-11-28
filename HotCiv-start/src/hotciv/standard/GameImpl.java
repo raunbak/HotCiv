@@ -6,6 +6,7 @@ import hotciv.attackStrategy.AttackStrategy;
 import hotciv.framework.*;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
+import hotciv.workforce.WorkForceStrategy;
 import hotciv.world.WorldStrategy;
 
 import java.util.*;
@@ -26,6 +27,7 @@ public class GameImpl implements ExtendedGame {
     private WinnerStrategy winnerStrategy;
     private UnitActionStrategy unitActionStrategy;
     private AttackStrategy attackStrategy;
+    private WorkForceStrategy workForceStrategy;
     private WorldImpl world = new WorldImpl();  // holds all tiles, cities, units.
     private int roundsPlayed;
 
@@ -41,6 +43,7 @@ public class GameImpl implements ExtendedGame {
         WorldStrategy worldStrategy = gameFactory.createWorldStrategy();
         unitActionStrategy = gameFactory.createUnitActionStrategy();
         attackStrategy = gameFactory.createAttackStrategy();
+        workForceStrategy = gameFactory.createWorkForceStrategy();
 
         // Make the world strategy setup the world containing the initial layout of Tiles, Cities and Units.
         worldStrategy.setupInitialWorld(world);
@@ -156,7 +159,7 @@ public class GameImpl implements ExtendedGame {
         for (Position p : world.getCityPositions()) {
             ModifiableCity city = world.getCityAt(p);
 
-            city.increaseAmountOfProduction(6);  // Constant amount of 6 in AlphaCiv.
+            workForceStrategy.gatherFoodAndProduction(world, p);
 
             // produce units!
             city.produceUnits(world, p);
@@ -167,6 +170,7 @@ public class GameImpl implements ExtendedGame {
 
 
     public void changeWorkForceFocusInCityAt(Position p, String balance) {
+        world.getCityAt(p).setWorkForceFocus(balance);
     }
 
     public void changeProductionInCityAt(Position p, String unitType) {

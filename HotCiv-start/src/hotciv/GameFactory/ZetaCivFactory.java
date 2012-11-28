@@ -8,6 +8,8 @@ import hotciv.framework.ExtendedGame;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.*;
+import hotciv.workforce.SimpleWorkForceStrategy;
+import hotciv.workforce.WorkForceStrategy;
 import hotciv.world.SimpleLayoutStrategy;
 import hotciv.world.WorldStrategy;
 
@@ -38,5 +40,10 @@ public class ZetaCivFactory implements AbstractGameFactory {
     @Override
     public AttackStrategy createAttackStrategy() {
         return new SimpleAttackStrategy();
+    }
+
+    @Override
+    public WorkForceStrategy createWorkForceStrategy() {
+        return new SimpleWorkForceStrategy();
     }
 }

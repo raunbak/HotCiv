@@ -9,6 +9,8 @@ import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinByConquestStrategy;
 import hotciv.winner.WinnerStrategy;
+import hotciv.workforce.SimpleWorkForceStrategy;
+import hotciv.workforce.WorkForceStrategy;
 import hotciv.world.SimpleLayoutStrategy;
 import hotciv.world.WorldStrategy;
 
@@ -43,5 +45,10 @@ public class BetaCivFactory implements AbstractGameFactory {
     @Override
     public AttackStrategy createAttackStrategy() {
         return new SimpleAttackStrategy();
+    }
+
+    @Override
+    public WorkForceStrategy createWorkForceStrategy() {
+        return new SimpleWorkForceStrategy();
     }
 }

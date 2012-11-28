@@ -21,7 +21,7 @@ public class UnitImpl implements ModifiableUnit {
             attackingStrength = GameConstants.ATTMAP.get(unittype);
             totalMoves = GameConstants.MOVEMAP.get(unittype);
         } catch (NullPointerException npEx) {
-            throw new InvalidUnittypeException(unittype);
+            throw new InvalidTypeException(unittype);
         }
         moveCount = totalMoves;
     }

@@ -9,19 +9,15 @@ import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.RedWinsAtAge3000BCStrategy;
 import hotciv.winner.WinnerStrategy;
-import hotciv.workforce.SimpleWorkForceStrategy;
+import hotciv.workforce.AdvancedWorkForceStrategy;
 import hotciv.workforce.WorkForceStrategy;
 import hotciv.world.SimpleLayoutStrategy;
 import hotciv.world.WorldStrategy;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 24-11-12
- * Time: 12:20
- * To change this template use File | Settings | File Templates.
+ *
  */
-public class AlphaCivFactory implements AbstractGameFactory {
+public class EtaCivFactory implements AbstractGameFactory {
     @Override
     public AgeStrategy createAgeStrategy() {
         return new LinearAgeStrategy();
@@ -49,6 +45,6 @@ public class AlphaCivFactory implements AbstractGameFactory {
 
     @Override
     public WorkForceStrategy createWorkForceStrategy() {
-        return new SimpleWorkForceStrategy();
+        return new AdvancedWorkForceStrategy();
     }
 }

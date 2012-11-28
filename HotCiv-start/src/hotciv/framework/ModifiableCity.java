@@ -11,6 +11,14 @@ public interface ModifiableCity extends City {
 
     public void setProduction(String unittype);
 
+    public void setWorkForceFocus(String focus);
+
+    public void increaseAmountOfFood(int amount);
+
+    public void reduceAmountOfFood(int amount);
+
+    public void addToPopulation(int numberOfPeople);
+
     public void setOwner(Player player);
 
     /**

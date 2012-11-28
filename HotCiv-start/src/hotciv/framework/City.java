@@ -52,7 +52,7 @@ public interface City {
      * @return a string type defining the focus, see GameConstants
      *         for valid return values.
      */
-    public String getWorkforceFocus();
+    public String getWorkForceFocus();
 
     /**
      * Returns how much a city has of production.
@@ -61,4 +61,9 @@ public interface City {
      */
     public int getCurrentAmountOfProduction();
 
+    /**
+     *
+     * @return
+     */
+    public int getCurrentAmountOfFood();
 }

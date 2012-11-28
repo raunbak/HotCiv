@@ -9,6 +9,8 @@ import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinBy3WonAttacksStrategy;
 import hotciv.winner.WinnerStrategy;
+import hotciv.workforce.SimpleWorkForceStrategy;
+import hotciv.workforce.WorkForceStrategy;
 import hotciv.world.SimpleLayoutStrategy;
 import hotciv.world.WorldStrategy;
 
@@ -39,5 +41,10 @@ public class EpsilonCivFactory implements AbstractGameFactory {
     @Override
     public AttackStrategy createAttackStrategy() {
         return new AdvancedAttackStrategy();
+    }
+
+    @Override
+    public WorkForceStrategy createWorkForceStrategy() {
+        return new SimpleWorkForceStrategy();
     }
 }

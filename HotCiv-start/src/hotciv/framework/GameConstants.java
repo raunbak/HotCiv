@@ -29,10 +29,49 @@ public class GameConstants {
     public static final int WORLDSIZE = 16;
     // Valid terrain types
     public static final String PLAINS = "plains";
+    private static final int PLAINS_FOOD = 3;
+    private static final int PLAINS_PRODUCTION = 0;
+
     public static final String OCEANS = "ocean";
+    private static final int OCEANS_FOOD = 1;
+    private static final int OCEANS_PRODUCTION = 0;
+
     public static final String FOREST = "forest";
+    private static final int FOREST_FOOD = 0;
+    private static final int FOREST_PRODUCTION = 3;
+
     public static final String HILLS = "hills";
+    private static final int HILLS_FOOD = 0;
+    private static final int HILLS_PRODUCTION = 2;
+
     public static final String MOUNTAINS = "mountain";
+    private static final int MOUNTAINS_FOOD = 0;
+    private static final int MOUNTAINS_PRODUCTION = 1;
+
+    // Production map of tiles.
+    public static final Map<String, Integer> PRODMAP;
+    static {
+        Map<String, Integer> aMap = new HashMap<String, Integer>();
+        aMap.put(PLAINS, PLAINS_PRODUCTION);
+        aMap.put(OCEANS, OCEANS_PRODUCTION);
+        aMap.put(FOREST, FOREST_PRODUCTION);
+        aMap.put(HILLS, HILLS_PRODUCTION);
+        aMap.put(MOUNTAINS, MOUNTAINS_PRODUCTION);
+        PRODMAP = Collections.unmodifiableMap(aMap);
+    }
+
+    // Production map of tiles.
+    public static final Map<String, Integer> FOODMAP;
+    static {
+        Map<String, Integer> aMap = new HashMap<String, Integer>();
+        aMap.put(PLAINS, PLAINS_FOOD);
+        aMap.put(OCEANS, OCEANS_FOOD);
+        aMap.put(FOREST, FOREST_FOOD);
+        aMap.put(HILLS, HILLS_FOOD);
+        aMap.put(MOUNTAINS, MOUNTAINS_FOOD);
+        FOODMAP = Collections.unmodifiableMap(aMap);
+    }
+
     // Valid production balance types
     public static final String productionFocus = "hammer";
     public static final String foodFocus = "apple";
@@ -58,7 +97,6 @@ public class GameConstants {
     private static final int SETTLER_DEFENSIVE = 3;
     private static final int SETTLER_ATTACKING = 0;
     private static final int SETTLER_TOTAL_MOVES = 1;
-
 
     // Cost map of units.
     public static final Map<String, Integer> COSTMAP;
@@ -99,4 +137,6 @@ public class GameConstants {
         aMap.put(SETTLER, SETTLER_TOTAL_MOVES);
         MOVEMAP = Collections.unmodifiableMap(aMap);
     }
+
+
 }

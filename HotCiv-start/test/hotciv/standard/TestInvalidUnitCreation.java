@@ -1,6 +1,6 @@
 package hotciv.standard;
 
-import hotciv.framework.InvalidUnittypeException;
+import hotciv.framework.InvalidTypeException;
 import hotciv.framework.Player;
 import hotciv.framework.Unit;
 import org.junit.Test;
@@ -17,8 +17,8 @@ public class TestInvalidUnitCreation {
         Unit u = null;
         try {
             u = new UnitImpl(Player.RED, "Photon Man");
-        } catch (InvalidUnittypeException e) {
+        } catch (InvalidTypeException e) {
         }
-        assertNull("InvalidUnittypeException should have been thrown, thus Unit u should still be null.", u);
+        assertNull("InvalidTypeException should have been thrown, thus Unit u should still be null.", u);
     }
 }

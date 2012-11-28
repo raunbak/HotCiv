@@ -10,6 +10,7 @@ import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinBy3WonAttacksStrategy;
 import hotciv.winner.WinnerStrategy;
+import hotciv.workforce.WorkForceStrategy;
 import hotciv.world.WorldStrategy;
 import org.junit.Before;
 import org.junit.Test;
@@ -112,6 +113,11 @@ public class TestAdvancedAttackStrategy {
         @Override
         public AttackStrategy createAttackStrategy() {
             return new AdvancedAttackStrategy();
+        }
+
+        @Override
+        public WorkForceStrategy createWorkForceStrategy() {
+            return null;
         }
     }
 

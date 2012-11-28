@@ -292,12 +292,17 @@ class GameStubForBattleTesting implements Game {
                     return null;
                 }
 
-                public String getWorkforceFocus() {
+                public String getWorkForceFocus() {
                     return null;
                 }
 
                 @Override
                 public int getCurrentAmountOfProduction() {
+                    return 0;
+                }
+
+                @Override
+                public int getCurrentAmountOfFood() {
                     return 0;
                 }
 

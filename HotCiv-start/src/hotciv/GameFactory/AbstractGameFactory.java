@@ -5,6 +5,7 @@ import hotciv.attackStrategy.AttackStrategy;
 import hotciv.framework.ExtendedGame;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
+import hotciv.workforce.WorkForceStrategy;
 import hotciv.world.WorldStrategy;
 
 /**
@@ -25,4 +26,6 @@ public interface AbstractGameFactory {
     public UnitActionStrategy createUnitActionStrategy();
 
     public AttackStrategy createAttackStrategy();
+
+    public WorkForceStrategy createWorkForceStrategy();
 }
