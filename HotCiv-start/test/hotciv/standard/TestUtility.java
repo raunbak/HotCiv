@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -20,10 +19,12 @@ public class TestUtility {
     private Position center, p;
 
     Game game;
+    World world;
 
     @Before
     public void setUp() {
         game = new GameStubForBattleTesting();
+        world = new WorldStubForBattleTesting(game);
     }
 
     /**
@@ -102,37 +103,37 @@ public class TestUtility {
     @Test
     public void shouldGiveCorrectTerrainFactors() {
         // plains have multiplier 1
-        assertEquals(1, Utility.getTerrainFactor(game, new Position(0, 1)));
+        assertEquals(1, Utility.getTerrainFactor(world, new Position(0, 1)));
         // hills have multiplier 2
-        assertEquals(2, Utility.getTerrainFactor(game, new Position(1, 0)));
+        assertEquals(2, Utility.getTerrainFactor(world, new Position(1, 0)));
         // forest have multiplier 2
-        assertEquals(2, Utility.getTerrainFactor(game, new Position(0, 0)));
+        assertEquals(2, Utility.getTerrainFactor(world, new Position(0, 0)));
         // cities have multiplier 3
-        assertEquals(3, Utility.getTerrainFactor(game, new Position(1, 1)));
+        assertEquals(3, Utility.getTerrainFactor(world, new Position(1, 1)));
     }
 
     @Test
     public void shouldGiveSum1ForBlueAtP5_5() {
         assertEquals("Blue unit at (5,5) should get +1 support",
-                +1, Utility.getFriendlySupport(game, new Position(5, 5), Player.BLUE));
+                +1, Utility.getFriendlySupport(world, new Position(5, 5), Player.BLUE));
     }
 
     @Test
     public void shouldGiveSum0ForBlueAtP2_4() {
         assertEquals("Blue unit at (2,4) should get +0 support",
-                +0, Utility.getFriendlySupport(game, new Position(2, 4), Player.BLUE));
+                +0, Utility.getFriendlySupport(world, new Position(2, 4), Player.BLUE));
     }
 
     @Test
     public void shouldGiveSum2ForRedAtP2_4() {
         assertEquals("Red unit at (2,4) should get +2 support",
-                +2, Utility.getFriendlySupport(game, new Position(2, 4), Player.RED));
+                +2, Utility.getFriendlySupport(world, new Position(2, 4), Player.RED));
     }
 
     @Test
     public void shouldGiveSum3ForRedAtP2_2() {
         assertEquals("Red unit at (2,2) should get +3 support",
-                +3, Utility.getFriendlySupport(game, new Position(2, 2), Player.RED));
+                +3, Utility.getFriendlySupport(world, new Position(2, 2), Player.RED));
     }
 }
 
@@ -185,6 +186,60 @@ class StubUnit implements Unit {
 
     public int getAttackingStrength() {
         return 0;
+    }
+}
+
+@SuppressWarnings("unchecked")
+class WorldStubForBattleTesting implements World {
+    Game game;
+
+    public WorldStubForBattleTesting(Game game) {
+        this.game = game;
+    }
+
+    @Override
+    public Tile getTileAt(Position p) {
+        return game.getTileAt(p);
+    }
+
+    @Override
+    public City getCityAt(Position p) {
+        return game.getCityAt(p);
+    }
+
+    @Override
+    public Unit getUnitAt(Position p) {
+        return game.getUnitAt(p);
+    }
+
+    @Override
+    public Iterable<Position> getCityPositions() {
+        return null;
+    }
+
+    @Override
+    public Iterable<Position> getUnitPositions() {
+        return null;
+    }
+
+    @Override
+    public void setTileAt(Position p, Tile t) {
+    }
+
+    @Override
+    public void setCityAt(Position p, City c) {
+    }
+
+    @Override
+    public void setUnitAt(Position p, Unit u) {
+    }
+
+    @Override
+    public void removeCityAt(Position p) {
+    }
+
+    @Override
+    public void removeUnitAt(Position p) {
     }
 }
 
@@ -243,7 +298,7 @@ class GameStubForBattleTesting implements Game {
 
                 @Override
                 public int getCurrentAmountOfProduction() {
-                    return 0;  //To change body of implemented methods use File | Settings | File Templates.
+                    return 0;
                 }
 
             };

@@ -3,29 +3,24 @@ package hotciv.attackStrategy;
 import hotciv.framework.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 22-11-12
- * Time: 12:27
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class AdvancedAttackStrategy implements AttackStrategy {
-    Utility utility;
     @Override
-    public Unit outcomeOfBattle(Game game, Position pAttacking, Position pDefending) {
+    public Unit outcomeOfBattle(World world, Position pAttacking, Position pDefending) {
 
-        Unit unitAttacking = game.getUnitAt(pAttacking);
-        Unit unitDefending = game.getUnitAt(pDefending);
+        Unit unitAttacking = world.getUnitAt(pAttacking);
+        Unit unitDefending = world.getUnitAt(pDefending);
 
         // Getting all values needed to calculate winner.
         int attStrength = unitAttacking.getAttackingStrength();
         int defStrength = unitDefending.getDefensiveStrength();
 
-        int attSupport = utility.getFriendlySupport(game, pAttacking, unitAttacking.getOwner());
-        int defSupport = utility.getFriendlySupport(game, pDefending, unitDefending.getOwner());
+        int attSupport = Utility.getFriendlySupport(world, pAttacking, unitAttacking.getOwner());
+        int defSupport = Utility.getFriendlySupport(world, pDefending, unitDefending.getOwner());
 
-        int attTerrainFactor =   utility.getTerrainFactor(game, pAttacking);
-        int defTerrainFactor =   utility.getTerrainFactor(game, pDefending);
+        int attTerrainFactor =   Utility.getTerrainFactor(world, pAttacking);
+        int defTerrainFactor =   Utility.getTerrainFactor(world, pDefending);
 
 
         // Finding combined strength by: ( strength + support ) times terrainfactor

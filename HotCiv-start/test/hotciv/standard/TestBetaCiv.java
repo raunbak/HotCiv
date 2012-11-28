@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  *
@@ -16,11 +17,6 @@ public class TestBetaCiv {
     @Before
     public void setUp() {
         game = new GameImpl(new BetaCivFactory());
-    }
-
-    @Test
-    public void works() {
-        assertEquals("hej", 1, 1);
     }
 
     @Test
@@ -55,8 +51,10 @@ public class TestBetaCiv {
     public void redShouldWinWhenItConquersBlueCityAt4_1() {
         game.moveUnit(new Position(4, 3), new Position(4, 2));
         makeGameRunNturns(1);
+
+        assertNull("There should still not be a winner at this point.", game.getWinner());
+
         game.moveUnit(new Position(4, 2), new Position(4, 1));
-        makeGameRunNturns(1);
 
         assertEquals("Should have settler at (4,1)", GameConstants.SETTLER, game.getUnitAt(new Position(4, 1)).getTypeString());
         assertEquals("Red should be the winner!", Player.RED, game.getWinner());

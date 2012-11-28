@@ -72,5 +72,4 @@ public class UnitImpl implements Unit {
     public void setDefensiveStrength(int defStrength) {
         defensiveStrength = defStrength;
     }
-
 }

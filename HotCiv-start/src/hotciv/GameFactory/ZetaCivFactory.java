@@ -14,13 +14,9 @@ import hotciv.world.SimpleLayoutStrategy;
 import hotciv.world.WorldStrategy;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 24-11-12
- * Time: 15:03
- * To change this template use File | Settings | File Templates.
+ *
  */
-public class ZetaCiv implements AbstractGameFactory {
+public class ZetaCivFactory implements AbstractGameFactory {
     @Override
     public AgeStrategy createAgeStrategy() {
         return new LinearAgeStrategy();

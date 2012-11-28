@@ -3,7 +3,6 @@ package hotciv.standard;
 import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
-import hotciv.attackStrategy.AdvancedAttackStrategy;
 import hotciv.attackStrategy.AttackStrategy;
 import hotciv.attackStrategy.SimpleAttackStrategy;
 import hotciv.framework.*;
@@ -15,9 +14,8 @@ import hotciv.world.WorldStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 /**
  *
@@ -35,12 +33,20 @@ public class TestWinByAttacksStrategy {
     @Test
     public void blueShouldWinAfter3Att() {
         game.endOfTurn();
-        game.moveUnit(new Position(1, 1), new Position(0, 0));
-        assertEquals("Blue should be here", Player.BLUE, Player.BLUE);
-        makeGameRunNturns(1);
-        game.moveUnit(new Position(0, 0), new Position(0, 1));
-        makeGameRunNturns(1);
-        game.moveUnit(new Position(0, 1), new Position(0, 2));
+
+        Position pTo =  new Position(0, 0);
+        game.moveUnit(new Position(1, 0), pTo);
+        assertEquals("Blue should be here", Player.BLUE, game.getUnitAt(pTo).getOwner());
+
+        pTo = new Position(0, 1);
+        game.moveUnit(new Position(1, 1), pTo);
+        assertEquals("Blue should be here", Player.BLUE, game.getUnitAt(pTo).getOwner());
+
+        assertNotSame("Blue should not be the winner yet", Player.BLUE, game.getWinner());
+
+        pTo = new Position(0, 2);
+        game.moveUnit(new Position(1, 2), pTo);
+        assertEquals("Blue should be here", Player.BLUE, game.getUnitAt(pTo).getOwner());
 
         assertEquals("Blue should be the winner now", Player.BLUE, game.getWinner());
 
@@ -48,36 +54,29 @@ public class TestWinByAttacksStrategy {
 
 
     private class BattleLayoutStub implements WorldStrategy {
-
-        private HashMap<Position, TileImpl> tileMap = new HashMap<Position, TileImpl>();
-        private HashMap<Position, CityImpl> cityMap = new HashMap<Position, CityImpl>();
-        private HashMap<Position, UnitImpl> unitMap = new HashMap<Position, UnitImpl>();
-
-
-        public BattleLayoutStub() {
+        @Override
+        public void setupInitialWorld(World world) {
 
             // Initialize the tile array with plains on every tile, with the responding positions.
             for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
                 for (int j = 0; j < GameConstants.WORLDSIZE; j++) {
                     Position p = new Position(i, j);
-                    tileMap.put(p, new TileImpl(p, GameConstants.PLAINS));
+                    world.setTileAt(p, new TileImpl(p, GameConstants.PLAINS));
                 }
             }
 
             Position p = new Position(0, 0);
-            unitMap.put(p, new UnitImpl(Player.RED, GameConstants.ARCHER));
+            world.setUnitAt(p, new UnitImpl(Player.RED, GameConstants.ARCHER));
             p = new Position(0, 1);
-            unitMap.put(p, new UnitImpl(Player.RED, GameConstants.SETTLER));
+            world.setUnitAt(p, new UnitImpl(Player.RED, GameConstants.SETTLER));
             p = new Position(0, 2);
-            unitMap.put(p, new UnitImpl(Player.RED, GameConstants.LEGION));
+            world.setUnitAt(p, new UnitImpl(Player.RED, GameConstants.LEGION));
+            p = new Position(1, 0);
+            world.setUnitAt(p, new UnitImpl(Player.BLUE, GameConstants.SETTLER));
             p = new Position(1, 1);
-            unitMap.put(p, new UnitImpl(Player.BLUE, GameConstants.LEGION));
-        }
-
-
-        @Override
-        public World getWorld() {
-            return new World(tileMap, cityMap, unitMap);
+            world.setUnitAt(p, new UnitImpl(Player.BLUE, GameConstants.SETTLER));
+            p = new Position(1, 2);
+            world.setUnitAt(p, new UnitImpl(Player.BLUE, GameConstants.SETTLER));
         }
     }
 

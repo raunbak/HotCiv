@@ -9,7 +9,6 @@ import hotciv.winner.WinnerStrategy;
 import hotciv.world.WorldStrategy;
 
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  * An implementation of Game. Based on the skeleton implementation from Henrik B Christensen.
@@ -28,7 +27,7 @@ public class GameImpl implements Game {
     private UnitActionStrategy unitActionStrategy;
     private HashMap<Player, Integer> attacksWon;
     private AttackStrategy attackStrategy;
-    private World world;  // holds all tiles, cities, units.
+    private WorldImpl world = new WorldImpl();  // holds all tiles, cities, units.
     private int roundsPlayed;
 
     public GameImpl(AbstractGameFactory gameFactory) {
@@ -40,8 +39,8 @@ public class GameImpl implements Game {
         unitActionStrategy = gameFactory.createUnitActionStrategy();
         attackStrategy = gameFactory.createAttackStrategy();
 
-        // Get a world-instance from the world strategy containing the initial layout of Tiles, Cities and Units.
-        world = worldStrategy.getWorld();
+        // Make the world strategy setup the world containing the initial layout of Tiles, Cities and Units.
+        worldStrategy.setupInitialWorld(world);
 
         // No player has won any attacks at the start of the game.
         attacksWon = new HashMap<Player, Integer>();
@@ -54,15 +53,15 @@ public class GameImpl implements Game {
     }
 
     public Tile getTileAt(Position p) {
-        return world.tileMap().get(p);
+        return world.getTileAt(p);
     }
 
     public Unit getUnitAt(Position p) {
-        return world.unitMap().get(p);
+        return world.getUnitAt(p);
     }
 
     public City getCityAt(Position p) {
-        return world.cityMap().get(p);
+        return world.getCityAt(p);
     }
 
     public Player getPlayerInTurn() {
@@ -71,9 +70,9 @@ public class GameImpl implements Game {
 
     public Player getWinner() {
         // If there isn't already a winner, determine who the winner is.
-        // We know that this is not strictly an invariant accessor,
-        // but otherwise this code would have to be in both endOfTurn(), moveUnit(),
-        // and performUnitActionAt() to be sure.
+        // This is not strictly an invariant accessor, but otherwise this code
+        // would have to be in both endOfTurn(), moveUnit(), and performUnitActionAt() to be sure.
+        // And it makes sense that this will be called at least once per round.
         if (winner == null) {
             winner = winnerStrategy.winner(this);
         }
@@ -109,7 +108,7 @@ public class GameImpl implements Game {
                 return false;
             }
 
-            Unit winningUnit = attackStrategy.outcomeOfBattle(this, from, to);
+            Unit winningUnit = attackStrategy.outcomeOfBattle(world, from, to);
 
             if (winningUnit.getOwner() == playerInTurn) {
                 attacksWon.put(playerInTurn, attacksWon.get(playerInTurn) + 1);
@@ -120,8 +119,8 @@ public class GameImpl implements Game {
             unitToBeMoved = unitFrom;
         }
         // Now, move the unit:
-        world.unitMap().put(to, (UnitImpl) unitToBeMoved);
-        world.unitMap().remove(from);
+        world.setUnitAt(to, unitToBeMoved);
+        world.removeUnitAt(from);
         ((UnitImpl) unitFrom).reduceMoveCountBy(distanceToBeMoved);
 
         CityImpl cityTo = (CityImpl) getCityAt(to);
@@ -147,14 +146,14 @@ public class GameImpl implements Game {
         age = ageStrategy.calculateAge(age);
 
         // Restore the move count of all the units.
-        for (Position p : world.unitMap().keySet()) {
-            world.unitMap().get(p).restoreMoveCount();
+        for (Position p : world.getUnitPositions()) {
+            world.getUnitAt(p).restoreMoveCount();
         }
 
         // For each city, add 6 to the current amount of production, and produce as many units as it can afford.
-        for (Position p : world.cityMap().keySet()) {
+        for (Position p : world.getCityPositions()) {
 
-            world.cityMap().get(p).increaseAmountOfProduction(6);  // Constant amount of 6 in AlphaCiv.
+            world.getCityAt(p).increaseAmountOfProduction(6);  // Constant amount of 6 in AlphaCiv.
 
             // produce units!
             produceUnitsInCityAt(p);
@@ -223,7 +222,7 @@ public class GameImpl implements Game {
                         && !getTileAt(p).getTypeString().equals(GameConstants.OCEANS)) {
 
                     UnitImpl u = new UnitImpl(playerInTurn, unittype);
-                    world.unitMap().put(p, u);
+                    world.setUnitAt(p, u);
                     nUnitsProduced++;  // now one more unit has been created.
                 }
 
@@ -281,8 +280,8 @@ public class GameImpl implements Game {
      * Returns a set containing all the positions at which there are cities.
      * Added by L&M.
      */
-    public Set<Position> getCityPositions() {
-        return world.cityMap().keySet();
+    public Iterable<Position> getCityPositions() {
+        return world.getCityPositions();
     }
 
     @SuppressWarnings("unchecked")

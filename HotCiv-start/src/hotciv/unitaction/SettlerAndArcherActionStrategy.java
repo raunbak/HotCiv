@@ -2,9 +2,9 @@ package hotciv.unitaction;
 
 import hotciv.framework.GameConstants;
 import hotciv.framework.Position;
+import hotciv.framework.World;
 import hotciv.standard.CityImpl;
 import hotciv.standard.UnitImpl;
-import hotciv.standard.World;
 
 /**
  *
@@ -12,7 +12,7 @@ import hotciv.standard.World;
 public class SettlerAndArcherActionStrategy implements UnitActionStrategy {
     @Override
     public void performUnitAction(World world, Position p) {
-        UnitImpl u = world.unitMap().get(p);
+        UnitImpl u = world.getUnitAt(p);
         String type = u.getTypeString();
 
         if (type.equals(GameConstants.ARCHER)) {
@@ -32,10 +32,10 @@ public class SettlerAndArcherActionStrategy implements UnitActionStrategy {
         }
 
         if (type.equals(GameConstants.SETTLER)
-                && !world.cityMap().containsKey(p)) {
+                && world.getCityAt(p) == null) {
             // Build a city at the cost of the settler.
-            world.cityMap().put(p, new CityImpl(u.getOwner()));
-            world.unitMap().remove(p);
+            world.setCityAt(p, new CityImpl(u.getOwner()));
+            world.removeUnitAt(p);
         }
     }
 }

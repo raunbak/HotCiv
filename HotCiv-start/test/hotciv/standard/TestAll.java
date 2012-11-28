@@ -13,7 +13,10 @@ import org.junit.runners.Suite;
                 TestUtility.class,
                 TestWinByAttacksStrategy.class,
                 TestAdvancedAttackStrategy.class,
-                TestEpsilonCiv.class
+                TestEpsilonCiv.class,
+                TestInvalidUnitCreation.class,
+                TestAdvancedAttackStrategy.class,
+                TestZetaCiv.class
         })
 
 public class TestAll {

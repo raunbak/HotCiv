@@ -4,17 +4,11 @@ import hotciv.framework.*;
 import hotciv.standard.CityImpl;
 import hotciv.standard.TileImpl;
 import hotciv.standard.UnitImpl;
-import hotciv.standard.World;
-
-import java.util.HashMap;
 
 /**
  *
  */
 public class AdvancedLayoutStrategy implements WorldStrategy {
-    private HashMap<Position, TileImpl> tileMap = new HashMap<Position, TileImpl>();
-    private HashMap<Position, CityImpl> cityMap = new HashMap<Position, CityImpl>();
-    private HashMap<Position, UnitImpl> unitMap = new HashMap<Position, UnitImpl>();
 
 
     String[] tilelayout = new String[]{
@@ -36,18 +30,7 @@ public class AdvancedLayoutStrategy implements WorldStrategy {
             ".....ooooooooo..",
     };
 
-    public AdvancedLayoutStrategy() {
-
-        defineTilesOfWorld();
-        Position p = new Position(8, 12);
-        cityMap.put(p, new CityImpl(Player.RED));
-        p = new Position(4, 5);
-        cityMap.put(p, new CityImpl(Player.BLUE));
-        p = new Position(2, 0);
-        unitMap.put(p, new UnitImpl(Player.RED, GameConstants.ARCHER));
-    }
-
-    private void defineTilesOfWorld() {
+    private void defineTilesOfWorld(World world) {
         String line;
         for (int r = 0; r < GameConstants.WORLDSIZE; r++) {
             line = tilelayout[r];
@@ -71,14 +54,20 @@ public class AdvancedLayoutStrategy implements WorldStrategy {
                 }
 
                 Position p = new Position(r, c);
-                tileMap.put(p, new TileImpl(p, type));
+                world.setTileAt(p, new TileImpl(p, type));
 
             }
         }
     }
 
     @Override
-    public World getWorld() {
-        return new World(tileMap, cityMap, unitMap);
+    public void setupInitialWorld(World world) {
+        defineTilesOfWorld(world);
+        Position p = new Position(8, 12);
+        world.setCityAt(p, new CityImpl(Player.RED));
+        p = new Position(4, 5);
+        world.setCityAt(p, new CityImpl(Player.BLUE));
+        p = new Position(2, 0);
+        world.setUnitAt(p, new UnitImpl(Player.RED, GameConstants.ARCHER));
     }
 }

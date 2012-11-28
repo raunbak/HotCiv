@@ -92,7 +92,9 @@ public class TestAlphaCiv {
     @Test
     public void redShouldWinInYear3000BC() {
         assertEquals("Game should start at 4000 BC", -4000, game.getAge());
-        makeGameRunNturns(10);
+        makeGameRunNturns(9);
+        assertNull("Red should not yet have won at 3100 BC", game.getWinner());
+        makeGameRunNturns(1);
         assertEquals("Red should have won at 3000 BC", Player.RED, game.getWinner());
     }
 

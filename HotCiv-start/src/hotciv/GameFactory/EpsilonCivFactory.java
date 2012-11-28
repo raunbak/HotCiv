@@ -6,17 +6,14 @@ import hotciv.attackStrategy.AdvancedAttackStrategy;
 import hotciv.attackStrategy.AttackStrategy;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
+import hotciv.winner.WinAfterXRoundsBy3WonAttacksStrategy;
 import hotciv.winner.WinBy3WonAttacksStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.world.SimpleLayoutStrategy;
 import hotciv.world.WorldStrategy;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 24-11-12
- * Time: 15:00
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class EpsilonCivFactory implements AbstractGameFactory {
     @Override
@@ -26,7 +23,9 @@ public class EpsilonCivFactory implements AbstractGameFactory {
 
     @Override
     public WinnerStrategy createWinnerStrategy() {
-        return new WinBy3WonAttacksStrategy();
+        // return new WinBy3WonAttacksStrategy();
+        // TODO we can use the new one instead, thus removing code duplication.
+        return new WinAfterXRoundsBy3WonAttacksStrategy();
     }
 
     @Override

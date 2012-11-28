@@ -1,20 +1,16 @@
 package hotciv.attackStrategy;
 
-import hotciv.framework.Game;
 import hotciv.framework.Position;
 import hotciv.framework.Unit;
+import hotciv.framework.World;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 22-11-12
- * Time: 12:28
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class SimpleAttackStrategy implements AttackStrategy {
     @Override
-    public Unit outcomeOfBattle(Game game, Position pAttacking, Position pDefending) {
-        return game.getUnitAt(pAttacking);
+    public Unit outcomeOfBattle(World world, Position pAttacking, Position pDefending) {
+        return world.getUnitAt(pAttacking);
 
     }
 

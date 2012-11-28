@@ -27,6 +27,5 @@ public class TestDecreasingAgeStrategy {
     public void shouldGive1980() {
         assertEquals("Age should be 1980", 1980, AS.calculateAge(1979));
     }
-    // TODO More tests
 
 }

@@ -7,11 +7,7 @@ import hotciv.standard.GameImpl;
 import java.util.HashMap;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 22-11-12
- * Time: 10:37
- * To change this template use File | Settings | File Templates.
+ * TODO delete class if we use WinAfterXRoundsBy3WonAttacksStrategy instead.
  */
 public class WinBy3WonAttacksStrategy implements WinnerStrategy {
     @Override
