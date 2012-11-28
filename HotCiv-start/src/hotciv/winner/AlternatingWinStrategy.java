@@ -1,15 +1,12 @@
 package hotciv.winner;
 
+import hotciv.framework.ExtendedGame;
 import hotciv.framework.Game;
 import hotciv.framework.Player;
 import hotciv.standard.GameImpl;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 24-11-12
- * Time: 14:17
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class AlternatingWinStrategy implements WinnerStrategy {
     private WinnerStrategy before20RoundsStrategy,
@@ -23,8 +20,8 @@ public class AlternatingWinStrategy implements WinnerStrategy {
         this.currentStrategy = null;
     }
     @Override
-    public Player winner(Game game) {
-        if (((GameImpl) game).getRoundsPlayed() <= 20) {
+    public Player winner(ExtendedGame game) {
+        if (game.getRoundsPlayed() <= 20) {
             currentStrategy = before20RoundsStrategy;
         }
         else {

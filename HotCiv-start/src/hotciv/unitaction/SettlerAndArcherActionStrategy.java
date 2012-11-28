@@ -1,6 +1,7 @@
 package hotciv.unitaction;
 
 import hotciv.framework.GameConstants;
+import hotciv.framework.ModifiableUnit;
 import hotciv.framework.Position;
 import hotciv.framework.World;
 import hotciv.standard.CityImpl;
@@ -12,7 +13,7 @@ import hotciv.standard.UnitImpl;
 public class SettlerAndArcherActionStrategy implements UnitActionStrategy {
     @Override
     public void performUnitAction(World world, Position p) {
-        UnitImpl u = world.getUnitAt(p);
+        ModifiableUnit u = world.getUnitAt(p);
         String type = u.getTypeString();
 
         if (type.equals(GameConstants.ARCHER)) {

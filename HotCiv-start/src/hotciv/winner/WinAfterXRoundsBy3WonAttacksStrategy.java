@@ -1,5 +1,6 @@
 package hotciv.winner;
 
+import hotciv.framework.ExtendedGame;
 import hotciv.framework.Game;
 import hotciv.framework.Player;
 import hotciv.standard.GameImpl;
@@ -14,14 +15,13 @@ public class WinAfterXRoundsBy3WonAttacksStrategy implements WinnerStrategy {
     private HashMap<Player,Integer> wonAttacksAt20Rounds;
 
     @Override
-    public Player winner(Game game) {
-        GameImpl gameimpl = (GameImpl) game;
+    public Player winner(ExtendedGame game) {
 
         if (wonAttacksAt20Rounds == null) {
-            wonAttacksAt20Rounds = gameimpl.getAttacksWonMap();
+            wonAttacksAt20Rounds = game.getAttacksWonMap();
         }
 
-        HashMap<Player,Integer> attacksWon = gameimpl.getAttacksWonMap();
+        HashMap<Player,Integer> attacksWon = game.getAttacksWonMap();
 
         for (Player p : attacksWon.keySet()) {
             if ((attacksWon.get(p) - wonAttacksAt20Rounds.get(p)) >= 3) {

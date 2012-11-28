@@ -6,7 +6,6 @@ package hotciv.framework;
 
 public class Die{
 
-    private int eyes;
     private int sides;
     /**
      * Die-constructor
@@ -24,13 +23,6 @@ public class Die{
      * Roll the die. Generates a random number, between 1 and the number of sides.
      */
     public int roll(){
-        return eyes = (int)((Math.random() * sides) + 1);
-    }
-
-    /**
-     * Returns the number og eyes from the last roll.
-     */
-    public int getEyes(){
-        return eyes;
+        return (int)((Math.random() * sides) + 1);
     }
 }

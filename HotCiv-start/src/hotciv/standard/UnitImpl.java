@@ -5,7 +5,7 @@ import hotciv.framework.*;
 /**
  * UnitImpl is an implementation of Unit.
  */
-public class UnitImpl implements Unit {
+public class UnitImpl implements ModifiableUnit {
     private Player owner;
     private String unittype;
     private int defensiveStrength;
@@ -56,19 +56,22 @@ public class UnitImpl implements Unit {
         return attackingStrength;
     }
 
-
+    @Override
     public void reduceMoveCountBy(int moves) {
         moveCount -= moves;
     }
 
+    @Override
     public void restoreMoveCount() {
         moveCount = totalMoves;
     }
 
+    @Override
     public void setTotalMoves(int totalMoves) {
         this.totalMoves = totalMoves;
     }
 
+    @Override
     public void setDefensiveStrength(int defStrength) {
         defensiveStrength = defStrength;
     }

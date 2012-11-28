@@ -7,10 +7,10 @@ import hotciv.framework.*;
  */
 public class AdvancedAttackStrategy implements AttackStrategy {
     @Override
-    public Unit outcomeOfBattle(World world, Position pAttacking, Position pDefending) {
+    public ModifiableUnit outcomeOfBattle(World world, Position pAttacking, Position pDefending) {
 
-        Unit unitAttacking = world.getUnitAt(pAttacking);
-        Unit unitDefending = world.getUnitAt(pDefending);
+        ModifiableUnit unitAttacking = world.getUnitAt(pAttacking);
+        ModifiableUnit unitDefending = world.getUnitAt(pDefending);
 
         // Getting all values needed to calculate winner.
         int attStrength = unitAttacking.getAttackingStrength();

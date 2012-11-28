@@ -12,28 +12,26 @@ import java.util.HashMap;
  */
 @SuppressWarnings("unchecked")
 public class WorldImpl implements World {
-    private HashMap<Position, TileImpl> tileMap;
-    private HashMap<Position, CityImpl> cityMap;
-    private HashMap<Position, UnitImpl> unitMap;
+    private HashMap<Position, Tile> tileMap;
+    private HashMap<Position, ModifiableCity> cityMap;
+    private HashMap<Position, ModifiableUnit> unitMap;
 
     public WorldImpl() {
-        tileMap = new HashMap<Position, TileImpl>();
-        cityMap = new HashMap<Position, CityImpl>();
-        unitMap = new HashMap<Position, UnitImpl>();
+        tileMap = new HashMap<Position, Tile>();
+        cityMap = new HashMap<Position, ModifiableCity>();
+        unitMap = new HashMap<Position, ModifiableUnit>();
     }
 
 
-    public TileImpl getTileAt(Position p) {
+    public Tile getTileAt(Position p) {
         return tileMap.get(p);
     }
 
-    //@SuppressWarnings("unchecked")
-    public UnitImpl getUnitAt(Position p) {
+    public ModifiableUnit getUnitAt(Position p) {
         return unitMap.get(p);
     }
 
-    //@SuppressWarnings("unchecked")
-    public CityImpl getCityAt(Position p) {
+    public ModifiableCity getCityAt(Position p) {
         return cityMap.get(p);
     }
 

@@ -1,5 +1,6 @@
 package hotciv.winner;
 
+import hotciv.framework.ExtendedGame;
 import hotciv.framework.Game;
 import hotciv.framework.Player;
 import hotciv.framework.Position;
@@ -17,9 +18,9 @@ public class WinByConquestStrategy implements WinnerStrategy {
      * @return The winner of the game or null if there is no winner yet.
      */
     @Override
-    public Player winner(Game game) {
+    public Player winner(ExtendedGame game) {
 
-        Iterable<Position> cityKeySet = ((GameImpl) game).getCityPositions();
+        Iterable<Position> cityKeySet = game.getCityPositions();
         Player winnerSoFar = null;
 
         for (Position p : cityKeySet) {
