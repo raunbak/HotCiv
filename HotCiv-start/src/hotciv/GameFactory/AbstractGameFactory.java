@@ -2,6 +2,7 @@ package hotciv.GameFactory;
 
 import hotciv.age.AgeStrategy;
 import hotciv.attackStrategy.AttackStrategy;
+import hotciv.framework.ExtendedGame;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.world.WorldStrategy;
@@ -17,7 +18,7 @@ public interface AbstractGameFactory {
 
     public AgeStrategy createAgeStrategy();
 
-    public WinnerStrategy createWinnerStrategy();
+    public WinnerStrategy createWinnerStrategy(ExtendedGame game);
 
     public WorldStrategy createWorldStrategy();
 

@@ -4,6 +4,7 @@ import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.attackStrategy.AttackStrategy;
 import hotciv.attackStrategy.SimpleAttackStrategy;
+import hotciv.framework.ExtendedGame;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.RedWinsAtAge3000BCStrategy;
@@ -25,7 +26,7 @@ public class AlphaCivFactory implements AbstractGameFactory {
     }
 
     @Override
-    public WinnerStrategy createWinnerStrategy() {
+    public WinnerStrategy createWinnerStrategy(ExtendedGame game) {
         return new RedWinsAtAge3000BCStrategy();
     }
 

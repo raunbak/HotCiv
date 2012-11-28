@@ -4,12 +4,10 @@ import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.attackStrategy.AttackStrategy;
 import hotciv.attackStrategy.SimpleAttackStrategy;
+import hotciv.framework.ExtendedGame;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
-import hotciv.winner.AlternatingWinStrategy;
-import hotciv.winner.WinAfterXRoundsBy3WonAttacksStrategy;
-import hotciv.winner.WinByConquestStrategy;
-import hotciv.winner.WinnerStrategy;
+import hotciv.winner.*;
 import hotciv.world.SimpleLayoutStrategy;
 import hotciv.world.WorldStrategy;
 
@@ -23,8 +21,8 @@ public class ZetaCivFactory implements AbstractGameFactory {
     }
 
     @Override
-    public WinnerStrategy createWinnerStrategy() {
-        return new AlternatingWinStrategy(new WinByConquestStrategy(),new WinAfterXRoundsBy3WonAttacksStrategy());
+    public WinnerStrategy createWinnerStrategy(ExtendedGame game) {
+        return new AlternatingWinStrategy(new WinByConquestStrategy(),new WinBy3WonAttacksStrategy(game));
     }
 
     @Override

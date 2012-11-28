@@ -20,8 +20,8 @@ public interface ExtendedGame extends Game {
     public Iterable<Position> getCityPositions();
 
     /**
-     *
-     * @return
+     * Add an AttacksWonSubscriber to the list that will get notified each time an attack is won.
+     * @param sub The subscriber that wants to receive updates in regards to attacks won.
      */
-    public HashMap<Player, Integer> getAttacksWonMap();
+    public void addAttacksWonSubscriber(AttacksWonSubscriber sub);
 }

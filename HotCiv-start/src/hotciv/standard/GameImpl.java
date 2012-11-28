@@ -8,7 +8,7 @@ import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.world.WorldStrategy;
 
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * An implementation of Game. Based on the skeleton implementation from Henrik B Christensen.
@@ -25,27 +25,25 @@ public class GameImpl implements ExtendedGame {
     private AgeStrategy ageStrategy;
     private WinnerStrategy winnerStrategy;
     private UnitActionStrategy unitActionStrategy;
-    private HashMap<Player, Integer> attacksWon;
     private AttackStrategy attackStrategy;
     private WorldImpl world = new WorldImpl();  // holds all tiles, cities, units.
     private int roundsPlayed;
 
+    private List<AttacksWonSubscriber> subscribers;
+
+
     public GameImpl(AbstractGameFactory gameFactory) {
+        subscribers = new ArrayList<AttacksWonSubscriber>();
 
         // Create all needed Strategies
         ageStrategy = gameFactory.createAgeStrategy();
-        winnerStrategy = gameFactory.createWinnerStrategy();
+        winnerStrategy = gameFactory.createWinnerStrategy(this);
         WorldStrategy worldStrategy = gameFactory.createWorldStrategy();
         unitActionStrategy = gameFactory.createUnitActionStrategy();
         attackStrategy = gameFactory.createAttackStrategy();
 
         // Make the world strategy setup the world containing the initial layout of Tiles, Cities and Units.
         worldStrategy.setupInitialWorld(world);
-
-        // No player has won any attacks at the start of the game.
-        attacksWon = new HashMap<Player, Integer>();
-        attacksWon.put(Player.RED, 0);
-        attacksWon.put(Player.BLUE, 0);
 
         // Number of rounds played.
         roundsPlayed = 0;
@@ -110,8 +108,12 @@ public class GameImpl implements ExtendedGame {
 
             ModifiableUnit winningUnit = attackStrategy.outcomeOfBattle(world, from, to);
 
+
             if (winningUnit.getOwner() == playerInTurn) {
-                attacksWon.put(playerInTurn, attacksWon.get(playerInTurn) + 1);
+
+                for (AttacksWonSubscriber sub : subscribers) {
+                    sub.aWonAttack(playerInTurn);
+                }
             }
 
             unitToBeMoved = winningUnit;
@@ -181,25 +183,18 @@ public class GameImpl implements ExtendedGame {
         }
     }
 
-    /**
-     * Get the number of rounds played so far.
-     * Added by L&M.
-     * @return Number of rounds played
-     */
     public int getRoundsPlayed(){
         return roundsPlayed;
     }
 
-    /**
-     * Returns a set containing all the positions at which there are cities.
-     * Added by L&M.
-     */
     public Iterable<Position> getCityPositions() {
         return world.getCityPositions();
     }
 
-    @SuppressWarnings("unchecked")
-    public HashMap<Player, Integer> getAttacksWonMap() {
-        return (HashMap<Player, Integer>) attacksWon.clone();
+    public void addAttacksWonSubscriber(AttacksWonSubscriber sub) {
+        if (!subscribers.contains(sub)) {
+            subscribers.add(sub);
+        }
     }
+
 }

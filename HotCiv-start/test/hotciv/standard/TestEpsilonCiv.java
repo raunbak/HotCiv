@@ -18,7 +18,7 @@ public class TestEpsilonCiv {
 
     @Test
     public void dummy() {
-        // TODO We tested all necessary cases in TestAdvancedAttackStrategy? But if we use WinAfterXRoundsBy3WonAttacksStrategy in EpsilonCiv, we might want to test this.
+        // TODO We tested all necessary cases in TestAdvancedAttackStrategy?
     }
 
 

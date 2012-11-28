@@ -2,7 +2,9 @@ package hotciv.standard;
 
 import hotciv.framework.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * A class representing the world.
@@ -47,17 +49,17 @@ public class WorldImpl implements World {
 
     @Override
     public void setTileAt(Position p, Tile t) {
-        tileMap.put(p, (TileImpl) t);
+        tileMap.put(p, t);
     }
 
     @Override
     public void setCityAt(Position p, City c) {
-        cityMap.put(p, (CityImpl) c);
+        cityMap.put(p, (ModifiableCity) c);
     }
 
     @Override
     public void setUnitAt(Position p, Unit u) {
-        unitMap.put(p, (UnitImpl) u);
+        unitMap.put(p, (ModifiableUnit) u);
     }
 
     @Override

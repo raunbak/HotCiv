@@ -4,9 +4,9 @@ import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.attackStrategy.AdvancedAttackStrategy;
 import hotciv.attackStrategy.AttackStrategy;
+import hotciv.framework.ExtendedGame;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
-import hotciv.winner.WinAfterXRoundsBy3WonAttacksStrategy;
 import hotciv.winner.WinBy3WonAttacksStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.world.SimpleLayoutStrategy;
@@ -22,10 +22,8 @@ public class EpsilonCivFactory implements AbstractGameFactory {
     }
 
     @Override
-    public WinnerStrategy createWinnerStrategy() {
-        // return new WinBy3WonAttacksStrategy();
-        // TODO we can use the new one instead, thus removing code duplication.
-        return new WinAfterXRoundsBy3WonAttacksStrategy();
+    public WinnerStrategy createWinnerStrategy(ExtendedGame game) {
+        return new WinBy3WonAttacksStrategy(game);
     }
 
     @Override

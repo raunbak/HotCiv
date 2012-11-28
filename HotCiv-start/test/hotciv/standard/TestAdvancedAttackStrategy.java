@@ -95,8 +95,8 @@ public class TestAdvancedAttackStrategy {
         }
 
         @Override
-        public WinnerStrategy createWinnerStrategy() {
-            return new WinBy3WonAttacksStrategy();
+        public WinnerStrategy createWinnerStrategy(ExtendedGame game) {
+            return new WinBy3WonAttacksStrategy(game);
         }
 
         @Override
