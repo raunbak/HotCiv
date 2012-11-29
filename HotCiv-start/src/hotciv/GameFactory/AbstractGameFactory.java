@@ -1,8 +1,9 @@
 package hotciv.GameFactory;
 
 import hotciv.age.AgeStrategy;
-import hotciv.attackStrategy.AttackStrategy;
+import hotciv.attack.AttackStrategy;
 import hotciv.framework.ExtendedGame;
+import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.workforce.WorkForceStrategy;
@@ -28,4 +29,6 @@ public interface AbstractGameFactory {
     public AttackStrategy createAttackStrategy();
 
     public WorkForceStrategy createWorkForceStrategy();
+
+    public PopulationStrategy createPopulationStrategy();
 }

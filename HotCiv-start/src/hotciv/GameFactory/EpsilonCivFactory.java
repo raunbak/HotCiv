@@ -2,9 +2,11 @@ package hotciv.GameFactory;
 
 import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
-import hotciv.attackStrategy.AdvancedAttackStrategy;
-import hotciv.attackStrategy.AttackStrategy;
+import hotciv.attack.AdvancedAttackStrategy;
+import hotciv.attack.AttackStrategy;
 import hotciv.framework.ExtendedGame;
+import hotciv.population.PopulationStrategy;
+import hotciv.population.SimplePopulationStrategy;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinBy3WonAttacksStrategy;
@@ -46,5 +48,10 @@ public class EpsilonCivFactory implements AbstractGameFactory {
     @Override
     public WorkForceStrategy createWorkForceStrategy() {
         return new SimpleWorkForceStrategy();
+    }
+
+    @Override
+    public PopulationStrategy createPopulationStrategy() {
+        return new SimplePopulationStrategy();
     }
 }

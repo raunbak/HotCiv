@@ -2,9 +2,11 @@ package hotciv.GameFactory;
 
 import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
-import hotciv.attackStrategy.AttackStrategy;
-import hotciv.attackStrategy.SimpleAttackStrategy;
+import hotciv.attack.AttackStrategy;
+import hotciv.attack.SimpleAttackStrategy;
 import hotciv.framework.ExtendedGame;
+import hotciv.population.PopulationStrategy;
+import hotciv.population.SimplePopulationStrategy;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.*;
@@ -45,5 +47,10 @@ public class ZetaCivFactory implements AbstractGameFactory {
     @Override
     public WorkForceStrategy createWorkForceStrategy() {
         return new SimpleWorkForceStrategy();
+    }
+
+    @Override
+    public PopulationStrategy createPopulationStrategy() {
+        return new SimplePopulationStrategy();
     }
 }

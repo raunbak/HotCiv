@@ -3,9 +3,10 @@ package hotciv.standard;
 import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
-import hotciv.attackStrategy.AttackStrategy;
-import hotciv.attackStrategy.SimpleAttackStrategy;
+import hotciv.attack.AttackStrategy;
+import hotciv.attack.SimpleAttackStrategy;
 import hotciv.framework.*;
+import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinBy3WonAttacksStrategy;
@@ -110,6 +111,11 @@ public class TestWinByAttacksStrategy {
 
         @Override
         public WorkForceStrategy createWorkForceStrategy() {
+            return null;
+        }
+
+        @Override
+        public PopulationStrategy createPopulationStrategy() {
             return null;
         }
     }

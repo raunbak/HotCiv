@@ -24,9 +24,9 @@ public class TestEtaCiv {
     @Test
     public void redCityWithProductionFocusShouldProduce4perRound() {
         Position p = new Position(1,1);
-        ModifiableCity redCity = (ModifiableCity) game.getCityAt(p);
-        redCity.addToPopulation(3);
-        redCity.setWorkForceFocus(GameConstants.productionFocus);
+        ModifiableCity city = (ModifiableCity) game.getCityAt(p);
+        city.addToPopulation(3);
+        city.setWorkForceFocus(GameConstants.productionFocus);
         makeGameRunNturns(1);
         assertEquals("Should have produced 4 resources.", 4, game.getCityAt(p).getCurrentAmountOfProduction());
     }
@@ -34,11 +34,21 @@ public class TestEtaCiv {
     @Test
     public void redCityWithFoodFocusShouldProduce10perRound() {
         Position p = new Position(1,1);
-        ModifiableCity blueCity = (ModifiableCity) game.getCityAt(p);
-        blueCity.addToPopulation(3);
-        blueCity.setWorkForceFocus(GameConstants.foodFocus);
+        ModifiableCity city = (ModifiableCity) game.getCityAt(p);
+        city.addToPopulation(3);
         makeGameRunNturns(1);
         assertEquals("Should have produced 10 food.", 10, game.getCityAt(p).getCurrentAmountOfFood());
+    }
+
+    @Test
+    public void redCityShouldGrowToSize5inTwoRounds() {
+        Position p = new Position(1,1);
+        ModifiableCity city = (ModifiableCity) game.getCityAt(p);
+        city.addToPopulation(3);
+        makeGameRunNturns(1);
+        assertEquals("City should still be of size 4.", 4, city.getSize());
+        makeGameRunNturns(1);
+        assertEquals("City should now have grown to size 5.", 5, city.getSize());
     }
 
 

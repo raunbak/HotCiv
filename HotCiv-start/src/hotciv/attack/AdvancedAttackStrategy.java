@@ -1,4 +1,4 @@
-package hotciv.attackStrategy;
+package hotciv.attack;
 
 import hotciv.framework.*;
 

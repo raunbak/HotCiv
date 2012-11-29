@@ -43,16 +43,7 @@ public class AdvancedWorkForceStrategy implements WorkForceStrategy {
 
         System.out.println("Workforce focus: "+focus); // todo delete print
 
-        // No preferences, just pick the number of tiles needed.
-        if (focus == null) {
-            for (int i = 0; i < peopleAvailable; i++) {
-                resourcesProduced += tileResources[i];
-                foodGathered += tileFood[i];
-
-                System.out.println("Tile["+i+"] gives: "+tileFood[i]+" food and "+tileResources[i]+" production."); // todo delete print
-            }
-        }
-        else if (focus.equals(GameConstants.productionFocus)) {
+        if (focus.equals(GameConstants.productionFocus)) {
             // Sort in descending order.
             Arrays.sort(tileResources, Collections.reverseOrder());
 
@@ -82,11 +73,6 @@ public class AdvancedWorkForceStrategy implements WorkForceStrategy {
         city.increaseAmountOfProduction(resourcesProduced);
         city.increaseAmountOfFood(foodGathered);
 
-        // City population
-        int foodLimit = 5 + 3 * city.getSize();
-        if (city.getCurrentAmountOfFood() > foodLimit && city.getSize() < 9) {
-            city.addToPopulation(1);
-            city.reduceAmountOfFood(foodLimit);
-        }
+
     }
 }

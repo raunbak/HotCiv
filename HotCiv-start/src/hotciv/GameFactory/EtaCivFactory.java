@@ -2,9 +2,11 @@ package hotciv.GameFactory;
 
 import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
-import hotciv.attackStrategy.AttackStrategy;
-import hotciv.attackStrategy.SimpleAttackStrategy;
+import hotciv.attack.AttackStrategy;
+import hotciv.attack.SimpleAttackStrategy;
 import hotciv.framework.ExtendedGame;
+import hotciv.population.AdvancedPopulationStrategy;
+import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.RedWinsAtAge3000BCStrategy;
@@ -46,5 +48,10 @@ public class EtaCivFactory implements AbstractGameFactory {
     @Override
     public WorkForceStrategy createWorkForceStrategy() {
         return new AdvancedWorkForceStrategy();
+    }
+
+    @Override
+    public PopulationStrategy createPopulationStrategy() {
+        return new AdvancedPopulationStrategy();
     }
 }

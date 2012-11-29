@@ -21,6 +21,7 @@ public class CityImpl implements ModifiableCity {
     public CityImpl(Player player) {
         owner = player;
         size = 1;
+        workForceFocus = GameConstants.foodFocus;
     }
 
     @Override

@@ -2,8 +2,9 @@ package hotciv.standard;
 
 import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.age.AgeStrategy;
-import hotciv.attackStrategy.AttackStrategy;
+import hotciv.attack.AttackStrategy;
 import hotciv.framework.*;
+import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.workforce.WorkForceStrategy;
@@ -28,6 +29,7 @@ public class GameImpl implements ExtendedGame {
     private UnitActionStrategy unitActionStrategy;
     private AttackStrategy attackStrategy;
     private WorkForceStrategy workForceStrategy;
+    private PopulationStrategy populationStrategy;
     private WorldImpl world = new WorldImpl();  // holds all tiles, cities, units.
     private int roundsPlayed;
 
@@ -44,6 +46,7 @@ public class GameImpl implements ExtendedGame {
         unitActionStrategy = gameFactory.createUnitActionStrategy();
         attackStrategy = gameFactory.createAttackStrategy();
         workForceStrategy = gameFactory.createWorkForceStrategy();
+        populationStrategy = gameFactory.createPopulationStrategy();
 
         // Make the world strategy setup the world containing the initial layout of Tiles, Cities and Units.
         worldStrategy.setupInitialWorld(world);
@@ -160,6 +163,8 @@ public class GameImpl implements ExtendedGame {
             ModifiableCity city = world.getCityAt(p);
 
             workForceStrategy.gatherFoodAndProduction(world, p);
+
+            populationStrategy.populationGrowth(world, p);
 
             // produce units!
             city.produceUnits(world, p);
