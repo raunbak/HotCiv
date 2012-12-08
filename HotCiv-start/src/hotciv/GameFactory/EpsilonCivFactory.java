@@ -4,6 +4,7 @@ import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.attack.AdvancedAttackStrategy;
 import hotciv.attack.AttackStrategy;
+import hotciv.framework.Die;
 import hotciv.framework.ExtendedGame;
 import hotciv.population.PopulationStrategy;
 import hotciv.population.SimplePopulationStrategy;
@@ -41,8 +42,8 @@ public class EpsilonCivFactory implements AbstractGameFactory {
     }
 
     @Override
-    public AttackStrategy createAttackStrategy() {
-        return new AdvancedAttackStrategy();
+    public AttackStrategy createAttackStrategy(Die die) {
+        return new AdvancedAttackStrategy(die);
     }
 
     @Override

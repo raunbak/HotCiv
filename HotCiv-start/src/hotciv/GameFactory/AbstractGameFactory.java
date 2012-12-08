@@ -2,6 +2,7 @@ package hotciv.GameFactory;
 
 import hotciv.age.AgeStrategy;
 import hotciv.attack.AttackStrategy;
+import hotciv.framework.Die;
 import hotciv.framework.ExtendedGame;
 import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.UnitActionStrategy;
@@ -10,11 +11,7 @@ import hotciv.workforce.WorkForceStrategy;
 import hotciv.world.WorldStrategy;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 24-11-12
- * Time: 12:15
- * To change this template use File | Settings | File Templates.
+ * Abstract Factory pattern.
  */
 public interface AbstractGameFactory {
 
@@ -26,7 +23,7 @@ public interface AbstractGameFactory {
 
     public UnitActionStrategy createUnitActionStrategy();
 
-    public AttackStrategy createAttackStrategy();
+    public AttackStrategy createAttackStrategy(Die die);
 
     public WorkForceStrategy createWorkForceStrategy();
 

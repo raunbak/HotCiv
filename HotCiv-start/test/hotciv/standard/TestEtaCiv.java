@@ -4,7 +4,7 @@ import hotciv.framework.Game;
 import hotciv.framework.GameConstants;
 import hotciv.framework.ModifiableCity;
 import hotciv.framework.Position;
-import hotciv.gameFactory.EtaCivFactory;
+import hotciv.GameFactory.EtaCivFactory;
 import org.junit.Before;
 import org.junit.Test;
 

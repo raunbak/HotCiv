@@ -4,6 +4,7 @@ import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.attack.AttackStrategy;
 import hotciv.attack.SimpleAttackStrategy;
+import hotciv.framework.Die;
 import hotciv.framework.ExtendedGame;
 import hotciv.population.PopulationStrategy;
 import hotciv.population.SimplePopulationStrategy;
@@ -17,11 +18,7 @@ import hotciv.world.SimpleLayoutStrategy;
 import hotciv.world.WorldStrategy;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 24-11-12
- * Time: 12:28
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class GammaCivFactory implements AbstractGameFactory {
     @Override
@@ -45,7 +42,7 @@ public class GammaCivFactory implements AbstractGameFactory {
     }
 
     @Override
-    public AttackStrategy createAttackStrategy() {
+    public AttackStrategy createAttackStrategy(Die die) {
         return new SimpleAttackStrategy();
     }
 

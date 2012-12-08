@@ -1,7 +1,7 @@
 package hotciv.standard;
 
 import hotciv.framework.Game;
-import hotciv.gameFactory.ZetaCivFactory;
+import hotciv.GameFactory.ZetaCivFactory;
 import org.junit.Before;
 import org.junit.Test;
 

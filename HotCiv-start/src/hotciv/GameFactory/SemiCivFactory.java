@@ -4,6 +4,7 @@ import hotciv.age.AgeStrategy;
 import hotciv.age.DecreasingAgeStrategy;
 import hotciv.attack.AdvancedAttackStrategy;
 import hotciv.attack.AttackStrategy;
+import hotciv.framework.Die;
 import hotciv.framework.ExtendedGame;
 import hotciv.population.AdvancedPopulationStrategy;
 import hotciv.population.PopulationStrategy;
@@ -19,7 +20,7 @@ import hotciv.world.WorldStrategy;
 /**
  *
  */
-public class SemiCivFactory implements AbstractGameFactory{
+public class SemiCivFactory implements AbstractGameFactory {
 
     @Override
     public AgeStrategy createAgeStrategy() {
@@ -42,8 +43,8 @@ public class SemiCivFactory implements AbstractGameFactory{
     }
 
     @Override
-    public AttackStrategy createAttackStrategy() {
-        return new AdvancedAttackStrategy();
+    public AttackStrategy createAttackStrategy(Die die) {
+        return new AdvancedAttackStrategy(die);
     }
 
     @Override

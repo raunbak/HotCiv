@@ -1,7 +1,7 @@
 package hotciv.standard;
 
 import hotciv.framework.Game;
-import hotciv.gameFactory.EpsilonCivFactory;
+import hotciv.GameFactory.EpsilonCivFactory;
 import org.junit.Before;
 import org.junit.Test;
 
