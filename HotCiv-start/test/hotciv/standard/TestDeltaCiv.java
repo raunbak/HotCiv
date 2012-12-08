@@ -1,10 +1,10 @@
 package hotciv.standard;
 
-import hotciv.GameFactory.DeltaCivFactory;
 import hotciv.framework.Game;
 import hotciv.framework.GameConstants;
 import hotciv.framework.Position;
 import hotciv.framework.Tile;
+import hotciv.gameFactory.DeltaCivFactory;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,11 +1,11 @@
 package hotciv.standard;
 
-import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.attack.AttackStrategy;
 import hotciv.attack.SimpleAttackStrategy;
 import hotciv.framework.*;
+import hotciv.gameFactory.AbstractGameFactory;
 import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
@@ -63,22 +63,22 @@ public class TestWinByAttacksStrategy {
             for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
                 for (int j = 0; j < GameConstants.WORLDSIZE; j++) {
                     Position p = new Position(i, j);
-                    world.setTileAt(p, new TileImpl(p, GameConstants.PLAINS));
+                    world.createTileAt(p, GameConstants.PLAINS);
                 }
             }
 
             Position p = new Position(0, 0);
-            world.setUnitAt(p, new UnitImpl(Player.RED, GameConstants.ARCHER));
+            world.createUnitAt(p, Player.RED, GameConstants.ARCHER);
             p = new Position(0, 1);
-            world.setUnitAt(p, new UnitImpl(Player.RED, GameConstants.SETTLER));
+            world.createUnitAt(p, Player.RED, GameConstants.SETTLER);
             p = new Position(0, 2);
-            world.setUnitAt(p, new UnitImpl(Player.RED, GameConstants.LEGION));
+            world.createUnitAt(p, Player.RED, GameConstants.LEGION);
             p = new Position(1, 0);
-            world.setUnitAt(p, new UnitImpl(Player.BLUE, GameConstants.SETTLER));
+            world.createUnitAt(p, Player.BLUE, GameConstants.SETTLER);
             p = new Position(1, 1);
-            world.setUnitAt(p, new UnitImpl(Player.BLUE, GameConstants.SETTLER));
+            world.createUnitAt(p, Player.BLUE, GameConstants.SETTLER);
             p = new Position(1, 2);
-            world.setUnitAt(p, new UnitImpl(Player.BLUE, GameConstants.SETTLER));
+            world.createUnitAt(p, Player.BLUE, GameConstants.SETTLER);
         }
     }
 
@@ -105,7 +105,7 @@ public class TestWinByAttacksStrategy {
         }
 
         @Override
-        public AttackStrategy createAttackStrategy() {
+        public AttackStrategy createAttackStrategy(Die die) {
             return new SimpleAttackStrategy();
         }
 
@@ -117,12 +117,6 @@ public class TestWinByAttacksStrategy {
         @Override
         public PopulationStrategy createPopulationStrategy() {
             return null;
-        }
-    }
-
-    private void makeGameRunNturns(int Nturns) {
-        for (int i = 0; i < 2 * Nturns; i++) {   // age should increment by 100 each time both player's turn has ended, 2*1000/100 = 20.
-            game.endOfTurn();
         }
     }
 }

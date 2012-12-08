@@ -2,9 +2,7 @@ package hotciv.standard;
 
 import hotciv.framework.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * A class representing the world.
@@ -12,27 +10,29 @@ import java.util.List;
  * Game holds the world-instance, and when needed passes a pointer
  * to other objects which should be able to make modifications.
  */
-@SuppressWarnings("unchecked")
+
 public class WorldImpl implements World {
-    private HashMap<Position, Tile> tileMap;
-    private HashMap<Position, ModifiableCity> cityMap;
-    private HashMap<Position, ModifiableUnit> unitMap;
+    private HashMap<Position, TileImpl> tileMap;
+    private HashMap<Position, CityImpl> cityMap;
+    private HashMap<Position, UnitImpl> unitMap;
 
     public WorldImpl() {
-        tileMap = new HashMap<Position, Tile>();
-        cityMap = new HashMap<Position, ModifiableCity>();
-        unitMap = new HashMap<Position, ModifiableUnit>();
+        tileMap = new HashMap<Position, TileImpl>();
+        cityMap = new HashMap<Position, CityImpl>();
+        unitMap = new HashMap<Position, UnitImpl>();
     }
 
-
+    @Override
     public Tile getTileAt(Position p) {
         return tileMap.get(p);
     }
 
+    @Override
     public ModifiableUnit getUnitAt(Position p) {
         return unitMap.get(p);
     }
 
+    @Override
     public ModifiableCity getCityAt(Position p) {
         return cityMap.get(p);
     }
@@ -48,23 +48,26 @@ public class WorldImpl implements World {
     }
 
     @Override
-    public void setTileAt(Position p, Tile t) {
-        tileMap.put(p, t);
+    public void forceMoveUnit(Position from, Position to) {
+        if (unitMap.containsKey(from)) {
+            unitMap.put(to, unitMap.get(from));
+            unitMap.remove(from);
+        }
     }
 
     @Override
-    public void setCityAt(Position p, City c) {
-        cityMap.put(p, (ModifiableCity) c);
+    public void createTileAt(Position p, String type) {
+        tileMap.put(p, new TileImpl(p, type));
     }
 
     @Override
-    public void setUnitAt(Position p, Unit u) {
-        unitMap.put(p, (ModifiableUnit) u);
+    public void createCityAt(Position p, Player owner) {
+        cityMap.put(p, new CityImpl(owner));
     }
 
     @Override
-    public void removeCityAt(Position p) {
-        cityMap.remove(p);
+    public void createUnitAt(Position p, Player owner, String type) {
+        unitMap.put(p, new UnitImpl(owner, type));
     }
 
     @Override

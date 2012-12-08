@@ -5,19 +5,19 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
-        {TestAlphaCiv.class,
+        {
+                TestAdvancedAttackStrategy.class,
+                TestAlphaCiv.class,
                 TestBetaCiv.class,
                 TestDecreasingAgeStrategy.class,
-                TestGammaCiv.class,
                 TestDeltaCiv.class,
+                TestEpsilonCiv.class,
+                TestEtaCiv.class,
+                TestGammaCiv.class,
+                TestInvalidUnitCreation.class,
                 TestUtility.class,
                 TestWinByAttacksStrategy.class,
-                TestAdvancedAttackStrategy.class,
-                TestEpsilonCiv.class,
-                TestInvalidUnitCreation.class,
-                TestAdvancedAttackStrategy.class,
-                TestZetaCiv.class,
-                TestEtaCiv.class
+                TestZetaCiv.class
         })
 
 public class TestAll {

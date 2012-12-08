@@ -1,6 +1,9 @@
 package hotciv.standard;
 
-import hotciv.framework.*;
+import hotciv.framework.GameConstants;
+import hotciv.framework.InvalidTypeException;
+import hotciv.framework.ModifiableUnit;
+import hotciv.framework.Player;
 
 /**
  * UnitImpl is an implementation of Unit.

@@ -1,9 +1,10 @@
 package hotciv.workforce;
 
-import com.vladium.util.IntSet;
 import hotciv.framework.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -12,67 +13,32 @@ public class AdvancedWorkForceStrategy implements WorkForceStrategy {
     @Override
     public void gatherFoodAndProduction(World world, Position pCity) {
         ModifiableCity city = world.getCityAt(pCity);
-        String focus = city.getWorkForceFocus();
 
-        Iterator<Position> neighborhood = Utility.get8NeighborhoodIterator(pCity);
-        Set<Position> positions = new HashSet<Position>();
-        while (neighborhood.hasNext()) {
-            Position p = neighborhood.next();
-            positions.add(p);
+        // Get the surrounding tiles in a list.
+        List<Position> positions = Utility.get8NeighborhoodPositions(pCity);
+        List<Tile> tileList = new ArrayList<Tile>();
+        for (Position p : positions) {
+            tileList.add(world.getTileAt(p));
         }
 
-        // One of the people will stay in the city to produce 1 food and 1 production.
+        // Sort the list in respect to the food or resources in descending order.
+        TileComparator tileComp = new TileComparator(city.getWorkForceFocus());
+        Collections.sort(tileList, Collections.reverseOrder(tileComp));
+
+        // One of the workers will stay in the city to produce 1 food and 1 production.
         int resourcesProduced = 1;
         int foodGathered = 1;
+        int workersAvailable = city.getSize() - 1;
+        tileList = tileList.subList(0, workersAvailable);
 
-        int peopleAvailable = city.getSize() - 1;
-        int peopleUsed = 0;
-
-        Integer[] tileResources = new Integer[positions.size()];
-        Integer[] tileFood = new Integer[positions.size()];
-
-        for (Position p : positions) {
-            String tileType = world.getTileAt(p).getTypeString();
-
-            tileResources[peopleUsed] = GameConstants.PRODMAP.get(tileType);
-            tileFood[peopleUsed] = GameConstants.FOODMAP.get(tileType);
-
-            peopleUsed++;
+        // Sum all the food and resources.
+        for (Tile t : tileList) {
+            resourcesProduced += t.getResourcesPerRound();
+            foodGathered += t.getFoodPerRound();
         }
 
-
-        System.out.println("Workforce focus: "+focus); // todo delete print
-
-        if (focus.equals(GameConstants.productionFocus)) {
-            // Sort in descending order.
-            Arrays.sort(tileResources, Collections.reverseOrder());
-
-            for (int i = 0; i < peopleAvailable; i++) {
-                resourcesProduced += tileResources[i];
-
-                System.out.println("Tile["+i+"] gives: "+tileResources[i]+" production.");  // todo delete print
-            }
-        }
-        else if (focus.equals(GameConstants.foodFocus)) {
-            // Sort in descending order.
-            Arrays.sort(tileFood, Collections.reverseOrder());
-
-            for (int i = 0; i < peopleAvailable; i++) {
-                foodGathered += tileFood[i];
-
-                System.out.println("Tile["+i+"] gives: "+tileFood[i]+" food.");  // todo delete print
-            }
-
-
-        }
-        else {
-            throw new InvalidTypeException(focus);
-        }
-
-
+        // Add the gathered food and produced resources to the city.
         city.increaseAmountOfProduction(resourcesProduced);
         city.increaseAmountOfFood(foodGathered);
-
-
     }
 }

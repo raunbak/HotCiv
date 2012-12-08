@@ -1,7 +1,5 @@
 package hotciv.framework;
 
-import java.util.Set;
-
 /**
  * Game is the central interface allowing a client to access and
  * modify the state of a HotCiv game.

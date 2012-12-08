@@ -1,9 +1,9 @@
 package hotciv.world;
 
-import hotciv.framework.*;
-import hotciv.standard.CityImpl;
-import hotciv.standard.TileImpl;
-import hotciv.standard.UnitImpl;
+import hotciv.framework.GameConstants;
+import hotciv.framework.Player;
+import hotciv.framework.Position;
+import hotciv.framework.World;
 
 /**
  *
@@ -54,7 +54,7 @@ public class AdvancedLayoutStrategy implements WorldStrategy {
                 }
 
                 Position p = new Position(r, c);
-                world.setTileAt(p, new TileImpl(p, type));
+                world.createTileAt(p, type);
 
             }
         }
@@ -64,10 +64,10 @@ public class AdvancedLayoutStrategy implements WorldStrategy {
     public void setupInitialWorld(World world) {
         defineTilesOfWorld(world);
         Position p = new Position(8, 12);
-        world.setCityAt(p, new CityImpl(Player.RED));
+        world.createCityAt(p, Player.RED);
         p = new Position(4, 5);
-        world.setCityAt(p, new CityImpl(Player.BLUE));
+        world.createCityAt(p, Player.BLUE);
         p = new Position(2, 0);
-        world.setUnitAt(p, new UnitImpl(Player.RED, GameConstants.ARCHER));
+        world.createUnitAt(p, Player.RED, GameConstants.ARCHER);
     }
 }

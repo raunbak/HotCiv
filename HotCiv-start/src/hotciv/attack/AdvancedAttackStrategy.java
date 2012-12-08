@@ -6,6 +6,12 @@ import hotciv.framework.*;
  *
  */
 public class AdvancedAttackStrategy implements AttackStrategy {
+    private Die die;
+
+    public AdvancedAttackStrategy(Die die) {
+        this.die = die;
+    }
+
     @Override
     public ModifiableUnit outcomeOfBattle(World world, Position pAttacking, Position pDefending) {
 
@@ -27,8 +33,6 @@ public class AdvancedAttackStrategy implements AttackStrategy {
         int combinedAttStrength = ( attStrength + attSupport ) * attTerrainFactor;
         int combinedDefStrength = ( defStrength + defSupport ) * defTerrainFactor;
 
-        // Die-rolls
-        Die die = new Die(6);
         int attDieRoll = die.roll();
         int defDieRoll = die.roll();
 

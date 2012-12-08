@@ -9,8 +9,8 @@ import hotciv.framework.World;
  */
 public class AdvancedPopulationStrategy implements PopulationStrategy {
     @Override
-    public void populationGrowth(World world, Position p) {
-        ModifiableCity city = world.getCityAt(p);
+    public void populationGrowth(World world, Position pCity) {
+        ModifiableCity city = world.getCityAt(pCity);
 
         // City population
         int foodAmount = city.getCurrentAmountOfFood();

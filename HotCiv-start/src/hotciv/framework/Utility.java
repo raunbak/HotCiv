@@ -1,7 +1,7 @@
 package hotciv.framework;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 
 /**
  * Collection of utility methods for speeding up
@@ -29,8 +29,8 @@ public class Utility {
      * @return iterator over the valid positions in the center's 8
      *         neighborhood.
      */
-    public static Iterator<Position> get8NeighborhoodIterator(Position center) {
-        ArrayList<Position> list = new ArrayList<Position>();
+    public static List<Position> get8NeighborhoodPositions(Position center) {
+        List<Position> list = new ArrayList<Position>();
         int row = center.getRow();
         int col = center.getColumn();
         int r, c;
@@ -48,7 +48,7 @@ public class Utility {
                 }
             }
         }
-        return list.iterator();
+        return list;
     }
 
     /**
@@ -85,11 +85,9 @@ public class Utility {
      */
     public static int getFriendlySupport(World world, Position position,
                                          Player player) {
-        Iterator<Position> neighborhood = get8NeighborhoodIterator(position);
-        Position p;
+        Iterable<Position> neighborhood = get8NeighborhoodPositions(position);
         int support = 0;
-        while (neighborhood.hasNext()) {
-            p = neighborhood.next();
+        for (Position p : neighborhood) {
             if (world.getUnitAt(p) != null &&
                     world.getUnitAt(p).getOwner() == player) {
                 support++;

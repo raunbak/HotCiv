@@ -1,7 +1,5 @@
 package hotciv.framework;
 
-import java.util.HashMap;
-
 /**
  * A game with extra methods.
  */

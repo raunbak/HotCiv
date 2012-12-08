@@ -1,10 +1,8 @@
 package hotciv.winner;
 
 import hotciv.framework.ExtendedGame;
-import hotciv.framework.Game;
 import hotciv.framework.Player;
 import hotciv.framework.Position;
-import hotciv.standard.GameImpl;
 
 /**
  *

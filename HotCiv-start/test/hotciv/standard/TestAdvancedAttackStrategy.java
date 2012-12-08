@@ -1,11 +1,11 @@
 package hotciv.standard;
 
-import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.attack.AdvancedAttackStrategy;
 import hotciv.attack.AttackStrategy;
 import hotciv.framework.*;
+import hotciv.gameFactory.AbstractGameFactory;
 import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
@@ -16,8 +16,6 @@ import hotciv.world.WorldStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Iterator;
-
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -25,6 +23,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class TestAdvancedAttackStrategy {
     private Game game;
+    private int fixedDieRoll = 3;    // TODO make tests for expected results with fixed die rolls.
 
     @Before
     public void setUp() {
@@ -56,36 +55,29 @@ public class TestAdvancedAttackStrategy {
             for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
                 for (int j = 0; j < GameConstants.WORLDSIZE; j++) {
                     Position p = new Position(i, j);
-                    world.setTileAt(p, new TileImpl(p, GameConstants.PLAINS));
+                    world.createTileAt(p, GameConstants.PLAINS);
                 }
             }
-            //tileTable[1][0] = new TileImpl(new Position(1, 0), GameConstants.OCEANS);
-            //tileTable[0][1] = new TileImpl(new Position(0, 1), GameConstants.HILLS);
-            //tileTable[2][2] = new TileImpl(new Position(2, 2), GameConstants.MOUNTAINS);
-            //cityTable[1][1] = new CityImpl(Player.RED);
-            //cityTable[4][1] = new CityImpl(Player.BLUE);
 
             Position p = new Position(5, 5);
-            UnitImpl overpoweredArcher = new UnitImpl(Player.BLUE, GameConstants.ARCHER);
+            world.createUnitAt(p, Player.BLUE, GameConstants.ARCHER);
+            ModifiableUnit overpoweredArcher = world.getUnitAt(p);
             overpoweredArcher.setDefensiveStrength(9001);
-            world.setUnitAt(p, overpoweredArcher);
             p = new Position(6, 6);
-            world.setUnitAt(p, new UnitImpl(Player.RED, GameConstants.LEGION));
+            world.createUnitAt(p, Player.RED, GameConstants.LEGION);
 
 
             p = new Position(1, 1);
-            UnitImpl u = new UnitImpl(Player.RED, GameConstants.SETTLER);
-            world.setUnitAt(p, u);
+            world.createUnitAt(p, Player.RED, GameConstants.SETTLER);
             // Put red units in all adjacent positions, except at (0,0).
-            Iterator<Position> neighborhood = Utility.get8NeighborhoodIterator(p);
-            while (neighborhood.hasNext()) {
-                p = neighborhood.next();
-                world.setUnitAt(p, u);
+            Iterable<Position> neighborhood = Utility.get8NeighborhoodPositions(p);
+            for (Position pn : neighborhood) {
+                world.createUnitAt(pn, Player.RED, GameConstants.SETTLER);
             }
             p = new Position(0,0);
-            UnitImpl uDef = new UnitImpl(Player.BLUE, GameConstants.LEGION);
+            world.createUnitAt(p, Player.BLUE, GameConstants.LEGION);
+            ModifiableUnit uDef = world.getUnitAt(p);
             uDef.setDefensiveStrength(1);
-            world.setUnitAt(p, uDef);
         }
     }
 
@@ -112,8 +104,8 @@ public class TestAdvancedAttackStrategy {
         }
 
         @Override
-        public AttackStrategy createAttackStrategy() {
-            return new AdvancedAttackStrategy();
+        public AttackStrategy createAttackStrategy(Die die) {
+            return new AdvancedAttackStrategy(new TestDieStub(fixedDieRoll));
         }
 
         @Override
@@ -127,9 +119,15 @@ public class TestAdvancedAttackStrategy {
         }
     }
 
-    private void makeGameRunNturns(int Nturns) {
-        for (int i = 0; i < 2 * Nturns; i++) {   // age should increment by 100 each time both player's turn has ended, 2*1000/100 = 20.
-            game.endOfTurn();
+    private class TestDieStub extends Die {
+        private int sides;
+        public TestDieStub(int sides) {
+            super(sides);
+            this.sides = sides;
+        }
+
+        public int roll() {
+            return sides;
         }
     }
 }

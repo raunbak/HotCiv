@@ -1,14 +1,14 @@
 package hotciv.standard;
 
-import hotciv.GameFactory.EtaCivFactory;
 import hotciv.framework.Game;
 import hotciv.framework.GameConstants;
 import hotciv.framework.ModifiableCity;
 import hotciv.framework.Position;
+import hotciv.gameFactory.EtaCivFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  *

@@ -38,4 +38,16 @@ public interface Tile {
      * @return the type type as string
      */
     public String getTypeString();
+
+    /**
+     * The amount of food available for gathering on this tile.
+     * @return The amount of food available.
+     */
+    public int getFoodPerRound();
+
+    /**
+     * The amount of resources available to be produces on this tile.
+     * @return The amount of resources available.
+     */
+    public int getResourcesPerRound();
 }

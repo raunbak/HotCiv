@@ -1,7 +1,7 @@
 package hotciv.standard;
 
-import hotciv.GameFactory.AlphaCivFactory;
 import hotciv.framework.*;
+import hotciv.gameFactory.AlphaCivFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -177,7 +177,7 @@ public class TestAlphaCiv {
     @Test
     public void shouldLowerProductionAmountInRed1_1_CityFrom30to10() {
         makeGameRunNturns(5);
-        CityImpl c = (CityImpl) game.getCityAt(new Position(1, 1));
+        ModifiableCity c = (ModifiableCity) game.getCityAt(new Position(1, 1));
         c.reduceAmountOfProduction(20);
         assertEquals("Should be 10 production in this city now", 10, c.getCurrentAmountOfProduction());
     }

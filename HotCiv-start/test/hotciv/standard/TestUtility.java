@@ -4,8 +4,7 @@ import hotciv.framework.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -14,9 +13,8 @@ import static org.junit.Assert.*;
  * and battle factors.
  */
 public class TestUtility {
-    private Iterator<Position> iter;
-    private ArrayList<Position> neighborhood;
-    private Position center, p;
+    private List<Position> neighborhood;
+    private Position center;
 
     Game game;
     World world;
@@ -27,23 +25,11 @@ public class TestUtility {
         world = new WorldStubForBattleTesting(game);
     }
 
-    /**
-     * helper method to insert elements in an iterator into a list.
-     */
-    private ArrayList<Position> convertIteration2List(Iterator<Position> iter) {
-        neighborhood = new ArrayList<Position>();
-        while (iter.hasNext()) {
-            p = iter.next();
-            neighborhood.add(p);
-        }
-        return neighborhood;
-    }
-
     @Test
     public void shouldGive8PositionsForP8_8() {
         center = new Position(8, 8);
-        iter = Utility.get8NeighborhoodIterator(center);
-        neighborhood = convertIteration2List(iter);
+        neighborhood = Utility.get8NeighborhoodPositions(center);
+
 
         assertTrue("Must contain (7,7)",
                 neighborhood.contains(new Position(7, 7)));
@@ -67,8 +53,8 @@ public class TestUtility {
     @Test
     public void shouldGive3PositionsForP0_0() {
         center = new Position(0, 0);
-        iter = Utility.get8NeighborhoodIterator(center);
-        neighborhood = convertIteration2List(iter);
+        neighborhood = Utility.get8NeighborhoodPositions(center);
+
 
         assertTrue("Must contain (1,0)",
                 neighborhood.contains(new Position(1, 0)));
@@ -85,8 +71,8 @@ public class TestUtility {
     @Test
     public void shouldGive3PositionsForP15_15() {
         center = new Position(15, 15);
-        iter = Utility.get8NeighborhoodIterator(center);
-        neighborhood = convertIteration2List(iter);
+        neighborhood = Utility.get8NeighborhoodPositions(center);
+
 
         assertTrue("Must contain (14,15)",
                 neighborhood.contains(new Position(14, 15)));
@@ -152,9 +138,19 @@ class StubTile implements Tile {
     public String getTypeString() {
         return type;
     }
+
+    @Override
+    public int getFoodPerRound() {
+        return 0;
+    }
+
+    @Override
+    public int getResourcesPerRound() {
+        return 0;
+    }
 }
 
-class StubUnit implements Unit {
+class StubUnit implements ModifiableUnit {
     private String type;
     private Player owner;
 
@@ -187,6 +183,22 @@ class StubUnit implements Unit {
     public int getAttackingStrength() {
         return 0;
     }
+
+    @Override
+    public void reduceMoveCountBy(int moves) {
+    }
+
+    @Override
+    public void restoreMoveCount() {
+    }
+
+    @Override
+    public void setTotalMoves(int totalMoves) {
+    }
+
+    @Override
+    public void setDefensiveStrength(int defStrength) {
+    }
 }
 
 @SuppressWarnings("unchecked")
@@ -203,13 +215,13 @@ class WorldStubForBattleTesting implements World {
     }
 
     @Override
-    public City getCityAt(Position p) {
-        return game.getCityAt(p);
+    public ModifiableCity getCityAt(Position p) {
+        return (ModifiableCity) game.getCityAt(p);
     }
 
     @Override
-    public Unit getUnitAt(Position p) {
-        return game.getUnitAt(p);
+    public ModifiableUnit getUnitAt(Position p) {
+        return (ModifiableUnit) game.getUnitAt(p);
     }
 
     @Override
@@ -223,23 +235,23 @@ class WorldStubForBattleTesting implements World {
     }
 
     @Override
-    public void setTileAt(Position p, Tile t) {
+    public void createTileAt(Position p, String type) {
     }
 
     @Override
-    public void setCityAt(Position p, City c) {
+    public void createCityAt(Position p, Player owner) {
     }
 
     @Override
-    public void setUnitAt(Position p, Unit u) {
-    }
-
-    @Override
-    public void removeCityAt(Position p) {
+    public void createUnitAt(Position p, Player owner, String type) {
     }
 
     @Override
     public void removeUnitAt(Position p) {
+    }
+
+    @Override
+    public void forceMoveUnit(Position from, Position to) {
     }
 }
 
@@ -279,7 +291,7 @@ class GameStubForBattleTesting implements Game {
 
     public City getCityAt(Position p) {
         if (p.getRow() == 1 && p.getColumn() == 1) {
-            return new City() {
+            return new ModifiableCity() {
                 public Player getOwner() {
                     return Player.RED;
                 }
@@ -306,6 +318,41 @@ class GameStubForBattleTesting implements Game {
                     return 0;
                 }
 
+                @Override
+                public void reduceAmountOfProduction(int amount) {
+                }
+
+                @Override
+                public void increaseAmountOfProduction(int amount) {
+                }
+
+                @Override
+                public void setProduction(String unittype) {
+                }
+
+                @Override
+                public void setWorkForceFocus(String focus) {
+                }
+
+                @Override
+                public void increaseAmountOfFood(int amount) {
+                }
+
+                @Override
+                public void reduceAmountOfFood(int amount) {
+                }
+
+                @Override
+                public void addToPopulation(int numberOfPeople) {
+                }
+
+                @Override
+                public void setOwner(Player player) {
+                }
+
+                @Override
+                public void produceUnits(World world, Position pCity) {
+                }
             };
         }
         return null;

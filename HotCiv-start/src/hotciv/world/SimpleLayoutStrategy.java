@@ -1,7 +1,9 @@
 package hotciv.world;
 
-import hotciv.framework.*;
-import hotciv.standard.*;
+import hotciv.framework.GameConstants;
+import hotciv.framework.Player;
+import hotciv.framework.Position;
+import hotciv.framework.World;
 
 /**
  *
@@ -13,24 +15,24 @@ public class SimpleLayoutStrategy implements WorldStrategy {
         for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
             for (int j = 0; j < GameConstants.WORLDSIZE; j++) {
                 Position p = new Position(i, j);
-                world.setTileAt(p, new TileImpl(p, GameConstants.PLAINS));
+                world.createTileAt(p, GameConstants.PLAINS);
             }
         }
         Position p = new Position(1, 0);
-        world.setTileAt(p, new TileImpl(p, GameConstants.OCEANS));
+        world.createTileAt(p, GameConstants.OCEANS);
         p = new Position(0, 1);
-        world.setTileAt(p, new TileImpl(p, GameConstants.HILLS));
+        world.createTileAt(p, GameConstants.HILLS);
         p = new Position(2, 2);
-        world.setTileAt(p, new TileImpl(p, GameConstants.MOUNTAINS));
+        world.createTileAt(p, GameConstants.MOUNTAINS);
         p = new Position(1, 1);
-        world.setCityAt(p, new CityImpl(Player.RED));
+        world.createCityAt(p, Player.RED);
         p = new Position(4, 1);
-        world.setCityAt(p, new CityImpl(Player.BLUE));
+        world.createCityAt(p, Player.BLUE);
         p = new Position(2, 0);
-        world.setUnitAt(p, new UnitImpl(Player.RED, GameConstants.ARCHER));
+        world.createUnitAt(p, Player.RED, GameConstants.ARCHER);
         p = new Position(4, 3);
-        world.setUnitAt(p, new UnitImpl(Player.RED, GameConstants.SETTLER));
+        world.createUnitAt(p, Player.RED, GameConstants.SETTLER);
         p = new Position(3, 2);
-        world.setUnitAt(p, new UnitImpl(Player.BLUE, GameConstants.LEGION));
+        world.createUnitAt(p, Player.BLUE, GameConstants.LEGION);
     }
 }

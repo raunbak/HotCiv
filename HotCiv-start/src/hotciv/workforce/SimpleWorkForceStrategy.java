@@ -10,7 +10,7 @@ import hotciv.framework.World;
 public class SimpleWorkForceStrategy implements WorkForceStrategy {
 
     @Override
-    public void gatherFoodAndProduction(World world, Position p) {
-        ((ModifiableCity) world.getCityAt(p)).increaseAmountOfProduction(6);
+    public void gatherFoodAndProduction(World world, Position pCity) {
+        world.getCityAt(pCity).increaseAmountOfProduction(6);
     }
 }

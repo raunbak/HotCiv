@@ -1,16 +1,17 @@
 package hotciv.standard;
 
-import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.age.AgeStrategy;
 import hotciv.attack.AttackStrategy;
 import hotciv.framework.*;
+import hotciv.gameFactory.AbstractGameFactory;
 import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.workforce.WorkForceStrategy;
 import hotciv.world.WorldStrategy;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An implementation of Game. Based on the skeleton implementation from Henrik B Christensen.
@@ -30,7 +31,7 @@ public class GameImpl implements ExtendedGame {
     private AttackStrategy attackStrategy;
     private WorkForceStrategy workForceStrategy;
     private PopulationStrategy populationStrategy;
-    private WorldImpl world = new WorldImpl();  // holds all tiles, cities, units.
+    private World world = new WorldImpl();  // holds all tiles, cities, units.
     private int roundsPlayed;
 
     private List<AttacksWonSubscriber> subscribers;
@@ -44,7 +45,7 @@ public class GameImpl implements ExtendedGame {
         winnerStrategy = gameFactory.createWinnerStrategy(this);
         WorldStrategy worldStrategy = gameFactory.createWorldStrategy();
         unitActionStrategy = gameFactory.createUnitActionStrategy();
-        attackStrategy = gameFactory.createAttackStrategy();
+        attackStrategy = gameFactory.createAttackStrategy(new Die(6));
         workForceStrategy = gameFactory.createWorkForceStrategy();
         populationStrategy = gameFactory.createPopulationStrategy();
 
@@ -89,9 +90,7 @@ public class GameImpl implements ExtendedGame {
 
     public boolean moveUnit(Position from, Position to) {
         ModifiableUnit unitFrom = world.getUnitAt(from);
-        ModifiableUnit unitTo = world.getUnitAt(to);
         Tile tileTo = getTileAt(to);
-
         int distanceToBeMoved = from.distanceTo(to);
         /* Cannot move a unit:
          * - owned by another player
@@ -105,36 +104,34 @@ public class GameImpl implements ExtendedGame {
             return false;
         }
 
-        ModifiableUnit unitToBeMoved;
+        Unit unitTo = world.getUnitAt(to);
+        // initially, set the winning unit to the unit that is moved.
+        Unit winningUnit = unitFrom;
         if (unitTo != null) {
             // Don't move the unit to a position occupied by a unit of the same owner.
             if (unitFrom.getOwner().equals(unitTo.getOwner())) {
                 return false;
             }
 
-            ModifiableUnit winningUnit = attackStrategy.outcomeOfBattle(world, from, to);
-
+            winningUnit = attackStrategy.outcomeOfBattle(world, from, to);
 
             if (winningUnit.getOwner() == playerInTurn) {
-
                 for (AttacksWonSubscriber sub : subscribers) {
                     sub.aWonAttack(playerInTurn);
                 }
             }
-
-            unitToBeMoved = winningUnit;
-        } else {
-            unitToBeMoved = unitFrom;
+            else {
+                world.removeUnitAt(from);
+            }
         }
-        // Now, move the unit:
-        world.setUnitAt(to, unitToBeMoved);
-        world.removeUnitAt(from);
+        // Now, move the unit (if it has not been removed because a defending unit won a battle).
+        world.forceMoveUnit(from, to);
         unitFrom.reduceMoveCountBy(distanceToBeMoved);
 
+        // If there is a city at "to", make sure the owner is now the owner of the winning unit.
         ModifiableCity cityTo = world.getCityAt(to);
-        if (cityTo != null
-                && cityTo.getOwner() != getPlayerInTurn()) {
-            cityTo.setOwner(getPlayerInTurn());
+        if (cityTo != null) {
+            cityTo.setOwner(winningUnit.getOwner());
         }
 
         return true;
@@ -173,9 +170,11 @@ public class GameImpl implements ExtendedGame {
         roundsPlayed++;
     }
 
-
     public void changeWorkForceFocusInCityAt(Position p, String balance) {
-        world.getCityAt(p).setWorkForceFocus(balance);
+        ModifiableCity c = world.getCityAt(p);
+        if (c.getOwner().equals(playerInTurn)) {
+            c.setWorkForceFocus(balance);
+        }
     }
 
     public void changeProductionInCityAt(Position p, String unitType) {

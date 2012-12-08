@@ -8,9 +8,9 @@ import hotciv.framework.World;
  */
 public interface WorkForceStrategy {
     /**
-     *
-     * @param world
-     * @param p
+     * Makes the available workers in a city gather food and production.
+     * @param world The world of the game.
+     * @param pCity The position of the city.
      */
-    public void gatherFoodAndProduction(World world, Position p);
+    public void gatherFoodAndProduction(World world, Position pCity);
 }

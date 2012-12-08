@@ -133,9 +133,9 @@ public class CityImpl implements ModifiableCity {
         Vector stepDirection = new Vector(-1, 0);
 
         // Keep stepping around to find the next free position as long as we are
-        //      not yet stepping around in a square bigger than the world map,
+        //      not yet stepping around in a square with double the sidelength of the world map,
         //      and the city can still afford to produce more units.
-        while (stepLimit < GameConstants.WORLDSIZE && nUnitsProduced < nUnitsAffordable) {
+        while (stepLimit < 2*GameConstants.WORLDSIZE && nUnitsProduced < nUnitsAffordable) {
             int stepsTakenSinceLastTurn = 0;
 
             // Keep stepping forward in stepDirection until we need to turn a corner.
@@ -149,8 +149,7 @@ public class CityImpl implements ModifiableCity {
                         && !world.getTileAt(p).getTypeString().equals(GameConstants.MOUNTAINS)
                         && !world.getTileAt(p).getTypeString().equals(GameConstants.OCEANS)) {
 
-                    UnitImpl u = new UnitImpl(getOwner(), unittype);
-                    world.setUnitAt(p, u);
+                    world.createUnitAt(p, getOwner(), unittype);
                     nUnitsProduced++;  // now one more unit has been created.
                 }
 
