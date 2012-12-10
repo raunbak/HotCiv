@@ -5,7 +5,7 @@ import hotciv.age.LinearAgeStrategy;
 import hotciv.attack.AdvancedAttackStrategy;
 import hotciv.attack.AttackStrategy;
 import hotciv.framework.*;
-import hotciv.GameFactory.AbstractGameFactory;
+import hotciv.gameFactory.AbstractGameFactory;
 import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;

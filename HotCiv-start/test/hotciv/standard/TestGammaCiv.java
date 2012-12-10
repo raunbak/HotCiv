@@ -2,7 +2,7 @@ package hotciv.standard;
 
 import hotciv.framework.Game;
 import hotciv.framework.Position;
-import hotciv.GameFactory.GammaCivFactory;
+import hotciv.gameFactory.GammaCivFactory;
 import org.junit.Before;
 import org.junit.Test;
 

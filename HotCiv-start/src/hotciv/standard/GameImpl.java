@@ -3,7 +3,7 @@ package hotciv.standard;
 import hotciv.age.AgeStrategy;
 import hotciv.attack.AttackStrategy;
 import hotciv.framework.*;
-import hotciv.GameFactory.AbstractGameFactory;
+import hotciv.gameFactory.AbstractGameFactory;
 import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
@@ -54,7 +54,6 @@ public class GameImpl implements ExtendedGame {
 
         // Number of rounds played.
         roundsPlayed = 0;
-
     }
 
     public Tile getTileAt(Position p) {
