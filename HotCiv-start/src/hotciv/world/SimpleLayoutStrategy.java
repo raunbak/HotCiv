@@ -8,7 +8,7 @@ import hotciv.framework.World;
 /**
  *
  */
-public class SimpleLayoutStrategy implements WorldStrategy {
+public class SimpleLayoutStrategy implements LayoutStrategy {
     @Override
     public void setupInitialWorld(World world) {
         // Initialize the tile array with plains on every tile, with the responding positions.

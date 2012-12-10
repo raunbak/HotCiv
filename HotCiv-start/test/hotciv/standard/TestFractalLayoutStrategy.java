@@ -17,7 +17,7 @@ import hotciv.winner.WinnerStrategy;
 import hotciv.workforce.SimpleWorkForceStrategy;
 import hotciv.workforce.WorkForceStrategy;
 import hotciv.world.FractalLayoutStrategy;
-import hotciv.world.WorldStrategy;
+import hotciv.world.LayoutStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,7 +49,7 @@ public class TestFractalLayoutStrategy {
         }
 
         @Override
-        public WorldStrategy createWorldStrategy() {
+        public LayoutStrategy createLayoutStrategy() {
             return new FractalLayoutStrategy();
         }
 

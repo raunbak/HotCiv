@@ -118,7 +118,7 @@ public class TestAlphaCiv {
 
     }
 
-    @Test
+    @Test  // test case 1 of moveUnit
     public void archerShouldBeAbleToMoveFrom2_0To3_1() {
         Unit archer = game.getUnitAt(new Position(2, 0));
         assertNotNull("There should be an archer at (2,0)", archer);
@@ -126,32 +126,33 @@ public class TestAlphaCiv {
         assertEquals("This archer should now be at position (3,1)", archer, game.getUnitAt(new Position(3, 1)));
     }
 
-    @Test
+    @Test  // test case 2 of moveUnit
     public void unitShouldNotBeAbleToMoveToATileWithAMountain() {
+        game.endOfTurn();
         game.moveUnit(new Position(3, 2), new Position(2, 2));
         assertNull("There should not be any units on a mountain-tile", game.getUnitAt(new Position(2, 2)));
     }
 
-    @Test
+    @Test  // test case 3 of moveUnit
     public void redCannotMoveBlueUnits() {
         game.moveUnit(new Position(3, 2), new Position(4, 2));
         assertNull("If not null, then red could move blues units", game.getUnitAt(new Position(4, 2)));
     }
 
-    @Test
+    @Test   // test case 4 of moveUnit
     public void unitsCannotMoveFurtherThanRemainingMoveCount() {
         game.moveUnit(new Position(4, 3), new Position(4, 5));
         assertNull("This settler should not be able to move here. (distance > 1)", game.getUnitAt(new Position(4, 5)));
     }
 
-    @Test
+    @Test   // test case 5 of moveUnit
     public void unitsCannotMoveWhenAtZeroMoveCount() {
         game.moveUnit(new Position(4, 3), new Position(4, 4));
         game.moveUnit(new Position(4, 4), new Position(4, 5));
         assertNull("This settler should not be able to move here. (no moves left)", game.getUnitAt(new Position(4, 5)));
     }
 
-    @Test
+    @Test  // test case 6 of moveUnit
     public void thereShouldBeOnlyOneUnitOnATile() {
         game.moveUnit(new Position(2, 0), new Position(3, 1));  // Move archer
         game.moveUnit(new Position(4, 3), new Position(4, 2));  // Move settler
@@ -161,7 +162,7 @@ public class TestAlphaCiv {
         assertNotNull("Archer should still be at (3,1) because it can't move to settlers position", game.getUnitAt(new Position(3, 1)));
     }
 
-    @Test
+    @Test  // test case 7 of moveUnit
     public void movingRedUnitToBlueUnitOverwritesTheBlueUnit() {
         game.moveUnit(new Position(4, 3), new Position(3, 2));
         assertEquals("The red settler should now be in the legion's position", Player.RED, game.getUnitAt(new Position(3, 2)).getOwner());

@@ -15,7 +15,7 @@ import hotciv.winner.WinnerStrategy;
 import hotciv.workforce.SimpleWorkForceStrategy;
 import hotciv.workforce.WorkForceStrategy;
 import hotciv.world.SimpleLayoutStrategy;
-import hotciv.world.WorldStrategy;
+import hotciv.world.LayoutStrategy;
 
 /**
  *
@@ -32,7 +32,7 @@ public class AlphaCivFactory implements AbstractGameFactory {
     }
 
     @Override
-    public WorldStrategy createWorldStrategy() {
+    public LayoutStrategy createLayoutStrategy() {
         return new SimpleLayoutStrategy();
     }
 

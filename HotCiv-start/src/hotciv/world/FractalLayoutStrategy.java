@@ -8,7 +8,7 @@ import thirdparty.ThirdPartyFractalGenerator;
 /**
  * Concrete strategy for making world layout based on the ThirdPartyFractalGenerator.
  */
-public class FractalLayoutStrategy implements WorldStrategy {
+public class FractalLayoutStrategy implements LayoutStrategy {
     @Override
     public void setupInitialWorld(World world) {
         ThirdPartyFractalGenerator fracGen = new ThirdPartyFractalGenerator();

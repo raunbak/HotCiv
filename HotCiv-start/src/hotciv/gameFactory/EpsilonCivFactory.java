@@ -14,8 +14,8 @@ import hotciv.winner.WinBy3WonAttacksStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.workforce.SimpleWorkForceStrategy;
 import hotciv.workforce.WorkForceStrategy;
+import hotciv.world.LayoutStrategy;
 import hotciv.world.SimpleLayoutStrategy;
-import hotciv.world.WorldStrategy;
 
 /**
  *
@@ -32,7 +32,7 @@ public class EpsilonCivFactory implements AbstractGameFactory {
     }
 
     @Override
-    public WorldStrategy createWorldStrategy() {
+    public LayoutStrategy createLayoutStrategy() {
         return new SimpleLayoutStrategy();
     }
 

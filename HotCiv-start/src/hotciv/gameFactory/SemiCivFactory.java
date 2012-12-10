@@ -15,7 +15,7 @@ import hotciv.winner.WinnerStrategy;
 import hotciv.workforce.AdvancedWorkForceStrategy;
 import hotciv.workforce.WorkForceStrategy;
 import hotciv.world.AdvancedLayoutStrategy;
-import hotciv.world.WorldStrategy;
+import hotciv.world.LayoutStrategy;
 
 /**
  *
@@ -33,7 +33,7 @@ public class SemiCivFactory implements AbstractGameFactory {
     }
 
     @Override
-    public WorldStrategy createWorldStrategy() {
+    public LayoutStrategy createLayoutStrategy() {
         return new AdvancedLayoutStrategy();
     }
 

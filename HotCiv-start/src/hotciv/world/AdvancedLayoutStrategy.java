@@ -8,7 +8,7 @@ import hotciv.framework.World;
 /**
  *
  */
-public class AdvancedLayoutStrategy implements WorldStrategy {
+public class AdvancedLayoutStrategy implements LayoutStrategy {
 
 
     String[] tilelayout = new String[]{
