@@ -13,6 +13,7 @@ import org.junit.runners.Suite;
                 TestDeltaCiv.class,
                 TestEpsilonCiv.class,
                 TestEtaCiv.class,
+                TestFractalLayoutStrategy.class,
                 TestGammaCiv.class,
                 TestInvalidUnitCreation.class,
                 TestUtility.class,
