@@ -8,7 +8,7 @@ import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.workforce.WorkForceStrategy;
-import hotciv.world.WorldStrategy;
+import hotciv.world.LayoutStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,14 +43,14 @@ public class GameImpl implements ExtendedGame {
         // Create all needed Strategies
         ageStrategy = gameFactory.createAgeStrategy();
         winnerStrategy = gameFactory.createWinnerStrategy(this);
-        WorldStrategy worldStrategy = gameFactory.createWorldStrategy();
+        LayoutStrategy layoutStrategy = gameFactory.createLayoutStrategy();
         unitActionStrategy = gameFactory.createUnitActionStrategy();
         attackStrategy = gameFactory.createAttackStrategy(new Die(6));
         workForceStrategy = gameFactory.createWorkForceStrategy();
         populationStrategy = gameFactory.createPopulationStrategy();
 
         // Make the world strategy setup the world containing the initial layout of Tiles, Cities and Units.
-        worldStrategy.setupInitialWorld(world);
+        layoutStrategy.setupInitialWorld(world);
 
         // Number of rounds played.
         roundsPlayed = 0;

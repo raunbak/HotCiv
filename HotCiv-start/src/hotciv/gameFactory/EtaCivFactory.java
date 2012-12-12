@@ -14,8 +14,8 @@ import hotciv.winner.RedWinsAtAge3000BCStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.workforce.AdvancedWorkForceStrategy;
 import hotciv.workforce.WorkForceStrategy;
+import hotciv.world.LayoutStrategy;
 import hotciv.world.SimpleLayoutStrategy;
-import hotciv.world.WorldStrategy;
 
 /**
  *
@@ -32,7 +32,7 @@ public class EtaCivFactory implements AbstractGameFactory {
     }
 
     @Override
-    public WorldStrategy createWorldStrategy() {
+    public LayoutStrategy createLayoutStrategy() {
         return new SimpleLayoutStrategy();
     }
 

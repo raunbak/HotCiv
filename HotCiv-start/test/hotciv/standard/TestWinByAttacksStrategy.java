@@ -12,7 +12,7 @@ import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinBy3WonAttacksStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.workforce.WorkForceStrategy;
-import hotciv.world.WorldStrategy;
+import hotciv.world.LayoutStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,7 +55,7 @@ public class TestWinByAttacksStrategy {
     }
 
 
-    private class BattleLayoutStub implements WorldStrategy {
+    private class BattleLayoutStub implements LayoutStrategy {
         @Override
         public void setupInitialWorld(World world) {
 
@@ -95,7 +95,7 @@ public class TestWinByAttacksStrategy {
         }
 
         @Override
-        public WorldStrategy createWorldStrategy() {
+        public LayoutStrategy createLayoutStrategy() {
             return new BattleLayoutStub();
         }
 
