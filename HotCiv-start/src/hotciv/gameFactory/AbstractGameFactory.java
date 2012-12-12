@@ -1,4 +1,4 @@
-package hotciv.gameFactory;
+package hotciv.GameFactory;
 
 import hotciv.age.AgeStrategy;
 import hotciv.attack.AttackStrategy;
