@@ -16,8 +16,8 @@ public class TestUtility {
     private List<Position> neighborhood;
     private Position center;
 
-    Game game;
-    World world;
+    private Game game;
+    private World world;
 
     @Before
     public void setUp() {
@@ -203,7 +203,7 @@ class StubUnit implements ModifiableUnit {
 
 @SuppressWarnings("unchecked")
 class WorldStubForBattleTesting implements World {
-    Game game;
+    private Game game;
 
     public WorldStubForBattleTesting(Game game) {
         this.game = game;

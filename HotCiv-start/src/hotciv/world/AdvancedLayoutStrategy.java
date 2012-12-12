@@ -11,7 +11,7 @@ import hotciv.framework.World;
 public class AdvancedLayoutStrategy implements LayoutStrategy {
 
 
-    String[] tilelayout = new String[]{
+    private String[] tilelayout = new String[]{
             "...ooMooooo.....",
             "..ohhoooofffoo..",
             ".oooooMooo...oo.",
@@ -67,7 +67,7 @@ public class AdvancedLayoutStrategy implements LayoutStrategy {
         world.createCityAt(p, Player.RED);
         p = new Position(4, 5);
         world.createCityAt(p, Player.BLUE);
-        p = new Position(2, 0);
+        p = new Position(2, 1);
         world.createUnitAt(p, Player.RED, GameConstants.ARCHER);
     }
 }

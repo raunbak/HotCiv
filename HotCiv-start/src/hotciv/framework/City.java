@@ -63,7 +63,7 @@ public interface City {
 
     /**
      *
-     * @return
+     * @return the current amount of food the city has.
      */
     public int getCurrentAmountOfFood();
 }

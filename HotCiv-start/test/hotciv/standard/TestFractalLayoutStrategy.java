@@ -25,7 +25,7 @@ import org.junit.Test;
  * Test class for the FractalLayoutStrategy using the ThirdPartyFractalGenerator.
  */
 public class TestFractalLayoutStrategy {
-    Game game;
+    private Game game;
     @Before
     public void setup() {
         game = new GameImpl(new TestFractalFactory());

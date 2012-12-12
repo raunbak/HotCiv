@@ -35,8 +35,8 @@ public class Position {
         this.c = c;
     }
 
-    protected int r;
-    protected int c;
+    private int r;
+    private int c;
 
     /**
      * get the row represented by this position.

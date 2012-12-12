@@ -1,15 +1,10 @@
 package hotciv.framework;
 
-import hotciv.builder.Builder;
-
 
 /**
- * Created with IntelliJ IDEA.
- * User: Raunbak
- * Date: 10-12-12
- * Time: 20:07
- * To change this template use File | Settings | File Templates.
+ * Decorator for ExtendedGame that add a transcript functionality.
  */
+@SuppressWarnings("unused")
 public class ExtendedGameDecorator {
     private ExtendedGame extendedGame;
     private boolean transcribing;
@@ -27,35 +22,38 @@ public class ExtendedGameDecorator {
     // Methods that are transcribed.
 
     public boolean moveUnit(Position from, Position to) {
-        if (transcribing == true) {
-            System.out.println(extendedGame.getPlayerInTurn().toString()+
-                    " moves "+extendedGame.getUnitAt(from).getTypeString()+
-                    " from "+from.toString()+ " to "+ to.toString());
+        String unittypeMoved = extendedGame.getUnitAt(from).getTypeString();
+        boolean moveSuccessful = extendedGame.moveUnit(from, to);
+
+        // Only transcribe, if the move actually happened.
+        if (transcribing && moveSuccessful) {
+            System.out.println(extendedGame.getPlayerInTurn()+
+                    " moves "+unittypeMoved+
+                    " from "+from+ " to "+ to);
         }
 
-
-        return extendedGame.moveUnit(from, to);
+        return moveSuccessful;
     }
 
     public void endOfTurn() {
-        if (transcribing == true) {
+        if (transcribing) {
             System.out.println(extendedGame.getPlayerInTurn()+" ends turn");
         }
         extendedGame.endOfTurn();
     }
 
     public void changeProductionInCityAt(Position p, String unitType) {
-        if (transcribing == true) {
+        if (transcribing) {
             System.out.println(extendedGame.getPlayerInTurn()+" changes production in city at "+
-                    p.toString()+" to "+unitType);
+                    p+" to "+unitType);
         }
         extendedGame.changeProductionInCityAt(p, unitType);
     }
 
     public void changeWorkForceFocusInCityAt(Position p, String balance) {
-        if (transcribing == true) {
-            System.out.println(extendedGame.getPlayerInTurn()+" changes work force focus in city at"+
-                    p.toString()+" to "+balance);
+        if (transcribing) {
+            System.out.println(extendedGame.getPlayerInTurn()+" changes work force focus in city at "+
+                    p+" to "+balance);
         }
         extendedGame.changeWorkForceFocusInCityAt(p, balance);
     }
