@@ -1,4 +1,4 @@
-package hotciv.GameFactory;
+package hotciv.gameFactory;
 
 import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
