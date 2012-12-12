@@ -23,7 +23,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class TestAdvancedAttackStrategy {
     private Game game;
-    private int fixedDieRoll = 3;    // TODO make tests for expected results with fixed die rolls.
+    private int fixedDieRoll = 1;    // TODO make tests for expected results with fixed die rolls.
 
     @Before
     public void setUp() {
@@ -60,11 +60,9 @@ public class TestAdvancedAttackStrategy {
             }
 
             Position p = new Position(5, 5);
-            world.createUnitAt(p, Player.BLUE, GameConstants.ARCHER);
-            ModifiableUnit overpoweredArcher = world.getUnitAt(p);
-            overpoweredArcher.setDefensiveStrength(9001);
+            world.createUnitAt(p, Player.BLUE, GameConstants.LEGION);
             p = new Position(6, 6);
-            world.createUnitAt(p, Player.RED, GameConstants.LEGION);
+            world.createUnitAt(p, Player.RED, GameConstants.ARCHER);
 
 
             p = new Position(1, 1);
@@ -76,8 +74,8 @@ public class TestAdvancedAttackStrategy {
             }
             p = new Position(0,0);
             world.createUnitAt(p, Player.BLUE, GameConstants.LEGION);
-            ModifiableUnit uDef = world.getUnitAt(p);
-            uDef.setDefensiveStrength(1);
+           // ModifiableUnit uDef = world.getUnitAt(p);
+           // uDef.setDefensiveStrength(1);
         }
     }
 
