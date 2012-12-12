@@ -21,14 +21,7 @@ public class ExtendedGameDecorator {
     }
 
     public void changeTranscribingMode(){
-        if (transcribing == true) {
-            transcribing = false;
-            return;
-        }
-        if (transcribing == false) {
-            transcribing = true;
-        }
-
+        transcribing = !transcribing;
     }
 
     // Methods that are transcribed.
