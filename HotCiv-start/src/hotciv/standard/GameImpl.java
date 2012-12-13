@@ -35,10 +35,12 @@ public class GameImpl implements ExtendedGame {
     private int roundsPlayed;
 
     private List<AttacksWonSubscriber> subscribers;
+    private GameObsComposite observers;
 
 
     public GameImpl(AbstractGameFactory gameFactory) {
         subscribers = new ArrayList<AttacksWonSubscriber>();
+        observers = new GameObsComposite();
 
         // Create all needed Strategies
         ageStrategy = gameFactory.createAgeStrategy();
@@ -133,6 +135,11 @@ public class GameImpl implements ExtendedGame {
             cityTo.setOwner(winningUnit.getOwner());
         }
 
+        // The world has not necessarily changed at both from and to, but notifying the observers
+        // here once and for all is the simplest.
+        observers.worldChangedAt(from);
+        observers.worldChangedAt(to);
+
         return true;
     }
 
@@ -140,6 +147,7 @@ public class GameImpl implements ExtendedGame {
         // If red is the player in turn, change player in turn to blue and nothing else.
         if (playerInTurn.equals(Player.RED)) {
             playerInTurn = Player.BLUE;
+            observers.turnEnds(playerInTurn, age);
             return;
         }
 
@@ -163,10 +171,12 @@ public class GameImpl implements ExtendedGame {
             populationStrategy.populationGrowth(world, p);
 
             // produce units!
-            city.produceUnits(world, p);
+            city.produceUnits(world, p, observers);
         }
         // Add to the counter of rounds played in the game.
         roundsPlayed++;
+
+        observers.turnEnds(playerInTurn, age);
     }
 
     public void changeWorkForceFocusInCityAt(Position p, String balance) {
@@ -187,7 +197,18 @@ public class GameImpl implements ExtendedGame {
         Unit u = getUnitAt(p);
         if (u.getOwner().equals(playerInTurn)) {
             unitActionStrategy.performUnitAction(world, p);
+            observers.worldChangedAt(p);
         }
+    }
+
+    @Override
+    public void addObserver(GameObserver observer) {
+        observers.addObserver(observer);
+    }
+
+    @Override
+    public void setTileFocus(Position position) {
+        observers.tileFocusChangedAt(position);
     }
 
     public int getRoundsPlayed(){

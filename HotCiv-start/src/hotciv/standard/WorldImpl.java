@@ -49,7 +49,7 @@ public class WorldImpl implements World {
 
     @Override
     public void forceMoveUnit(Position from, Position to) {
-        if (unitMap.containsKey(from)) {
+        if (unitMap.containsKey(from) && !from.equals(to)) {
             unitMap.put(to, unitMap.get(from));
             unitMap.remove(from);
         }

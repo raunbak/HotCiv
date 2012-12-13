@@ -99,7 +99,7 @@ public class CityImpl implements ModifiableCity {
      * starting from the position of the city and then the position just above it.
      */
     @Override
-    public void produceUnits(World world, Position pCity) {
+    public void produceUnits(World world, Position pCity, GameObsComposite observers) {
         String unittype = getProduction();
 
         // If the city has not currently a production set, then there is nothing to produce.
@@ -151,6 +151,7 @@ public class CityImpl implements ModifiableCity {
 
                     world.createUnitAt(p, getOwner(), unittype);
                     nUnitsProduced++;  // now one more unit has been created.
+                    observers.worldChangedAt(p);  // notify the observers.
                 }
 
                 // Add the stepping "vector" to the current position to get the next position.

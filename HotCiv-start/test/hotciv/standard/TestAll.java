@@ -14,6 +14,7 @@ import org.junit.runners.Suite;
                 TestEpsilonCiv.class,
                 TestEtaCiv.class,
                 TestFractalLayoutStrategy.class,
+                TestGameImplSubjectBehaviour.class,
                 TestGammaCiv.class,
                 TestInvalidUnitCreation.class,
                 TestUtility.class,

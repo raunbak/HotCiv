@@ -27,7 +27,9 @@ public interface ModifiableCity extends City {
      * Precondition: there is a city at position pCity.
      * Added by L&M.
      *
+     * @param world
      * @param pCity The position of the city that should produce units.
+     * @param observers
      */
-    public void produceUnits(World world, Position pCity);
+    public void produceUnits(World world, Position pCity, GameObsComposite observers);
 }

@@ -351,7 +351,7 @@ class GameStubForBattleTesting implements Game {
                 }
 
                 @Override
-                public void produceUnits(World world, Position pCity) {
+                public void produceUnits(World world, Position pCity, GameObsComposite observers) {
                 }
             };
         }
@@ -387,7 +387,6 @@ class GameStubForBattleTesting implements Game {
     public void performUnitActionAt(Position p) {
     }
 
-    // Remove these if the Game interface for the AlphaCiv exercise is used.
-    //public void addObserver(GameObserver observer) {}
-    //public void setTileFocus(Position position) {}
+    public void addObserver(GameObserver observer) {}
+    public void setTileFocus(Position position) {}
 }
