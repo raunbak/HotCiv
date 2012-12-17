@@ -18,8 +18,6 @@ public class BlueEasyCpuControlStrategy implements ControlStrategy {
     @Override
     public void playRound(ExtendedGame game) {
         sleep();
-        sleep();
-        sleep();
         if (game.getPlayerInTurn().equals(Player.BLUE)) {
             blueEasyPlayer.doActions(game);
         }
@@ -28,7 +26,7 @@ public class BlueEasyCpuControlStrategy implements ControlStrategy {
     @Override
     public void sleep() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

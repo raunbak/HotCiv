@@ -1,8 +1,10 @@
 package hotciv.standard;
 
 import hotciv.GameFactory.AlphaCivFactory;
+import hotciv.GameFactory.SemiCivFactory;
 import hotciv.framework.*;
 import hotciv.GameFactory.PlayerVsEasyCpuCivFactory;
+import hotciv.tools.MultiTool;
 import hotciv.view.CivDrawing;
 import hotciv.view.MapView;
 import minidraw.framework.*;
@@ -18,48 +20,16 @@ import java.awt.event.MouseEvent;
 public class TestVisual {
 
     public static void main(String args[]) {
-        Game game = new GameImpl(new AlphaCivFactory());
+        Game game = new GameImpl(new PlayerVsEasyCpuCivFactory());
 
         DrawingEditor editor =
                 new MiniDrawApplication("TestVisual", new TestFactory(game));
 
         // TODO figure out why doing endOfTurn in a MouseEvent in a Tool makes graphics act differently
-        editor.setTool(new UpdateTool(game));
 
         editor.open();
 
-        //game.endOfTurn();
-    }
-}
-
-class UpdateTool extends NullTool {
-    private Game game;
-
-    public UpdateTool(Game game) {
-        this.game = game;
-    }
-
-    private int count = 0;
-    public void mouseUp(MouseEvent e, int x, int y) {
-        switch(count) {
-            case 0:  // Not in use right now
-                System.out.println("Moving a unit...");
-                game.moveUnit(new Position(2,0), new Position(1,1));
-                System.out.println("Unit at position 'to': "+game.getUnitAt(new Position(1,1)).getTypeString());
-                break;
-
-            case 1:
-                System.out.println("end of turn...");
-                game.endOfTurn();
-                break;
-
-            case 2:
-                System.out.println("inspect position 4,1 (blue city)");
-                game.setTileFocus(new Position(4,1));
-                break;
-
-        }
-        count++;
+        editor.setTool(new MultiTool(editor, game));
     }
 }
 
