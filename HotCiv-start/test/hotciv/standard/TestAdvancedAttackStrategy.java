@@ -4,6 +4,8 @@ import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.attack.AdvancedAttackStrategy;
 import hotciv.attack.AttackStrategy;
+import hotciv.control.ControlStrategy;
+import hotciv.control.HumanControlStrategy;
 import hotciv.framework.*;
 import hotciv.gameFactory.AbstractGameFactory;
 import hotciv.population.PopulationStrategy;
@@ -114,6 +116,11 @@ public class TestAdvancedAttackStrategy {
         @Override
         public PopulationStrategy createPopulationStrategy() {
             return null;
+        }
+
+        @Override
+        public ControlStrategy createControlStrategy(ExtendedGame game) {
+            return new HumanControlStrategy();
         }
     }
 

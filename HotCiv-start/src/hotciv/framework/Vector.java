@@ -45,4 +45,8 @@ public class Vector {
     public int getColumnComponent() {
         return c;
     }
+
+    public String toString() {
+        return "("+r+","+c+")";
+    }
 }

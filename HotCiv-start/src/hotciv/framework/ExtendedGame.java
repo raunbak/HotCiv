@@ -18,6 +18,12 @@ public interface ExtendedGame extends Game {
     public Iterable<Position> getCityPositions();
 
     /**
+     * Returns a set containing all the positions at which there are units.
+     * Added by L&M.
+     */
+    public Iterable<Position> getUnitPositions();
+
+    /**
      * Add an AttacksWonSubscriber to the list that will get notified each time an attack is won.
      * @param sub The subscriber that wants to receive updates in regards to attacks won.
      */

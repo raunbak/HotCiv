@@ -4,6 +4,8 @@ import hotciv.age.AgeStrategy;
 import hotciv.age.DecreasingAgeStrategy;
 import hotciv.attack.AttackStrategy;
 import hotciv.attack.SimpleAttackStrategy;
+import hotciv.control.ControlStrategy;
+import hotciv.control.HumanControlStrategy;
 import hotciv.framework.Die;
 import hotciv.framework.ExtendedGame;
 import hotciv.population.PopulationStrategy;
@@ -54,5 +56,10 @@ public class BetaCivFactory implements AbstractGameFactory {
     @Override
     public PopulationStrategy createPopulationStrategy() {
         return new SimplePopulationStrategy();
+    }
+
+    @Override
+    public ControlStrategy createControlStrategy(ExtendedGame game) {
+        return new HumanControlStrategy();
     }
 }

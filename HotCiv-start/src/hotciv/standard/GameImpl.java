@@ -2,6 +2,7 @@ package hotciv.standard;
 
 import hotciv.age.AgeStrategy;
 import hotciv.attack.AttackStrategy;
+import hotciv.control.ControlStrategy;
 import hotciv.framework.*;
 import hotciv.gameFactory.AbstractGameFactory;
 import hotciv.population.PopulationStrategy;
@@ -31,6 +32,7 @@ public class GameImpl implements ExtendedGame {
     private AttackStrategy attackStrategy;
     private WorkForceStrategy workForceStrategy;
     private PopulationStrategy populationStrategy;
+    private ControlStrategy controlStrategy;
     private World world = new WorldImpl();  // holds all tiles, cities, units.
     private int roundsPlayed;
 
@@ -50,6 +52,7 @@ public class GameImpl implements ExtendedGame {
         attackStrategy = gameFactory.createAttackStrategy(new Die(6));
         workForceStrategy = gameFactory.createWorkForceStrategy();
         populationStrategy = gameFactory.createPopulationStrategy();
+        controlStrategy = gameFactory.createControlStrategy(this);
 
         // Make the world strategy setup the world containing the initial layout of Tiles, Cities and Units.
         layoutStrategy.setupInitialWorld(world);
@@ -148,6 +151,7 @@ public class GameImpl implements ExtendedGame {
         if (playerInTurn.equals(Player.RED)) {
             playerInTurn = Player.BLUE;
             observers.turnEnds(playerInTurn, age);
+            controlStrategy.playRound(this);
             return;
         }
 
@@ -177,6 +181,9 @@ public class GameImpl implements ExtendedGame {
         roundsPlayed++;
 
         observers.turnEnds(playerInTurn, age);
+
+        controlStrategy.playRound(this);
+
     }
 
     public void changeWorkForceFocusInCityAt(Position p, String balance) {
@@ -217,6 +224,11 @@ public class GameImpl implements ExtendedGame {
 
     public Iterable<Position> getCityPositions() {
         return world.getCityPositions();
+    }
+
+    @Override
+    public Iterable<Position> getUnitPositions() {
+        return world.getUnitPositions();
     }
 
     public void addAttacksWonSubscriber(AttacksWonSubscriber sub) {

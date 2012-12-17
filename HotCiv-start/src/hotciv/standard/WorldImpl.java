@@ -2,7 +2,9 @@ package hotciv.standard;
 
 import hotciv.framework.*;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * A class representing the world.
@@ -44,7 +46,7 @@ public class WorldImpl implements World {
 
     @Override
     public Iterable<Position> getUnitPositions() {
-        return unitMap.keySet();
+        return ((HashMap<Position,UnitImpl>) unitMap.clone()).keySet();
     }
 
     @Override
