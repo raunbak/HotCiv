@@ -1,7 +1,7 @@
 package hotciv.standard;
 
 import hotciv.framework.*;
-import hotciv.gameFactory.SemiCivFactory;
+import hotciv.GameFactory.SemiCivFactory;
 import org.junit.Before;
 import org.junit.Test;
 

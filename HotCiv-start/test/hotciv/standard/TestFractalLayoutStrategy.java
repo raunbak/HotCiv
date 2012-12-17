@@ -9,7 +9,7 @@ import hotciv.control.HumanControlStrategy;
 import hotciv.framework.Die;
 import hotciv.framework.ExtendedGame;
 import hotciv.framework.Game;
-import hotciv.gameFactory.AbstractGameFactory;
+import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.population.PopulationStrategy;
 import hotciv.population.SimplePopulationStrategy;
 import hotciv.unitaction.NoActionStrategy;

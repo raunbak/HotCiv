@@ -1,67 +1,64 @@
 package hotciv.GameFactory;
 
 import hotciv.age.AgeStrategy;
-import hotciv.age.LinearAgeStrategy;
+import hotciv.age.DecreasingAgeStrategy;
+import hotciv.attack.AdvancedAttackStrategy;
 import hotciv.attack.AttackStrategy;
-import hotciv.attack.SimpleAttackStrategy;
+import hotciv.control.BlueEasyCpuControlStrategy;
 import hotciv.control.ControlStrategy;
-import hotciv.control.HumanControlStrategy;
 import hotciv.framework.Die;
 import hotciv.framework.ExtendedGame;
+import hotciv.population.AdvancedPopulationStrategy;
 import hotciv.population.PopulationStrategy;
-import hotciv.population.SimplePopulationStrategy;
-import hotciv.unitaction.NoActionStrategy;
+import hotciv.unitaction.SettlerAndArcherActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
-import hotciv.winner.AlternatingWinStrategy;
-import hotciv.winner.WinBy3WonAttacksStrategy;
 import hotciv.winner.WinByConquestStrategy;
 import hotciv.winner.WinnerStrategy;
-import hotciv.workforce.SimpleWorkForceStrategy;
+import hotciv.workforce.AdvancedWorkForceStrategy;
 import hotciv.workforce.WorkForceStrategy;
-import hotciv.world.LayoutStrategy;
-import hotciv.world.SimpleLayoutStrategy;
+import hotciv.world.*;
 
 /**
- *
+ * A game-configuration with
  */
-public class ZetaCivFactory implements AbstractGameFactory {
+public class PlayerVsEasyCpuCivFactory implements AbstractGameFactory {
     @Override
     public AgeStrategy createAgeStrategy() {
-        return new LinearAgeStrategy();
+        return new DecreasingAgeStrategy();
     }
 
     @Override
     public WinnerStrategy createWinnerStrategy(ExtendedGame game) {
-        return new AlternatingWinStrategy(new WinByConquestStrategy(), new WinBy3WonAttacksStrategy(game));
+        return new WinByConquestStrategy();
     }
 
     @Override
     public LayoutStrategy createLayoutStrategy() {
-        return new SimpleLayoutStrategy();
+        return new PopulatedFractalLayoutStrategy();
     }
 
     @Override
     public UnitActionStrategy createUnitActionStrategy() {
-        return new NoActionStrategy();
+        return new SettlerAndArcherActionStrategy();
     }
 
     @Override
     public AttackStrategy createAttackStrategy(Die die) {
-        return new SimpleAttackStrategy();
+        return new AdvancedAttackStrategy(die);
     }
 
     @Override
     public WorkForceStrategy createWorkForceStrategy() {
-        return new SimpleWorkForceStrategy();
+        return new AdvancedWorkForceStrategy();
     }
 
     @Override
     public PopulationStrategy createPopulationStrategy() {
-        return new SimplePopulationStrategy();
+        return new AdvancedPopulationStrategy();
     }
 
     @Override
     public ControlStrategy createControlStrategy(ExtendedGame game) {
-        return new HumanControlStrategy();
+        return new BlueEasyCpuControlStrategy();
     }
 }

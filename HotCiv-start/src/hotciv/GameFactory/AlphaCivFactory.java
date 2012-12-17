@@ -4,6 +4,8 @@ import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.attack.AttackStrategy;
 import hotciv.attack.SimpleAttackStrategy;
+import hotciv.control.ControlStrategy;
+import hotciv.control.HumanControlStrategy;
 import hotciv.framework.Die;
 import hotciv.framework.ExtendedGame;
 import hotciv.population.PopulationStrategy;
@@ -15,7 +17,7 @@ import hotciv.winner.WinnerStrategy;
 import hotciv.workforce.SimpleWorkForceStrategy;
 import hotciv.workforce.WorkForceStrategy;
 import hotciv.world.SimpleLayoutStrategy;
-import hotciv.world.WorldStrategy;
+import hotciv.world.LayoutStrategy;
 
 /**
  *
@@ -32,7 +34,7 @@ public class AlphaCivFactory implements AbstractGameFactory {
     }
 
     @Override
-    public WorldStrategy createWorldStrategy() {
+    public LayoutStrategy createLayoutStrategy() {
         return new SimpleLayoutStrategy();
     }
 
@@ -54,5 +56,10 @@ public class AlphaCivFactory implements AbstractGameFactory {
     @Override
     public PopulationStrategy createPopulationStrategy() {
         return new SimplePopulationStrategy();
+    }
+
+    @Override
+    public ControlStrategy createControlStrategy(ExtendedGame game) {
+        return new HumanControlStrategy();
     }
 }
