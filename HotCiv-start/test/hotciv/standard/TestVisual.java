@@ -1,5 +1,6 @@
 package hotciv.standard;
 
+import hotciv.GameFactory.AlphaCivFactory;
 import hotciv.framework.*;
 import hotciv.GameFactory.PlayerVsEasyCpuCivFactory;
 import hotciv.view.CivDrawing;
@@ -17,17 +18,17 @@ import java.awt.event.MouseEvent;
 public class TestVisual {
 
     public static void main(String args[]) {
-        Game game = new GameImpl(new PlayerVsEasyCpuCivFactory());
+        Game game = new GameImpl(new AlphaCivFactory());
 
         DrawingEditor editor =
                 new MiniDrawApplication("TestVisual", new TestFactory(game));
 
         // TODO figure out why doing endOfTurn in a MouseEvent in a Tool makes graphics act differently
-        //editor.setTool(new UpdateTool(game));
+        editor.setTool(new UpdateTool(game));
 
         editor.open();
 
-        game.endOfTurn();
+        //game.endOfTurn();
     }
 }
 
@@ -41,7 +42,7 @@ class UpdateTool extends NullTool {
     private int count = 0;
     public void mouseUp(MouseEvent e, int x, int y) {
         switch(count) {
-            case -1:  // Not in use right now
+            case 0:  // Not in use right now
                 System.out.println("Moving a unit...");
                 game.moveUnit(new Position(2,0), new Position(1,1));
                 System.out.println("Unit at position 'to': "+game.getUnitAt(new Position(1,1)).getTypeString());

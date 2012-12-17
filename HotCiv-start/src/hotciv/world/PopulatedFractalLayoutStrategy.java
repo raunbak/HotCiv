@@ -9,7 +9,7 @@ import hotciv.framework.World;
  * TODO write a file header
  */
 public class PopulatedFractalLayoutStrategy implements LayoutStrategy {
-    public final double populationFrequency = 0.1;
+    public final double populationFrequency = 0.04;
     public final double cityToUnitRatio = 0.2;
     public final double[] unitRatios = {0.4, 0.8};  // {a,b} --> [0,a]:archer, [a,b]:legion, [b,1]:settler.
 
@@ -27,7 +27,7 @@ public class PopulatedFractalLayoutStrategy implements LayoutStrategy {
                 if (!tiletype.equals(GameConstants.MOUNTAINS)
                         && !tiletype.equals(GameConstants.OCEANS)
                         && Math.random() < populationFrequency) {
-                    Player owner = Player.RED;
+                    Player owner = Player.BLUE;
                     if (Math.random() < 0.5) {
                         owner = Player.BLUE;
                     }

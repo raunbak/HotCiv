@@ -42,6 +42,8 @@ public class CivDrawing
         defineCityMap();
         // and the set of 'icons' in the status panel
         defineIcons();
+
+
     }
 
     /** The UnitDrawing should not allow client side
