@@ -4,7 +4,7 @@ import hotciv.age.AgeStrategy;
 import hotciv.attack.AttackStrategy;
 import hotciv.control.ControlStrategy;
 import hotciv.framework.*;
-import hotciv.gameFactory.AbstractGameFactory;
+import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;

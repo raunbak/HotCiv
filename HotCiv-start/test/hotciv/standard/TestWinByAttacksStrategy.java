@@ -7,7 +7,7 @@ import hotciv.attack.SimpleAttackStrategy;
 import hotciv.control.ControlStrategy;
 import hotciv.control.HumanControlStrategy;
 import hotciv.framework.*;
-import hotciv.gameFactory.AbstractGameFactory;
+import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;

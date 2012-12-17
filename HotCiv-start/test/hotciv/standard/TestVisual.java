@@ -1,7 +1,7 @@
 package hotciv.standard;
 
 import hotciv.framework.*;
-import hotciv.gameFactory.PlayerVsEasyCpuCivFactory;
+import hotciv.GameFactory.PlayerVsEasyCpuCivFactory;
 import hotciv.view.CivDrawing;
 import hotciv.view.MapView;
 import minidraw.framework.*;
