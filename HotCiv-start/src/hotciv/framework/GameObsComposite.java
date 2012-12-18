@@ -39,4 +39,9 @@ public class GameObsComposite implements GameObserver {
             obs.tileFocusChangedAt(position);
         }
     }
+
+    @Override
+    public Position getTileFocus() {
+        return null; // not meant to be used for this composite class.
+    }
 }

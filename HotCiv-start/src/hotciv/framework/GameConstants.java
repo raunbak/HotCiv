@@ -74,7 +74,18 @@ public class GameConstants {
 
     // Valid production balance types
     public static final String productionFocus = "hammer";
+    public static final String productionFocusDescription = "Production-focus";
     public static final String foodFocus = "apple";
+    public static final String foodFocusDescription = "Food-focus";
+
+    public static Map<String, String> BALANCE_DESCRIPTIONMAP;
+    static {
+        BALANCE_DESCRIPTIONMAP = new HashMap<String, String>();
+        BALANCE_DESCRIPTIONMAP.put(productionFocus, productionFocusDescription);
+        BALANCE_DESCRIPTIONMAP.put(foodFocus, foodFocusDescription);
+        BALANCE_DESCRIPTIONMAP = Collections.unmodifiableMap(BALANCE_DESCRIPTIONMAP);
+    }
+
 
     // == Valid unit types and stats ====================
     // Archer

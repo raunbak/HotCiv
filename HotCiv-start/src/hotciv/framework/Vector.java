@@ -38,6 +38,18 @@ public class Vector {
         c = -rOld;
     }
 
+    /**
+     * Normalizes the vector while rotating, so that |r|<=1 and |c|<=1.
+     */
+    public void rotate45clockwise() {
+        int rOld = r;
+        r = r + c;
+        r = r != 0 ? r/Math.abs(r) : 0;
+        c = c - rOld;
+        c = c != 0 ? c/Math.abs(c) : 0;
+
+    }
+
     public int getRowComponent() {
         return r;
     }

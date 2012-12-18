@@ -1,7 +1,7 @@
 package hotciv.standard;
 
-import hotciv.framework.*;
 import hotciv.GameFactory.AlphaCivFactory;
+import hotciv.framework.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -113,6 +113,11 @@ public class TestGameImplSubjectBehaviour {
         @Override
         public void tileFocusChangedAt(Position position) {
             tileFocus = position;
+        }
+
+        @Override
+        public Position getTileFocus() {
+            return null;
         }
     }
 }

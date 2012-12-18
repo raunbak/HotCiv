@@ -1,18 +1,17 @@
 package hotciv.view;
 
 import hotciv.framework.*;
-import hotciv.view.CityFigure;
-import hotciv.view.GfxConstants;
-import hotciv.view.UnitFigure;
-import minidraw.framework.*;
+import minidraw.framework.DrawingEditor;
+import minidraw.framework.Figure;
 import minidraw.standard.ImageFigure;
+import minidraw.standard.NullTool;
 import minidraw.standard.StandardDrawing;
 
 import java.awt.*;
-//import javax.swing.*;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import static hotciv.view.GfxConstants.*;
 
 /**
  *
@@ -26,12 +25,21 @@ public class CivDrawing
      * from */
     protected Game game;
     protected DrawingEditor editor;
+    private TextFigure ageText;
+    private ImageFigure turnShieldIcon;
+    private ImageFigure unitShieldIcon;
+    private ImageFigure cityShieldIcon;
+    private ImageFigure productionIcon;
+    private ImageFigure workForceIcon;
+    private Position tileFocus;
 
     public CivDrawing(DrawingEditor editor, Game game) {
         super();
         this.game = game;
         this.editor = editor;
 
+        cityMap = new HashMap<Position,CityFigure>();
+        unitMap = new HashMap<Position, UnitFigure>();
         // register this unit drawing as listener to any game state
         // changes...
         game.addObserver(this);
@@ -43,7 +51,11 @@ public class CivDrawing
         // and the set of 'icons' in the status panel
         defineIcons();
 
-
+        // Add the text figure for displaying the age.
+        int age = game.getAge();
+        ageText = new TextFigure(age < 0 ? -age+" BC" : age+" AC",
+                new Point(AGE_TEXT_X, AGE_TEXT_Y) );
+        super.add(ageText);
     }
 
     /** The UnitDrawing should not allow client side
@@ -57,82 +69,137 @@ public class CivDrawing
     }
 
     /** store all moveable figures visible in this drawing = units */
-    protected Map<Unit,UnitFigure> unitMap = null;
+    protected Map<Position,UnitFigure> unitMap = null;
 
     /** erase the old list of units, and build a completely new
      * one from scratch by iterating over the game world and add
      * Figure instances for each unit in the world.
      */
     private void defineUnitMap() {
-
-        unitMap = new HashMap<Unit,UnitFigure>();
+        for (UnitFigure f : unitMap.values()) {
+            super.remove(f);
+        }
+        unitMap.clear();
         Position p;
         for ( int r = 0; r < GameConstants.WORLDSIZE; r++ ) {
             for ( int c = 0; c < GameConstants.WORLDSIZE; c++ ) {
                 p = new Position(r,c);
                 Unit unit = game.getUnitAt(p);
-                if ( unit != null ) {
-                    // convert the unit's Position to (x,y) coordinates
-                    Point point = new Point( GfxConstants.getXFromColumn(p.getColumn()),
-                            GfxConstants.getYFromRow(p.getRow()) );
-                    UnitFigure unitFigure =
-                            new UnitFigure( unit, point );
-                    unitFigure.addFigureChangeListener(this);
-                    unitMap.put(unit, unitFigure);
-
-                    // also insert in superclass list as it is
-                    // this list that is iterated by the
-                    // graphics rendering algorithms
-                    super.add(unitFigure);
+                if ( unit == null ) {
+                    continue;
                 }
+                // convert the unit's Position to (x,y) coordinates
+                Point point = new Point( getXFromColumn(p.getColumn()),
+                                            getYFromRow(p.getRow()) );
+
+                UnitFigure unitFigure = new UnitFigure( unit, point );
+                unitFigure.addFigureChangeListener(this);
+                unitMap.put(p, unitFigure);
+
+                // also insert in superclass list as it is
+                // this list that is iterated by the
+                // graphics rendering algorithms
+                super.add(unitFigure);
             }
         }
     }
 
-    protected Map<City,CityFigure> cityMap = null;
+    protected Map<Position,CityFigure> cityMap = null;
 
     private void defineCityMap() {
-
-        cityMap = new HashMap<City,CityFigure>();
+        for (CityFigure f : cityMap.values()) {
+            super.remove(f);
+        }
+        cityMap.clear();
         Position p;
         for ( int r = 0; r < GameConstants.WORLDSIZE; r++ ) {
             for ( int c = 0; c < GameConstants.WORLDSIZE; c++ ) {
                 p = new Position(r,c);
                 City city = game.getCityAt(p);
-                if ( city != null ) {
-                    // convert the unit's Position to (x,y) coordinates
-                    Point point = new Point( GfxConstants.getXFromColumn(p.getColumn()),
-                            GfxConstants.getYFromRow(p.getRow()) );
-                    CityFigure cityFigure =
-                            new CityFigure( city, point );
-                    cityFigure.addFigureChangeListener(this);
-                    cityMap.put(city, cityFigure);
-
-                    // also insert in superclass list as it is
-                    // this list that is iterated by the
-                    // graphics rendering algorithms
-                    super.add(cityFigure);
+                if ( city == null ) {
+                    continue;
                 }
+                // convert the unit's Position to (x,y) coordinates
+                Point point = new Point( getXFromColumn(p.getColumn()),
+                        getYFromRow(p.getRow()) );
+
+                CityFigure cityFigure = new CityFigure( city, point );
+                cityFigure.addFigureChangeListener(this);
+                cityMap.put(p, cityFigure);
+
+                // also insert in superclass list as it is
+                // this list that is iterated by the
+                // graphics rendering algorithms
+                super.add(cityFigure);
             }
         }
     }
 
-    private ImageFigure turnShieldIcon;
     private void defineIcons() {
-        // very much a template implementation :)
-        turnShieldIcon =
-                new ImageFigure( "redshield",
-                        new Point( GfxConstants.TURN_SHIELD_X,
-                                GfxConstants.TURN_SHIELD_Y ) );
+        super.remove(turnShieldIcon);
+        super.remove(unitShieldIcon);
+        super.remove(cityShieldIcon);
+        super.remove(productionIcon);
+        super.remove(workForceIcon);
+
+        turnShieldIcon = new ImageFigure( "redshield", new Point( TURN_SHIELD_X, TURN_SHIELD_Y ) );
+
+        unitShieldIcon = new ImageFigure( "black", new Point( UNIT_SHIELD_X, UNIT_SHIELD_Y ) );
+
+        cityShieldIcon = new ImageFigure( "black", new Point( CITY_SHIELD_X, CITY_SHIELD_Y ) );
+
+        productionIcon = new ImageFigure( "black", new Point( CITY_PRODUCTION_X, CITY_PRODUCTION_Y ) );
+
+        workForceIcon = new UnitFigure( null, new Point( WORKFORCEFOCUS_X, WORKFORCEFOCUS_Y ) );
+
         // insert in superclass figure list to ensure graphical
         // rendering.
         super.add(turnShieldIcon);
+        super.add(unitShieldIcon);
+        super.add(cityShieldIcon);
+        super.add(productionIcon);
+        super.add(workForceIcon);
     }
 
     // === Observer Methods ===
 
     public void worldChangedAt(Position pos) {
-        System.out.println( "UnitDrawing: world changes at "+pos);
+        // convert the unit's Position to (x,y) coordinates
+        int x = getXFromColumn(pos.getColumn());
+        int y = getYFromRow(pos.getRow());
+
+        // remove old city figure and add new one.
+        CityFigure cityFigure = cityMap.get(pos);
+        if (cityFigure != null) {
+            super.remove(cityFigure);
+            cityMap.remove(pos);
+        }
+        City city = game.getCityAt(pos);
+        if (city != null) {
+            Point point = new Point(x, y);
+            cityFigure = new CityFigure( city, point );
+            cityFigure.addFigureChangeListener(this);
+            cityMap.put(pos, cityFigure);
+            super.add(cityFigure);
+        }
+
+        // remove old unit figure and add new one.
+        UnitFigure unitFigure = unitMap.get(pos);
+        if (unitFigure != null) {
+            super.remove(unitFigure);
+            unitMap.remove(pos);
+        }
+        Unit unit = game.getUnitAt(pos);
+        if (unit != null) {
+            Point point = new Point(x, y);
+            unitFigure = new UnitFigure( unit, point );
+            unitFigure.addFigureChangeListener(this);
+            unitMap.put(pos, unitFigure);
+            super.add(unitFigure);
+        }
+
+
+        /*
         // this is a really brute-force algorithm: destroy
         // all known units and build up the entire set again
         for ( Figure f : cityMap.values() ) {
@@ -147,31 +214,63 @@ public class CivDrawing
 
         defineCityMap();
         defineUnitMap();
+        */
 
         // TODO find the right way to correctly paint the changes made each round.. for cpuplayers
         //editor.view().checkDamage();
-        /*
-        Figure f = findFigure(GfxConstants.getXFromColumn(pos.getColumn()),GfxConstants.getYFromRow(pos.getRow()));
-        if (f != null) {
-            figureInvalidated(new FigureChangeEvent(f));
-            requestUpdate();
-        }
-        */
-
         //editor.view().drawDrawing(editor.view().getGraphics());
+        checkWinnerStatus();
     }
 
     public void turnEnds(Player nextPlayer, int age) {
-        System.out.println( "UnitDrawing: turnEnds for "+
-                nextPlayer+" at "+age );
-        String playername = "red";
-        if ( nextPlayer == Player.BLUE ) { playername = "blue"; }
-        turnShieldIcon.set( playername+"shield",
-                new Point( GfxConstants.TURN_SHIELD_X,
-                        GfxConstants.TURN_SHIELD_Y ) );
+        editor.showStatus("Age: "+age+", player in turn: "+nextPlayer);
+        defineIcons();
+        turnShieldIcon.set( nextPlayer.toString().toLowerCase() + SHIELD,
+                new Point( TURN_SHIELD_X, TURN_SHIELD_Y ) );
+
+        // Update the age-text
+        String text = age < 0 ? -age+" BC" : age+" AC";
+        ageText.setText(text);
+
+        editor.view().drawDrawing(editor.view().getGraphics());
+        checkWinnerStatus();
     }
 
     public void tileFocusChangedAt(Position position) {
-        System.out.println( "Fake it: tileFocusChangedAt "+position );
+        tileFocus = position;
+
+        // Unit shield (owner)
+        Unit unit = game.getUnitAt(position);
+        String colorUnit = unit != null ? unit.getOwner()+SHIELD : NOTHING;
+        unitShieldIcon.set( colorUnit.toLowerCase(), new Point( UNIT_SHIELD_X, UNIT_SHIELD_Y ) );
+
+        // City shield (owner)
+        City city = game.getCityAt(position);
+        String colorCity = city != null ? city.getOwner()+SHIELD : NOTHING;
+        cityShieldIcon.set( colorCity.toLowerCase(), new Point( CITY_SHIELD_X, CITY_SHIELD_Y ) );
+
+        // Production icon (unittype)
+        String unittype = city != null ? city.getProduction() : null;
+        unittype = unittype != null ? unittype : NOTHING;
+        productionIcon.set( unittype, new Point( CITY_PRODUCTION_X, CITY_PRODUCTION_Y ) );
+
+        // Workforce focus (prioritize food, production, or...)
+        String focus = city != null ? city.getWorkForceFocus() : null;
+        focus = focus != null ? focus : NOTHING;
+        workForceIcon.set( focus, new Point( WORKFORCEFOCUS_X, WORKFORCEFOCUS_Y ) );
+    }
+
+    private void checkWinnerStatus() {
+        Player winner = game.getWinner();
+        if (winner != null) {
+            editor.showStatus(winner+" wins the game!");
+            editor.view().drawDrawing(editor.view().getGraphics());
+            editor.setTool(new NullTool());
+        }
+    }
+
+    @Override
+    public Position getTileFocus() {
+        return tileFocus;
     }
 }

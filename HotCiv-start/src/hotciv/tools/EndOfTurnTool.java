@@ -6,7 +6,6 @@ import minidraw.framework.Drawing;
 import minidraw.framework.DrawingEditor;
 import minidraw.framework.Figure;
 import minidraw.standard.AbstractTool;
-import minidraw.standard.NullTool;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -23,7 +22,7 @@ public class EndOfTurnTool extends AbstractTool {
         super(editor);
         this.game = game;
         this.drawing = editor.drawing();
-        this.turnShieldPoint = new Point( GfxConstants.TURN_SHIELD_X,
+        turnShieldPoint = new Point( GfxConstants.TURN_SHIELD_X,
                 GfxConstants.TURN_SHIELD_Y );
     }
 

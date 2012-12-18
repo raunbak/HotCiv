@@ -61,7 +61,7 @@ public class ZetaCivFactory implements AbstractGameFactory {
     }
 
     @Override
-    public ControlStrategy createControlStrategy(ExtendedGame game) {
+    public ControlStrategy createControlStrategy() {
         return new HumanControlStrategy();
     }
 }

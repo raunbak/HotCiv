@@ -10,9 +10,11 @@ import hotciv.playerAI.PlayerAIstrategy;
  */
 public class BlueEasyCpuControlStrategy implements ControlStrategy {
     private PlayerAIstrategy blueEasyPlayer;
+    private int sleepMillis;
 
-    public BlueEasyCpuControlStrategy() {
+    public BlueEasyCpuControlStrategy(int sleepMillis) {
         blueEasyPlayer = new EasyPlayerAIstrategy(this);
+        this.sleepMillis = sleepMillis;
     }
 
     @Override
@@ -26,7 +28,7 @@ public class BlueEasyCpuControlStrategy implements ControlStrategy {
     @Override
     public void sleep() {
         try {
-            Thread.sleep(500);
+            Thread.sleep(sleepMillis);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

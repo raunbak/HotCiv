@@ -2,9 +2,7 @@ package hotciv.standard;
 
 import hotciv.framework.*;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  * A class representing the world.
@@ -69,7 +67,7 @@ public class WorldImpl implements World {
 
     @Override
     public void createUnitAt(Position p, Player owner, String type) {
-        unitMap.put(p, new UnitImpl(owner, type));
+        unitMap.put(p, new UnitImpl(owner, type, p));
     }
 
     @Override

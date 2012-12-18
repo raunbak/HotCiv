@@ -1,5 +1,6 @@
 package hotciv.standard;
 
+import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.attack.AttackStrategy;
@@ -9,7 +10,6 @@ import hotciv.control.HumanControlStrategy;
 import hotciv.framework.Die;
 import hotciv.framework.ExtendedGame;
 import hotciv.framework.Game;
-import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.population.PopulationStrategy;
 import hotciv.population.SimplePopulationStrategy;
 import hotciv.unitaction.NoActionStrategy;
@@ -76,7 +76,7 @@ public class TestFractalLayoutStrategy {
         }
 
         @Override
-        public ControlStrategy createControlStrategy(ExtendedGame game) {
+        public ControlStrategy createControlStrategy() {
             return new HumanControlStrategy();
         }
     }

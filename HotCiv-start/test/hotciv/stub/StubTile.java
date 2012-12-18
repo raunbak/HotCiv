@@ -1,6 +1,7 @@
 package hotciv.stub;
 
-import hotciv.framework.*;
+import hotciv.framework.Position;
+import hotciv.framework.Tile;
 
 /** Implementation of Tile for the stub.
    This source code is from the book 

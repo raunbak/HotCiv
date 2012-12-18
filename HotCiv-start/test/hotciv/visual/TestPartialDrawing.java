@@ -1,15 +1,13 @@
 package hotciv.visual;
 
-import minidraw.standard.*;
-import minidraw.framework.*;
+import hotciv.framework.Game;
+import hotciv.framework.Position;
+import hotciv.stub.StubGame2;
+import minidraw.framework.DrawingEditor;
+import minidraw.standard.MiniDrawApplication;
+import minidraw.standard.NullTool;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-
-import hotciv.framework.*;
-import hotciv.view.*;
-import hotciv.stub.*;
+import java.awt.event.MouseEvent;
 
 /** Testing the template implementation of a game specific
  * Drawing role.

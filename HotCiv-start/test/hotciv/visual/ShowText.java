@@ -1,15 +1,21 @@
 package hotciv.visual;
 
-import minidraw.standard.*;
-import minidraw.framework.*;
+import hotciv.framework.Game;
+import hotciv.stub.StubGame1;
+import hotciv.view.GfxConstants;
+import hotciv.view.TextFigure;
+import minidraw.framework.Drawing;
+import minidraw.framework.DrawingEditor;
+import minidraw.framework.DrawingView;
+import minidraw.framework.Factory;
+import minidraw.standard.MiniDrawApplication;
+import minidraw.standard.NullTool;
+import minidraw.standard.StandardDrawing;
+import minidraw.standard.StdViewWithBackground;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-
-import hotciv.framework.*;
-import hotciv.view.*;
-import hotciv.stub.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
 
 /** Test the TextFigure to display age in
  * the status panel.

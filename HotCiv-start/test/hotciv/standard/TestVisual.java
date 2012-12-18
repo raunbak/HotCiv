@@ -1,18 +1,17 @@
 package hotciv.standard;
 
-import hotciv.GameFactory.AlphaCivFactory;
-import hotciv.GameFactory.SemiCivFactory;
-import hotciv.framework.*;
 import hotciv.GameFactory.PlayerVsEasyCpuCivFactory;
+import hotciv.framework.Game;
 import hotciv.tools.MultiTool;
 import hotciv.view.CivDrawing;
 import hotciv.view.MapView;
-import minidraw.framework.*;
+import minidraw.framework.Drawing;
+import minidraw.framework.DrawingEditor;
+import minidraw.framework.DrawingView;
+import minidraw.framework.Factory;
 import minidraw.standard.MiniDrawApplication;
-import minidraw.standard.NullTool;
 
 import javax.swing.*;
-import java.awt.event.MouseEvent;
 
 /**
  * TODO write a file header
@@ -20,7 +19,8 @@ import java.awt.event.MouseEvent;
 public class TestVisual {
 
     public static void main(String args[]) {
-        Game game = new GameImpl(new PlayerVsEasyCpuCivFactory());
+        int sleepTimeMillis = 0;
+        Game game = new GameImpl(new PlayerVsEasyCpuCivFactory(sleepTimeMillis));
 
         DrawingEditor editor =
                 new MiniDrawApplication("TestVisual", new TestFactory(game));
@@ -52,6 +52,8 @@ class TestFactory implements Factory {
 
     @Override
     public JTextField createStatusField(DrawingEditor editor) {
-        return null;
+        JTextField f = new JTextField("Welcome to the HotCivilization game!");
+        f.setEditable(false);
+        return f;
     }
 }

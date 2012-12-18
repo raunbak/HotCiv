@@ -16,8 +16,8 @@ import hotciv.winner.RedWinsAtAge3000BCStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.workforce.SimpleWorkForceStrategy;
 import hotciv.workforce.WorkForceStrategy;
-import hotciv.world.SimpleLayoutStrategy;
 import hotciv.world.LayoutStrategy;
+import hotciv.world.SimpleLayoutStrategy;
 
 /**
  *
@@ -59,7 +59,7 @@ public class AlphaCivFactory implements AbstractGameFactory {
     }
 
     @Override
-    public ControlStrategy createControlStrategy(ExtendedGame game) {
+    public ControlStrategy createControlStrategy() {
         return new HumanControlStrategy();
     }
 }

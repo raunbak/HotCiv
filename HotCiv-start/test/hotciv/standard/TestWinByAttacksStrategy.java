@@ -1,5 +1,6 @@
 package hotciv.standard;
 
+import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.age.AgeStrategy;
 import hotciv.age.LinearAgeStrategy;
 import hotciv.attack.AttackStrategy;
@@ -7,7 +8,6 @@ import hotciv.attack.SimpleAttackStrategy;
 import hotciv.control.ControlStrategy;
 import hotciv.control.HumanControlStrategy;
 import hotciv.framework.*;
-import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.NoActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
@@ -122,7 +122,7 @@ public class TestWinByAttacksStrategy {
         }
 
         @Override
-        public ControlStrategy createControlStrategy(ExtendedGame game) {
+        public ControlStrategy createControlStrategy() {
             return new HumanControlStrategy();
         }
     }

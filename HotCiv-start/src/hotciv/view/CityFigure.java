@@ -1,10 +1,9 @@
 package hotciv.view;
 
-import java.awt.*;
-
+import hotciv.framework.City;
 import minidraw.standard.ImageFigure;
 
-import hotciv.framework.*;
+import java.awt.*;
 
 public class CityFigure extends ImageFigure {
     private City city;

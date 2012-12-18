@@ -1,6 +1,5 @@
 package hotciv.workforce;
 
-import hotciv.framework.ModifiableCity;
 import hotciv.framework.Position;
 import hotciv.framework.World;
 

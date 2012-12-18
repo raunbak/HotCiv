@@ -1,10 +1,14 @@
 package hotciv.view;
 
-import minidraw.framework.*;
-import minidraw.standard.*;
-import java.awt.*;
+import hotciv.framework.Game;
+import hotciv.framework.GameConstants;
+import hotciv.framework.Position;
+import hotciv.framework.Tile;
+import minidraw.framework.DrawingEditor;
+import minidraw.standard.ImageManager;
+import minidraw.standard.StdViewWithBackground;
 
-import hotciv.framework.*;
+import java.awt.*;
 
 /** MapView: A MiniDraw DrawingView specializing
  in drawing the background for a HotCiv Game

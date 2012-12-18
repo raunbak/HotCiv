@@ -30,5 +30,5 @@ public interface AbstractGameFactory {
 
     public PopulationStrategy createPopulationStrategy();
 
-    public ControlStrategy createControlStrategy(ExtendedGame game);
+    public ControlStrategy createControlStrategy();
 }

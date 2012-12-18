@@ -1,6 +1,7 @@
 package hotciv.view;
 
-import hotciv.framework.*;
+import hotciv.framework.Player;
+import hotciv.framework.Position;
 
 /** Constants to be accessible by all graphics handling abstractions and
  * coordination mappings.
@@ -54,8 +55,7 @@ public class GfxConstants {
     public static final int CITY_PRODUCTION_Y = 400;
 
     // === Names of GIF files loaded by image manager
-    public static final String RED_SHIELD = "redshield";
-    public static final String BLUE_SHIELD = "blueshield";
+    public static final String SHIELD = "shield";  // owner+SHIELD   fx: "redshield"
     public static final String NOTHING = "black";
 
     /** return the x pixel position on the graphical display

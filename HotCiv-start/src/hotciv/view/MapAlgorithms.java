@@ -1,6 +1,8 @@
 package hotciv.view;
 
-import hotciv.framework.*;
+import hotciv.framework.Game;
+import hotciv.framework.GameConstants;
+import hotciv.framework.Position;
 
 /** A library of algorithms used to draw a FreeCiv like map, that
  * is, a map that draws coastlines properly for the oceans to avoid

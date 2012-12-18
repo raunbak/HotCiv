@@ -29,7 +29,9 @@ public class AdvancedWorkForceStrategy implements WorkForceStrategy {
         int resourcesProduced = 1;
         int foodGathered = 1;
         int workersAvailable = city.getSize() - 1;
-        tileList = tileList.subList(0, workersAvailable);
+        if (workersAvailable <= tileList.size()) {
+            tileList = tileList.subList(0, workersAvailable);
+        }
 
         // Sum all the food and resources.
         for (Tile t : tileList) {

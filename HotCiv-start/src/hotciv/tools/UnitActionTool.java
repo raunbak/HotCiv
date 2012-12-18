@@ -6,9 +6,7 @@ import hotciv.framework.Unit;
 import hotciv.view.GfxConstants;
 import minidraw.framework.DrawingEditor;
 import minidraw.standard.AbstractTool;
-import minidraw.standard.NullTool;
 
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 /**
@@ -23,11 +21,6 @@ public class UnitActionTool extends AbstractTool {
     }
 
     @Override
-    public void keyDown(KeyEvent e, int key) {
-
-    }
-
-    @Override
     public void mouseUp(MouseEvent e, int x, int y) {
         Position p = GfxConstants.getPositionFromXY(x,y);
         Unit u = game.getUnitAt(p);
@@ -35,6 +28,7 @@ public class UnitActionTool extends AbstractTool {
                 && fAnchorY == y
                 && e.isShiftDown()
                 && u != null) {
+            editor.showStatus(game.getPlayerInTurn()+" performs unit-action with "+u.getTypeString()+" at "+p);
             game.performUnitActionAt(p);
         }
     }

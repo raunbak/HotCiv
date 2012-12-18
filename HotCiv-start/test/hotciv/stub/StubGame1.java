@@ -2,7 +2,8 @@ package hotciv.stub;
 
 import hotciv.framework.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Test stub for game for visual testing of
  * minidraw based graphics.

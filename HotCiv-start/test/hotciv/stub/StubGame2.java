@@ -2,7 +2,8 @@ package hotciv.stub;
 
 import hotciv.framework.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Test stub for game for visual testing of
  * minidraw based graphics.
@@ -127,5 +128,10 @@ class StubUnit implements  Unit {
 
     public int getDefensiveStrength() { return 0; }
   public int getAttackingStrength() { return 0; }
+
+    @Override
+    public Position getPosition() {
+        return null;
+    }
 }
 }

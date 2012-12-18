@@ -1,10 +1,10 @@
 package hotciv.standard;
 
+import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.age.AgeStrategy;
 import hotciv.attack.AttackStrategy;
 import hotciv.control.ControlStrategy;
 import hotciv.framework.*;
-import hotciv.GameFactory.AbstractGameFactory;
 import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.UnitActionStrategy;
 import hotciv.winner.WinnerStrategy;
@@ -52,7 +52,7 @@ public class GameImpl implements ExtendedGame {
         attackStrategy = gameFactory.createAttackStrategy(new Die(6));
         workForceStrategy = gameFactory.createWorkForceStrategy();
         populationStrategy = gameFactory.createPopulationStrategy();
-        controlStrategy = gameFactory.createControlStrategy(this);
+        controlStrategy = gameFactory.createControlStrategy();
 
         // Make the world strategy setup the world containing the initial layout of Tiles, Cities and Units.
         layoutStrategy.setupInitialWorld(world);
@@ -94,6 +94,9 @@ public class GameImpl implements ExtendedGame {
 
     public boolean moveUnit(Position from, Position to) {
         ModifiableUnit unitFrom = world.getUnitAt(from);
+        if (unitFrom == null) {
+            return false;
+        }
         Tile tileTo = getTileAt(to);
         int distanceToBeMoved = from.distanceTo(to);
         /* Cannot move a unit:
@@ -131,6 +134,7 @@ public class GameImpl implements ExtendedGame {
         // Now, move the unit (if it has not been removed because a defending unit won a battle).
         world.forceMoveUnit(from, to);
         unitFrom.reduceMoveCountBy(distanceToBeMoved);
+        unitFrom.setPosition(to);
 
         // If there is a city at "to", make sure the owner is now the owner of the winning unit.
         ModifiableCity cityTo = world.getCityAt(to);

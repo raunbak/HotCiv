@@ -185,6 +185,11 @@ class StubUnit implements ModifiableUnit {
     }
 
     @Override
+    public Position getPosition() {
+        return null;
+    }
+
+    @Override
     public void reduceMoveCountBy(int moves) {
     }
 
@@ -198,6 +203,10 @@ class StubUnit implements ModifiableUnit {
 
     @Override
     public void setDefensiveStrength(int defStrength) {
+    }
+
+    @Override
+    public void setPosition(Position p) {
     }
 }
 

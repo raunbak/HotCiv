@@ -13,4 +13,5 @@ public interface ModifiableUnit extends Unit {
 
     public void setDefensiveStrength(int defStrength);
 
+    public void setPosition(Position p);
 }

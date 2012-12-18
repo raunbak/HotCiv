@@ -12,16 +12,25 @@ import hotciv.population.AdvancedPopulationStrategy;
 import hotciv.population.PopulationStrategy;
 import hotciv.unitaction.SettlerAndArcherActionStrategy;
 import hotciv.unitaction.UnitActionStrategy;
+import hotciv.winner.AlternatingWinStrategy;
+import hotciv.winner.WinBy3WonAttacksStrategy;
 import hotciv.winner.WinByConquestStrategy;
 import hotciv.winner.WinnerStrategy;
 import hotciv.workforce.AdvancedWorkForceStrategy;
 import hotciv.workforce.WorkForceStrategy;
-import hotciv.world.*;
+import hotciv.world.LayoutStrategy;
+import hotciv.world.PopulatedFractalLayoutStrategy;
 
 /**
  * A game-configuration with
  */
 public class PlayerVsEasyCpuCivFactory implements AbstractGameFactory {
+    private final int sleepMillis;
+
+    public PlayerVsEasyCpuCivFactory(int sleepMillis) {
+        this.sleepMillis = sleepMillis;
+    }
+
     @Override
     public AgeStrategy createAgeStrategy() {
         return new DecreasingAgeStrategy();
@@ -29,7 +38,8 @@ public class PlayerVsEasyCpuCivFactory implements AbstractGameFactory {
 
     @Override
     public WinnerStrategy createWinnerStrategy(ExtendedGame game) {
-        return new WinByConquestStrategy();
+        return new AlternatingWinStrategy(new WinByConquestStrategy(),
+                new WinBy3WonAttacksStrategy(game));
     }
 
     @Override
@@ -58,7 +68,7 @@ public class PlayerVsEasyCpuCivFactory implements AbstractGameFactory {
     }
 
     @Override
-    public ControlStrategy createControlStrategy(ExtendedGame game) {
-        return new BlueEasyCpuControlStrategy();
+    public ControlStrategy createControlStrategy() {
+        return new BlueEasyCpuControlStrategy(sleepMillis);
     }
 }

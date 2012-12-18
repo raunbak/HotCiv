@@ -1,7 +1,9 @@
 package hotciv.standard;
 
-import hotciv.framework.*;
 import hotciv.GameFactory.SemiCivFactory;
+import hotciv.framework.ExtendedGameDecorator;
+import hotciv.framework.GameConstants;
+import hotciv.framework.Position;
 import org.junit.Before;
 import org.junit.Test;
 

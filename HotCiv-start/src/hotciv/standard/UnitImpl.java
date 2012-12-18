@@ -1,9 +1,6 @@
 package hotciv.standard;
 
-import hotciv.framework.GameConstants;
-import hotciv.framework.InvalidTypeException;
-import hotciv.framework.ModifiableUnit;
-import hotciv.framework.Player;
+import hotciv.framework.*;
 
 /**
  * UnitImpl is an implementation of Unit.
@@ -15,10 +12,12 @@ public class UnitImpl implements ModifiableUnit {
     private int attackingStrength;
     private int moveCount;
     private int totalMoves;
+    private Position position;
 
-    public UnitImpl(Player owner, String unittype) {
+    public UnitImpl(Player owner, String unittype, Position p) {
         this.owner = owner;
         this.unittype = unittype;
+        position = p;
         try {
             defensiveStrength = GameConstants.DEFMAP.get(unittype);
             attackingStrength = GameConstants.ATTMAP.get(unittype);
@@ -60,6 +59,11 @@ public class UnitImpl implements ModifiableUnit {
     }
 
     @Override
+    public Position getPosition() {
+        return position;
+    }
+
+    @Override
     public void reduceMoveCountBy(int moves) {
         moveCount -= moves;
     }
@@ -77,5 +81,10 @@ public class UnitImpl implements ModifiableUnit {
     @Override
     public void setDefensiveStrength(int defStrength) {
         defensiveStrength = defStrength;
+    }
+
+    @Override
+    public void setPosition(Position p) {
+        position = p;
     }
 }

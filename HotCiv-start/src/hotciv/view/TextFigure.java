@@ -1,11 +1,8 @@
 package hotciv.view;
 
-import java.awt.*;
-import java.awt.image.ImageObserver;
-import java.text.AttributedCharacterIterator;
-
-import minidraw.framework.Figure;
 import minidraw.standard.AbstractFigure;
+
+import java.awt.*;
 
 /** A figure representing a text.
  * Rather crude at the moment.

@@ -22,13 +22,13 @@ public class EasyPlayerAIstrategy implements PlayerAIstrategy {
         for (Position p : game.getUnitPositions()) {
             // Make sure not to try to move outside the world.
             while(!v.addToPosition(p).isValidWorldPosition()) {
-                v.rotate90clockwise();
+                v.rotate45clockwise();
             }
             boolean succesfulMove = game.moveUnit(p, v.addToPosition(p));
             if (succesfulMove) {
                 control.sleep();
             }
-            v.rotate90clockwise();
+            v.rotate45clockwise();
         }
         game.endOfTurn();
     }

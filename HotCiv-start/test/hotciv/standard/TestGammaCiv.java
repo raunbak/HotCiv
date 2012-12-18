@@ -1,8 +1,8 @@
 package hotciv.standard;
 
+import hotciv.GameFactory.GammaCivFactory;
 import hotciv.framework.Game;
 import hotciv.framework.Position;
-import hotciv.GameFactory.GammaCivFactory;
 import org.junit.Before;
 import org.junit.Test;
 
