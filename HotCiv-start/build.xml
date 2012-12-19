@@ -27,12 +27,14 @@
   
   <property name="junitJar" value="lib/junit-4.4.jar"/>
   <property name="fractal" value="lib/fractal.jar"/>
+    <property name="minidraw" value="lib/minidraw.jar"/>
 
   <!-- define the class path for JUnit testing -->
   <path id="class-path">
     <pathelement location="${build-directory}"/>
     <pathelement location="${junitJar}"/>
     <pathelement location="${fractal}"/>
+      <pathelement location="${minidraw}"/>
   </path>
 
   <!-- define classpath for Emma -->
