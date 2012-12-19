@@ -32,6 +32,7 @@ public class CivDrawing
     private ImageFigure productionIcon;
     private ImageFigure workForceIcon;
     private Position tileFocus;
+    private TextFigure unitMoveCountText;
 
     public CivDrawing(DrawingEditor editor, Game game) {
         super();
@@ -56,6 +57,10 @@ public class CivDrawing
         ageText = new TextFigure(age < 0 ? -age+" BC" : age+" AC",
                 new Point(AGE_TEXT_X, AGE_TEXT_Y) );
         super.add(ageText);
+
+        unitMoveCountText = new TextFigure( "", new Point(UNIT_COUNT_X, UNIT_COUNT_Y));
+        super.add(unitMoveCountText);
+
     }
 
     /** The UnitDrawing should not allow client side
@@ -142,13 +147,13 @@ public class CivDrawing
         super.remove(productionIcon);
         super.remove(workForceIcon);
 
-        turnShieldIcon = new ImageFigure( "redshield", new Point( TURN_SHIELD_X, TURN_SHIELD_Y ) );
+        turnShieldIcon = new ImageFigure( Player.RED.toString().toLowerCase()+SHIELD, new Point( TURN_SHIELD_X, TURN_SHIELD_Y ) );
 
-        unitShieldIcon = new ImageFigure( "black", new Point( UNIT_SHIELD_X, UNIT_SHIELD_Y ) );
+        unitShieldIcon = new ImageFigure( NOTHING, new Point( UNIT_SHIELD_X, UNIT_SHIELD_Y ) );
 
-        cityShieldIcon = new ImageFigure( "black", new Point( CITY_SHIELD_X, CITY_SHIELD_Y ) );
+        cityShieldIcon = new ImageFigure( NOTHING, new Point( CITY_SHIELD_X, CITY_SHIELD_Y ) );
 
-        productionIcon = new ImageFigure( "black", new Point( CITY_PRODUCTION_X, CITY_PRODUCTION_Y ) );
+        productionIcon = new ImageFigure( NOTHING, new Point( CITY_PRODUCTION_X, CITY_PRODUCTION_Y ) );
 
         workForceIcon = new UnitFigure( null, new Point( WORKFORCEFOCUS_X, WORKFORCEFOCUS_Y ) );
 
@@ -189,36 +194,18 @@ public class CivDrawing
             super.remove(unitFigure);
             unitMap.remove(pos);
         }
+        unitMoveCountText.setText("");
         Unit unit = game.getUnitAt(pos);
         if (unit != null) {
+            unitMoveCountText.setText(""+unit.getMoveCount());
             Point point = new Point(x, y);
             unitFigure = new UnitFigure( unit, point );
+
             unitFigure.addFigureChangeListener(this);
             unitMap.put(pos, unitFigure);
             super.add(unitFigure);
         }
 
-
-        /*
-        // this is a really brute-force algorithm: destroy
-        // all known units and build up the entire set again
-        for ( Figure f : cityMap.values() ) {
-            super.remove(f);
-        }
-        for ( Figure f : unitMap.values() ) {
-            super.remove(f);
-        }
-        // ensure no units of the old list are accidental in
-        // the selection!
-        clearSelection();
-
-        defineCityMap();
-        defineUnitMap();
-        */
-
-        // TODO find the right way to correctly paint the changes made each round.. for cpuplayers
-        //editor.view().checkDamage();
-        //editor.view().drawDrawing(editor.view().getGraphics());
         checkWinnerStatus();
     }
 
@@ -232,7 +219,8 @@ public class CivDrawing
         String text = age < 0 ? -age+" BC" : age+" AC";
         ageText.setText(text);
 
-        editor.view().drawDrawing(editor.view().getGraphics());
+        unitMoveCountText.setText("");
+
         checkWinnerStatus();
     }
 
@@ -244,14 +232,19 @@ public class CivDrawing
         String colorUnit = unit != null ? unit.getOwner()+SHIELD : NOTHING;
         unitShieldIcon.set( colorUnit.toLowerCase(), new Point( UNIT_SHIELD_X, UNIT_SHIELD_Y ) );
 
+        // Set the movecount text for the unit
+        String movecount = unit != null ? ""+unit.getMoveCount() : "";
+        unitMoveCountText.setText(movecount);
+
+
         // City shield (owner)
         City city = game.getCityAt(position);
         String colorCity = city != null ? city.getOwner()+SHIELD : NOTHING;
         cityShieldIcon.set( colorCity.toLowerCase(), new Point( CITY_SHIELD_X, CITY_SHIELD_Y ) );
 
         // Production icon (unittype)
-        String unittype = city != null ? city.getProduction() : null;
-        unittype = unittype != null ? unittype : NOTHING;
+        String unittype = city != null ? city.getProduction() : NOTHING;
+        unittype = unittype != null ? unittype : NOUNIT;
         productionIcon.set( unittype, new Point( CITY_PRODUCTION_X, CITY_PRODUCTION_Y ) );
 
         // Workforce focus (prioritize food, production, or...)

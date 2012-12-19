@@ -15,19 +15,9 @@ public class SettlerAndArcherActionStrategy implements UnitActionStrategy {
         String type = u.getTypeString();
 
         if (type.equals(GameConstants.ARCHER)) {
-            // Toggle the fortify state.
-            switch (u.getTotalMoves()) {
-                case 1:
-                    u.setDefensiveStrength(u.getDefensiveStrength() * 2);
-                    u.setTotalMoves(0);
-                    u.restoreMoveCount();
-                    break;
-                case 0:
-                    u.setDefensiveStrength(u.getDefensiveStrength() / 2);
-                    u.setTotalMoves(1);
-                    u.restoreMoveCount();  // TODO this could be abused to get an infinite number of moves in one turn. Do we have to introduce a "movable"-variable in UnitImpl?
-                    break;
-            }
+            int defStr = u.getDefensiveStrength();
+            u.setDefensiveStrength(defStr != GameConstants.DEFMAP.get(type) ? defStr/2 : defStr*2);
+            u.setMovable(!u.isMovable());
         }
 
         if (type.equals(GameConstants.SETTLER)

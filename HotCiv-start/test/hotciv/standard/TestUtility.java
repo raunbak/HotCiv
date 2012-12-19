@@ -190,6 +190,11 @@ class StubUnit implements ModifiableUnit {
     }
 
     @Override
+    public boolean isMovable() {
+        return false;
+    }
+
+    @Override
     public void reduceMoveCountBy(int moves) {
     }
 
@@ -198,7 +203,7 @@ class StubUnit implements ModifiableUnit {
     }
 
     @Override
-    public void setTotalMoves(int totalMoves) {
+    public void setMovable(boolean movable) {
     }
 
     @Override

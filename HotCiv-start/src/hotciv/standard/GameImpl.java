@@ -104,7 +104,8 @@ public class GameImpl implements ExtendedGame {
          * - too long a distance
          * - to a mountain- or ocean-tile
          */
-        if (!playerInTurn.equals(unitFrom.getOwner())
+        if (!unitFrom.isMovable()
+                || !playerInTurn.equals(unitFrom.getOwner())
                 || distanceToBeMoved > unitFrom.getMoveCount()
                 || tileTo.getTypeString().equals(GameConstants.MOUNTAINS)
                 || tileTo.getTypeString().equals(GameConstants.OCEANS)) {

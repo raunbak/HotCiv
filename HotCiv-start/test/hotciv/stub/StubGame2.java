@@ -133,5 +133,10 @@ class StubUnit implements  Unit {
     public Position getPosition() {
         return null;
     }
+
+    @Override
+    public boolean isMovable() {
+        return false;
+    }
 }
 }

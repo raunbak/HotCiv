@@ -57,6 +57,8 @@ public class GfxConstants {
     // === Names of GIF files loaded by image manager
     public static final String SHIELD = "shield";  // owner+SHIELD   fx: "redshield"
     public static final String NOTHING = "black";
+    public static final String NOUNIT = "nounit";
+    public static final String FORTARCHER = "fortarcher";
 
     /** return the x pixel position on the graphical display
      * for a tile's column position

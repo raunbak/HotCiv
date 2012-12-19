@@ -1,5 +1,6 @@
 package hotciv.view;
 
+import hotciv.framework.GameConstants;
 import hotciv.framework.Position;
 import hotciv.framework.Unit;
 import minidraw.standard.ImageFigure;
@@ -25,7 +26,11 @@ public class UnitFigure extends ImageFigure {
         if (associatedUnit == null) {
             return;
         }
-
+        String unittype = associatedUnit.getTypeString();
+        if (unittype.equals(GameConstants.ARCHER)) {
+            String imgName = associatedUnit.isMovable() ? unittype : GfxConstants.FORTARCHER;
+            set(imgName, displayBox().getLocation());
+        }
 
         // Draw the owner circle
         Color color =

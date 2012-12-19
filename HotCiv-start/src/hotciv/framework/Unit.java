@@ -74,4 +74,6 @@ public interface Unit {
     public int getAttackingStrength();
 
     public Position getPosition();
+
+    public boolean isMovable();
 }

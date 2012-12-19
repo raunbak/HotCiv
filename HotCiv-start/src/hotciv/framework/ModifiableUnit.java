@@ -9,7 +9,7 @@ public interface ModifiableUnit extends Unit {
 
     public void restoreMoveCount();
 
-    public void setTotalMoves(int totalMoves);
+    public void setMovable(boolean movable);
 
     public void setDefensiveStrength(int defStrength);
 

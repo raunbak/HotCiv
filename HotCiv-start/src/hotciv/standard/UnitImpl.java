@@ -13,6 +13,7 @@ public class UnitImpl implements ModifiableUnit {
     private int moveCount;
     private int totalMoves;
     private Position position;
+    private boolean movable;
 
     public UnitImpl(Player owner, String unittype, Position p) {
         this.owner = owner;
@@ -26,6 +27,7 @@ public class UnitImpl implements ModifiableUnit {
             throw new InvalidTypeException(unittype);
         }
         moveCount = totalMoves;
+        movable = true;
     }
 
     @Override
@@ -64,6 +66,11 @@ public class UnitImpl implements ModifiableUnit {
     }
 
     @Override
+    public boolean isMovable() {
+        return movable;
+    }
+
+    @Override
     public void reduceMoveCountBy(int moves) {
         moveCount -= moves;
     }
@@ -74,8 +81,8 @@ public class UnitImpl implements ModifiableUnit {
     }
 
     @Override
-    public void setTotalMoves(int totalMoves) {
-        this.totalMoves = totalMoves;
+    public void setMovable(boolean movable) {
+        this.movable = movable;
     }
 
     @Override

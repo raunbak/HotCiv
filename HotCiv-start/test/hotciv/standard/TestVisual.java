@@ -1,6 +1,7 @@
 package hotciv.standard;
 
 import hotciv.GameFactory.PlayerVsEasyCpuCivFactory;
+import hotciv.GameFactory.SemiCivFactory;
 import hotciv.framework.Game;
 import hotciv.tools.MultiTool;
 import hotciv.view.CivDrawing;
@@ -19,7 +20,7 @@ import javax.swing.*;
 public class TestVisual {
 
     public static void main(String args[]) {
-        int sleepTimeMillis = 0;
+        int sleepTimeMillis = 0;  // pause between actions.
         Game game = new GameImpl(new PlayerVsEasyCpuCivFactory(sleepTimeMillis));
 
         DrawingEditor editor =
@@ -52,7 +53,7 @@ class TestFactory implements Factory {
 
     @Override
     public JTextField createStatusField(DrawingEditor editor) {
-        JTextField f = new JTextField("Welcome to the HotCivilization game!");
+        JTextField f = new JTextField("HotCivilization, game variant: PlayerVsEasyCpuCivFactory");
         f.setEditable(false);
         return f;
     }
